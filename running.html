@@ -78,6 +78,11 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
 .head{padding:10px 0 30px}
 }
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
+
+  .dgrp{margin-bottom:40px}
+  .dgh{display:flex;align-items:center;gap:9px;font-family:'Poppins',sans-serif;font-size:0.78rem;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.72);margin-bottom:16px;padding-bottom:11px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .dgh i{font-size:1rem;color:rgba(255,255,255,0.5)}
+  .dgc{margin-left:auto;font-size:0.66rem;color:rgba(255,255,255,0.34);letter-spacing:0.08em}
 </style>
 </head>
 <body>
@@ -104,15 +109,15 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
 
   <div class="sec">
     <h2>Event Running</h2>
-    <p>Album event lari. Diurutkan dari yang terbaru.</p>
-  </div>
-  <div class="grid" id="gridRunning"><div class="loading">Memuat album…</div></div>
-
-  <div class="sec">
-    <h2>Event Spesial</h2>
-    <p>Event besar — album tersimpan lebih lama.</p>
+    <p>Album event lari resmi.</p>
   </div>
   <div class="grid" id="gridEvent"><div class="loading">Memuat album…</div></div>
+
+  <div class="sec">
+    <h2>Lari Harian</h2>
+    <p>Album sesi lari harian, dikelompokkan pagi dan sore.</p>
+  </div>
+  <div id="dailyWrap"><div class="loading">Memuat album…</div></div>
 
   <div class="howto">
     <h2><i class="ph-fill ph-info"></i>Cara pemesanan</h2>
@@ -153,54 +158,92 @@ document.getElementById('filters').addEventListener('click', e => {
 (function(){
   const EP = "https://script.google.com/macros/s/AKfycbx1BYB1TACi2OSYFACowp38RVs1A8tq70hPn3dxbvjtLfJuYsS9LfuNEWQbOx5_o5KnLg/exec";
 
-  // Fallback: dipakai kalau sheet belum diisi / fetch gagal
-  const FALLBACK_RUNNING = [
-    {link:"https://photos.app.goo.gl/61guXMG9s7QQz2Kp6", badge:"Event Running", nama:"RID Luwansa Hotel 2026"},
-    {link:"https://photos.app.goo.gl/UfPKhonvsqHoWx6f9", badge:"Event Running", nama:"Tambun Bungai Run 2026"},
-    {link:"https://photos.app.goo.gl/8viQy1WHa1FAJWPv9", badge:"CFD", nama:"Running Area Bunbes · 27 Sep"},
-    {link:"https://photos.app.goo.gl/XyrpeXVN5E4Nqx1i6", badge:"CFD", nama:"Area Bunbes · 6 Sep"},
-    {link:"https://photos.app.goo.gl/kb5XLiUW3DGDGDo56", badge:"Pagi", nama:"Running Area Bunbes · 5 Sep"},
-    {link:"https://photos.app.goo.gl/AN3y5fgg76p21JYy6", badge:"Pagi", nama:"Running Area Bunbes · 29 Agu"},
-    {link:"https://photos.app.goo.gl/suXLK7waqQqqV6h7A", badge:"Sore", nama:"Running Area Jembatan · 25 Agu"},
-    {link:"https://photos.app.goo.gl/4PCB56XXLFXza7rB6", badge:"Pagi", nama:"Running Area Bunbes · 25 Agu"},
-    {link:"https://photos.app.goo.gl/L97H5WA4WFWAR5rM7", badge:"Sore", nama:"Running Area Jembatan · 14 Agu"},
-    {link:"https://photos.app.goo.gl/4KG4Xj5ZhLCW7y5q6", badge:"Sore", nama:"Running Area Jembatan · 12 Agu"}
+  /* ---------- Fallback (dipakai kalau sheet kosong / gagal fetch) ---------- */
+  const FALLBACK_EVENT = [
+    {judul:"RID Luwansa Hotel 2026", link:"https://photos.app.goo.gl/61guXMG9s7QQz2Kp6", tanggalTampil:"", waktu:""},
+    {judul:"Tambun Bungai Run 2026",  link:"https://photos.app.goo.gl/UfPKhonvsqHoWx6f9", tanggalTampil:"", waktu:""}
+  ];
+  const FALLBACK_DAILY = [
+    {judul:"Running Area Bumbes · 27 Sep",  link:"https://photos.app.goo.gl/8viQy1WHa1FAJWPv9", tanggalTampil:"27 Sep", waktu:"CFD"},
+    {judul:"Running Area Bumbes · 6 Sep",   link:"https://photos.app.goo.gl/XyrpeXVN5E4Nqx1i6", tanggalTampil:"6 Sep",  waktu:"CFD"},
+    {judul:"Running Area Bumbes · 5 Sep",   link:"https://photos.app.goo.gl/kb5XLiUW3DGDGDo56", tanggalTampil:"5 Sep",  waktu:"Pagi"},
+    {judul:"Running Area Bumbes · 29 Agu",  link:"https://photos.app.goo.gl/AN3y5fgg76p21JYy6", tanggalTampil:"29 Agu", waktu:"Pagi"},
+    {judul:"Running Area Bumbes · 25 Agu",  link:"https://photos.app.goo.gl/4PCB56XXLFXza7rB6", tanggalTampil:"25 Agu", waktu:"Pagi"},
+    {judul:"Running Area Jembatan · 25 Agu",link:"https://photos.app.goo.gl/suXLK7waqQqqV6h7A", tanggalTampil:"25 Agu", waktu:"Sore"},
+    {judul:"Running Area Jembatan · 14 Agu",link:"https://photos.app.goo.gl/L97H5WA4WFWAR5rM7", tanggalTampil:"14 Agu", waktu:"Sore"},
+    {judul:"Running Area Jembatan · 12 Agu",link:"https://photos.app.goo.gl/4KG4Xj5ZhLCW7y5q6", tanggalTampil:"12 Agu", waktu:"Sore"}
   ];
 
+  /* ---------- Render satu kartu ---------- */
   function card(a){
-    const badge = a.badge || "Album";
-    const nama  = a.nama || "Album";
-    const tgl   = a.tanggalTampil ? '<span class="ev-note">'+a.tanggalTampil+'</span>' : '<span class="ev-note">'+badge+'</span>';
-    return '<a class="ev-card" href="'+a.link+'" target="_blank" rel="noopener">'+
-      '<div class="ev-top"><span class="badge">'+badge+'</span>'+
-      '<span class="ev-ext"><i class="ph ph-arrow-up-right"></i></span></div>'+
-      '<h3>'+nama+'</h3>'+
-      '<div class="ev-foot">'+tgl+
+    const judul = a.judul || a.nama || "Album";
+    const tgl   = a.tanggalTampil || "";
+    return '<a class="ev-card" href="' + a.link + '" target="_blank" rel="noopener">' +
+      '<div class="ev-top"><span class="ev-ext"><i class="ph ph-arrow-up-right"></i></span></div>' +
+      '<h3>' + judul + '</h3>' +
+      '<div class="ev-foot"><span class="ev-note">' + tgl + '</span>' +
       '<span class="ev-go">Buka Album <i class="ph ph-arrow-right"></i></span></div></a>';
   }
 
-  function render(id, list, emptyMsg){
-    const el = document.getElementById(id);
+  /* ---------- Event Running: grid biasa ---------- */
+  function renderEvent(list){
+    const el = document.getElementById('gridEvent');
     if(!el) return;
-    if(!list || !list.length){ el.innerHTML = '<div class="empty">'+emptyMsg+'</div>'; return; }
+    if(!list || !list.length){ el.innerHTML = '<div class="empty">Belum ada album event.</div>'; return; }
     el.innerHTML = list.map(card).join("");
   }
 
-  function load(type, id, fallback, emptyMsg){
-    fetch(EP+"?action=getAlbums&type="+type)
-      .then(function(r){ return r.json(); })
-      .then(function(j){
-        if(j && j.success && j.albums && j.albums.length){
-          render(id, j.albums, emptyMsg);
-        } else {
-          render(id, type==="running"?fallback:[], emptyMsg);
-        }
-      })
-      .catch(function(){ render(id, type==="running"?fallback:[], emptyMsg); });
+  /* ---------- Lari Harian: dikelompokkan pagi / sore ---------- */
+  // Urutan grup: Pagi, Sore, lalu CFD paling bawah
+  const GROUPS = [
+    {key:"pagi", label:"Pagi", icon:"ph-sun-horizon"},
+    {key:"sore", label:"Sore", icon:"ph-sun"},
+    {key:"cfd",  label:"CFD",  icon:"ph-flag-banner"}
+  ];
+
+  function renderDaily(list){
+    const wrap = document.getElementById('dailyWrap');
+    if(!wrap) return;
+    if(!list || !list.length){ wrap.innerHTML = '<div class="empty">Belum ada album lari harian.</div>'; return; }
+
+    // Normalisasi ke grup; yang tak dikenali masuk "lain"
+    const buckets = {pagi:[], sore:[], cfd:[], lain:[]};
+    list.forEach(function(a){
+      const w = String(a.waktu||"").trim().toLowerCase();
+      if(w.indexOf("cfd") === 0) buckets.cfd.push(a);
+      else if(w.indexOf("pagi") === 0 || w === "morning") buckets.pagi.push(a);
+      else if(w.indexOf("sore") === 0 || w.indexOf("senja") === 0 || w === "evening") buckets.sore.push(a);
+      else buckets.lain.push(a);
+    });
+
+    let html = "";
+    GROUPS.forEach(function(g){
+      const items = buckets[g.key];
+      if(!items.length) return;
+      html += '<div class="dgrp"><div class="dgh"><i class="ph ' + g.icon + '"></i>' + g.label +
+              '<span class="dgc">' + items.length + '</span></div>' +
+              '<div class="grid">' + items.map(card).join("") + '</div></div>';
+    });
+    if(buckets.lain.length){
+      html += '<div class="dgrp"><div class="dgh"><i class="ph ph-clock"></i>Lainnya</div>' +
+              '<div class="grid">' + buckets.lain.map(card).join("") + '</div></div>';
+    }
+    wrap.innerHTML = html || '<div class="empty">Belum ada album lari harian.</div>';
   }
 
-  load("running", "gridRunning", FALLBACK_RUNNING, "Belum ada album.");
-  load("event",   "gridEvent",   [], "Belum ada album event spesial.");
+  /* ---------- Fetch ---------- */
+  function load(type, render, fallback){
+    fetch(EP + "?action=getAlbums&type=" + type)
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        if(j && j.success && j.albums && j.albums.length) render(j.albums);
+        else render(fallback);
+      })
+      .catch(function(){ render(fallback); });
+  }
+
+  load("event",   renderEvent, FALLBACK_EVENT);
+  load("running", renderDaily, FALLBACK_DAILY);
 })();
 </script>
 

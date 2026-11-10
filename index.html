@@ -366,15 +366,14 @@ footer .fnote{font-size:0.66rem;color:rgba(255,255,255,0.32);letter-spacing:0.1e
     <div class="sec-head rv">
       <div class="kicker">Karya</div>
       <h2>Sedikit cuplikan</h2>
-      <p>Semua diambil dengan Sony a6400 — tanpa properti sewaan, tanpa tim besar. Hasil dari latihan yang tidak berhenti.</p>
+      <p>Dikerjakan sendiri — tanpa tim besar.</p>
     </div>
     <div class="work rv" id="workGrid">
-      <a href="https://www.instagram.com/rpxlabs/" target="_blank" rel="noopener"><span>Graduation</span></a>
-      <a href="https://www.instagram.com/rpxlabs/" target="_blank" rel="noopener"><span>Padel</span></a>
-      <a href="https://www.instagram.com/rpxlabs/" target="_blank" rel="noopener"><span>Running</span></a>
-      <a href="https://www.instagram.com/rpxlabs/" target="_blank" rel="noopener"><span>Event</span></a>
-      <a href="https://www.instagram.com/rpxlabs/" target="_blank" rel="noopener"><span>Portrait</span></a>
-      <a href="https://www.instagram.com/rpxlabs/" target="_blank" rel="noopener"><span>BTS</span></a>
+      <a href="https://www.instagram.com/rpxlabs/" target="_blank" rel="noopener"><img loading="eager" decoding="async" src="thumb/graduation.jpg" alt="Graduation"><span>Graduation</span></a>
+      <a href="https://www.instagram.com/rpxlabs/" target="_blank" rel="noopener"><img loading="eager" decoding="async" src="thumb/padel.jpg" alt="Padel"><span>Padel</span></a>
+      <a href="https://www.instagram.com/rpxlabs/" target="_blank" rel="noopener"><img loading="eager" decoding="async" src="thumb/running.jpg" alt="Running"><span>Running</span></a>
+      <a href="https://www.instagram.com/rpxlabs/" target="_blank" rel="noopener"><img loading="eager" decoding="async" src="thumb/event.jpg" alt="Event"><span>Event</span></a>
+      <a href="https://www.instagram.com/rpxlabs/" target="_blank" rel="noopener"><img loading="eager" decoding="async" src="thumb/portrait.jpg" alt="Portrait"><span>Portrait</span></a>
     </div>
   </section>
 
@@ -407,27 +406,7 @@ const io = new IntersectionObserver(es => {
 }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.rv').forEach(el => io.observe(el));
 
-/* work grid: pull latest IG thumbnails via graceful fallback */
-(function(){
-  const grid = document.getElementById('workGrid');
-  const labels = ['Graduation','Padel','Running','Event','Portrait','BTS'];
-  const bg = [
-    'linear-gradient(155deg,#161616,#050505)',
-    'linear-gradient(200deg,#1c1c1c,#060606)',
-    'linear-gradient(120deg,#131313,#000)',
-    'linear-gradient(170deg,#1a1a1a,#040404)',
-    'linear-gradient(215deg,#151515,#020202)',
-    'linear-gradient(145deg,#181818,#050505)'
-  ];
-  Array.from(grid.children).forEach((a,i) => {
-    a.style.background = bg[i % bg.length];
-    a.style.position = 'relative';
-    const mark = document.createElement('i');
-    mark.className = 'ph-fill ph-camera';
-    mark.style.cssText = 'position:absolute;inset:0;display:grid;place-items:center;font-size:1.9rem;color:rgba(255,255,255,0.13);z-index:1';
-    a.insertBefore(mark, a.firstChild);
-  });
-})();
+
 
 /* live event count */
 fetch('https://script.google.com/macros/s/AKfycbx1BYB1TACi2OSYFACowp38RVs1A8tq70hPn3dxbvjtLfJuYsS9LfuNEWQbOx5_o5KnLg/exec?action=getSchedule')

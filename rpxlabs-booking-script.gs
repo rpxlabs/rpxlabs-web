@@ -1471,37 +1471,57 @@ function saveOtherJob(d) {
    Kolom: Tanggal | Nama | Album Link | Aktif
    ========================================================================== */
 
-const ALBUM_SHEETS = { running: 'Albums Running', event: 'Albums Event' };
-const ALBUM_HEADERS = ['Tanggal', 'Nama', 'Link Album', 'Aktif'];
+const ALBUM_SHEET = 'Albums Running';
+const ALBUM_HEADERS = ['Tanggal', 'Judul', 'Kategori', 'Waktu', 'Link Album', 'Aktif'];
+const ALBUM_KATEGORI = ['Event', 'Harian'];
+const ALBUM_WAKTU = ['Pagi', 'Sore', 'CFD'];
 
-/** Buat kedua tab album + header kalau belum ada. Jalankan sekali via ?action=setupAlbums */
+/** Buat tab album + header + dropdown. Jalankan sekali via ?action=setupAlbums */
 function setupAlbumsSheets() {
   const ss = SpreadsheetApp.openById(CONFIG.SHEET_ID);
-  const created = [];
-  Object.values(ALBUM_SHEETS).forEach(function (name) {
-    let sh = ss.getSheetByName(name);
-    if (!sh) {
-      sh = ss.insertSheet(name);
-      created.push(name + ' (dibuat)');
-    } else {
-      created.push(name + ' (sudah ada)');
-    }
-    // Tulis header kalau baris 1 kosong
-    const firstCell = sh.getRange(1, 1).getValue();
-    if (!firstCell) {
-      sh.getRange(1, 1, 1, ALBUM_HEADERS.length).setValues([ALBUM_HEADERS]);
-      sh.getRange(1, 1, 1, ALBUM_HEADERS.length)
-        .setFontWeight('bold').setBackground('#000000').setFontColor('#ffffff');
-      sh.setFrozenRows(1);
-      sh.setColumnWidth(1, 110);
-      sh.setColumnWidth(2, 240);
-      sh.setColumnWidth(3, 320);
-      sh.setColumnWidth(4, 70);
-      // Format kolom tanggal
-      sh.getRange(2, 1, sh.getMaxRows() - 1, 1).setNumberFormat('dd/mm/yyyy');
-    }
-  });
-  return { success: true, sheets: created, headers: ALBUM_HEADERS };
+  const report = [];
+  let sh = ss.getSheetByName(ALBUM_SHEET);
+  if (!sh) {
+    sh = ss.insertSheet(ALBUM_SHEET);
+    report.push(ALBUM_SHEET + ' (dibuat)');
+  } else {
+    report.push(ALBUM_SHEET + ' (sudah ada)');
+  }
+
+  // Header
+  sh.getRange(1, 1, 1, ALBUM_HEADERS.length).setValues([ALBUM_HEADERS])
+    .setFontWeight('bold').setBackground('#000000').setFontColor('#ffffff');
+  sh.setFrozenRows(1);
+
+  const widths = [110, 240, 110, 100, 320, 70];
+  widths.forEach(function (w, i) { sh.setColumnWidth(i + 1, w); });
+
+  // Dropdown Kategori (kolom C) & Waktu (kolom D) untuk baris 2..1000
+  const LAST = 1000;
+  const katRule = SpreadsheetApp.newDataValidation()
+    .requireValueInList(ALBUM_KATEGORI, true)
+    .setAllowInvalid(false)
+    .setHelpText('Pilih: Event atau Harian')
+    .build();
+  sh.getRange(2, 3, LAST, 1).setDataValidation(katRule);
+
+  const waktuRule = SpreadsheetApp.newDataValidation()
+    .requireValueInList(ALBUM_WAKTU, true)
+    .setAllowInvalid(false)
+    .setHelpText('Pilih: Pagi, Sore, atau CFD')
+    .build();
+  sh.getRange(2, 4, LAST, 1).setDataValidation(waktuRule);
+
+  // Format tanggal kolom A
+  sh.getRange(2, 1, LAST, 1).setNumberFormat('dd/mm/yyyy');
+
+  return {
+    success: true,
+    sheet: report,
+    headers: ALBUM_HEADERS,
+    dropdownKategori: ALBUM_KATEGORI,
+    dropdownWaktu: ALBUM_WAKTU
+  };
 }
 
 /**
@@ -1509,9 +1529,8 @@ function setupAlbumsSheets() {
  * @param {string} type 'running' atau 'event'
  */
 function getAlbumsFromSheet(type) {
-  const tabName = ALBUM_SHEETS[type] || ALBUM_SHEETS.running;
   const ss = SpreadsheetApp.openById(CONFIG.SHEET_ID);
-  const sh = ss.getSheetByName(tabName);
+  const sh = ss.getSheetByName(ALBUM_SHEET);
   if (!sh) return [];
 
   const lastRow = sh.getLastRow();
@@ -1520,22 +1539,31 @@ function getAlbumsFromSheet(type) {
   const rows = sh.getRange(2, 1, lastRow - 1, ALBUM_HEADERS.length).getValues();
   const out = [];
   rows.forEach(function (r) {
-    const tgl  = r[0];
-    const nama = String(r[1] || '').trim();
-    const link = String(r[2] || '').trim();
-    const aktif = r[3];
+    const tgl      = r[0];
+    const judul    = String(r[1] || '').trim();
+    const kategori = String(r[2] || '').trim();   // Event / Harian
+    const waktu    = String(r[3] || '').trim();   // Pagi / Sore / CFD
+    const link     = String(r[4] || '').trim();
+    const aktif    = r[5];
 
-    if (!nama || !link) return;                    // lewati baris kosong
+    if (!judul || !link) return;                 // lewati baris kosong
     if (link.indexOf("http") !== 0) return;      // link harus valid
 
     // Aktif: kosong/TRUE/ya/1 = tampil; FALSE/tidak/0 = sembunyikan
     const a = String(aktif).trim().toLowerCase();
     if (a === 'false' || a === 'tidak' || a === '0' || a === 'no') return;
 
+    // Filter by type: event -> Kategori "Event"; running -> sisanya (Harian)
+    const kat = kategori.toLowerCase();
+    if (type === 'event' && kat.indexOf('event') !== 0) return;
+    if (type === 'running' && kat.indexOf('event') === 0) return;
+
     out.push({
       tanggal: tgl instanceof Date ? Utilities.formatDate(tgl, 'Asia/Jakarta', 'yyyy-MM-dd') : String(tgl || ''),
       tanggalTampil: tgl instanceof Date ? Utilities.formatDate(tgl, 'Asia/Jakarta', 'd MMM yyyy') : String(tgl || ''),
-      nama: nama,
+      judul: judul,
+      kategori: kategori || 'Harian',
+      waktu: waktu,
       link: link,
       aktif: true,
       ts: tgl instanceof Date ? tgl.getTime() : 0
