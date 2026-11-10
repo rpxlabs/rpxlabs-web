@@ -114,6 +114,12 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
   <div class="grid" id="gridEvent"><div class="loading">Memuat album…</div></div>
 
   <div class="sec">
+    <h2>CFD</h2>
+    <p>Album sesi Car Free Day.</p>
+  </div>
+  <div class="grid" id="gridCfd"><div class="loading">Memuat album…</div></div>
+
+  <div class="sec">
     <h2>Lari Harian</h2>
     <p>Album sesi lari harian, dikelompokkan pagi dan sore.</p>
   </div>
@@ -161,6 +167,7 @@ document.getElementById('filters').addEventListener('click', e => {
   /* ---------- Fallback (dipakai kalau sheet kosong / gagal fetch) ---------- */
   const FALLBACK_EVENT = [];
   const FALLBACK_DAILY = [];
+  const FALLBACK_CFD = [];
 
   /* ---------- Render satu kartu ---------- */
   function card(a){
@@ -181,8 +188,15 @@ document.getElementById('filters').addEventListener('click', e => {
     el.innerHTML = list.map(card).join("");
   }
 
+  /* ---------- CFD: grid sendiri ---------- */
+  function renderCfd(list){
+    const el = document.getElementById('gridCfd');
+    if(!el) return;
+    if(!list || !list.length){ el.innerHTML = '<div class="empty">Belum ada album CFD.</div>'; return; }
+    el.innerHTML = list.map(card).join("");
+  }
+
   /* ---------- Lari Harian: dikelompokkan pagi / sore ---------- */
-  // Hanya Pagi & Sore. CFD = running harian biasa (tanpa grup sendiri).
   const GROUPS = [
     {key:"pagi", label:"Pagi", icon:"ph-sun-horizon"},
     {key:"sore", label:"Sore", icon:"ph-sun"}
@@ -199,7 +213,7 @@ document.getElementById('filters').addEventListener('click', e => {
       const w = String(a.waktu||"").trim().toLowerCase();
       if(w.indexOf("pagi") === 0 || w === "morning") buckets.pagi.push(a);
       else if(w.indexOf("sore") === 0 || w.indexOf("senja") === 0 || w === "evening") buckets.sore.push(a);
-      else buckets.lain.push(a);   // termasuk CFD -> harian biasa
+      else buckets.lain.push(a);
     });
 
     let html = "";
@@ -229,8 +243,20 @@ document.getElementById('filters').addEventListener('click', e => {
       .catch(function(){ render(fallback); });
   }
 
-  load("event",   renderEvent, FALLBACK_EVENT);
-  load("running", renderDaily, FALLBACK_DAILY);
+  // Satu fetch untuk non-event, lalu dipisah: CFD vs harian (Pagi/Sore)
+  load("running", function(all){
+    const cfd = [];
+    const daily = [];
+    (all || []).forEach(function(a){
+      const w = String(a.waktu || "").trim().toLowerCase();
+      if(w.indexOf("cfd") === 0) cfd.push(a);
+      else daily.push(a);
+    });
+    renderCfd(cfd);
+    renderDaily(daily);
+  }, []);
+
+  load("event", renderEvent, FALLBACK_EVENT);
 })();
 </script>
 
