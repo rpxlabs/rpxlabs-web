@@ -180,12 +180,21 @@ document.getElementById('filters').addEventListener('click', e => {
       '<span class="ev-go">Buka Album <i class="ph ph-arrow-right"></i></span></div></a>';
   }
 
+  /* ---------- Urutkan: tanggal terbaru di atas ---------- */
+  function sortNewest(list){
+    return (list || []).slice().sort(function(a, b){
+      const ta = a.ts || Date.parse(a.tanggal || "") || 0;
+      const tb = b.ts || Date.parse(b.tanggal || "") || 0;
+      return tb - ta;
+    });
+  }
+
   /* ---------- Event Running: grid biasa ---------- */
   function renderEvent(list){
     const el = document.getElementById('gridEvent');
     if(!el) return;
     if(!list || !list.length){ el.innerHTML = '<div class="empty">Belum ada album event.</div>'; return; }
-    el.innerHTML = list.map(card).join("");
+    el.innerHTML = sortNewest(list).map(card).join("");
   }
 
   /* ---------- CFD: grid sendiri ---------- */
@@ -193,7 +202,7 @@ document.getElementById('filters').addEventListener('click', e => {
     const el = document.getElementById('gridCfd');
     if(!el) return;
     if(!list || !list.length){ el.innerHTML = '<div class="empty">Belum ada album CFD.</div>'; return; }
-    el.innerHTML = list.map(card).join("");
+    el.innerHTML = sortNewest(list).map(card).join("");
   }
 
   /* ---------- Lari Harian: dikelompokkan pagi / sore ---------- */
@@ -222,12 +231,12 @@ document.getElementById('filters').addEventListener('click', e => {
       if(!items.length) return;
       html += '<div class="dgrp"><div class="dgh"><i class="ph ' + g.icon + '"></i>' + g.label +
               '<span class="dgc">' + items.length + '</span></div>' +
-              '<div class="grid">' + items.map(card).join("") + '</div></div>';
+              '<div class="grid">' + sortNewest(items).map(card).join("") + '</div></div>';
     });
     if(buckets.lain.length){
       html += '<div class="dgrp"><div class="dgh"><i class="ph ph-sneaker-move"></i>Harian' +
               '<span class="dgc">' + buckets.lain.length + '</span></div>' +
-              '<div class="grid">' + buckets.lain.map(card).join("") + '</div></div>';
+              '<div class="grid">' + sortNewest(buckets.lain).map(card).join("") + '</div></div>';
     }
     wrap.innerHTML = html || '<div class="empty">Belum ada album lari harian.</div>';
   }
