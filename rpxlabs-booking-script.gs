@@ -1476,7 +1476,7 @@ const ALBUM_HEADERS = ['Tanggal', 'Nama', 'Link Album', 'Aktif'];
 
 /** Buat kedua tab album + header kalau belum ada. Jalankan sekali via ?action=setupAlbums */
 function setupAlbumsSheets() {
-  const ss = SpreadsheetApp.openById(SHEET_ID);
+  const ss = SpreadsheetApp.openById(CONFIG.SHEET_ID);
   const created = [];
   Object.values(ALBUM_SHEETS).forEach(function (name) {
     let sh = ss.getSheetByName(name);
@@ -1510,7 +1510,7 @@ function setupAlbumsSheets() {
  */
 function getAlbumsFromSheet(type) {
   const tabName = ALBUM_SHEETS[type] || ALBUM_SHEETS.running;
-  const ss = SpreadsheetApp.openById(SHEET_ID);
+  const ss = SpreadsheetApp.openById(CONFIG.SHEET_ID);
   const sh = ss.getSheetByName(tabName);
   if (!sh) return [];
 

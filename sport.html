@@ -36,12 +36,6 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
 .card:hover .ico{background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.4);box-shadow:0 0 20px rgba(255,255,255,0.2)}
 .card h3{font-family:'Poppins',sans-serif;font-size:0.98rem;font-weight:700;margin-bottom:8px}
 .card p{font-size:0.79rem;color:var(--dim);line-height:1.62}
-.venue-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:46px}
-.venue{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:14px;border:1px solid var(--line-soft);background:rgba(255,255,255,0.025);transition:all .25s}
-.venue:hover{border-color:rgba(255,255,255,0.32);background:rgba(255,255,255,0.06)}
-.venue .vi{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.16);font-size:1.04rem;color:rgba(255,255,255,0.85);flex-shrink:0}
-.venue .vt{font-size:0.86rem;font-weight:700;font-family:'Poppins',sans-serif}
-.venue .vs{font-size:0.66rem;color:var(--dim);letter-spacing:0.06em;margin-top:2px}
 .price-band{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:46px}
 .pb{border-radius:20px;padding:28px 26px;background:linear-gradient(150deg,rgba(255,255,255,0.085),rgba(255,255,255,0.024) 50%,rgba(255,255,255,0.008));border:1px solid rgba(255,255,255,0.2);transition:all .28s}
 .pb:hover{border-color:rgba(255,255,255,0.36);box-shadow:0 0 40px rgba(255,255,255,0.09)}
@@ -60,7 +54,7 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
 .fab:hover{transform:scale(1.07)}
 @media(max-width:820px){
 .wrap{padding:0 16px 60px}
-.grid2,.venue-list,.price-band{grid-template-columns:1fr;gap:10px}
+.grid2,.price-band{grid-template-columns:1fr;gap:10px}
 .head{padding:10px 0 30px}
 }
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
@@ -98,15 +92,6 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
     <div class="card"><div class="ico"><i class="ph-fill ph-users-three"></i></div><h3>Sesi Tim</h3><p>Dokumentasi tim, group photo, dan candid perayaan.</p></div>
     <div class="card"><div class="ico"><i class="ph-fill ph-sneaker-move"></i></div><h3>Sesi Personal</h3><p>Latihan pribadi, sesi latihan, sampai sport content untuk sosial media.</p></div>
   </div>
-
-  <div class="sec-head"><h2>Venue yang pernah saya dokumentasikan</h2><p>Terbiasa dengan pencahayaan dan kondisi lapangan masing-masing venue.</p></div>
-  <div class="venue-list">
-    <div class="venue"><div class="vi"><i class="ph-fill ph-map-pin"></i></div><div><div class="vt">Amorta Padel</div><div class="vs">Padel Court</div></div></div>
-    <div class="venue"><div class="vi"><i class="ph-fill ph-map-pin"></i></div><div><div class="vt">Juma Padel</div><div class="vs">Padel Court</div></div></div>
-    <div class="venue"><div class="vi"><i class="ph-fill ph-map-pin"></i></div><div><div class="vt">Elsoco Padel</div><div class="vs">Padel Court</div></div></div>
-    <div class="venue"><div class="vi"><i class="ph-fill ph-map-pin"></i></div><div><div class="vt">Green Padel</div><div class="vs">Padel Court</div></div></div>
-  </div>
-
   <div class="sec-head"><h2>Sesi &amp; harga</h2><p>Harga sudah termasuk proses editing. Padel &amp; tenis memakai tarif per jam court.</p></div>
   <div class="price-band">
     <div class="pb">
@@ -165,7 +150,7 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
 
   <div class="band">
     <h2>Jadwalkan sesimu</h2>
-    <p>Kirim tanggal, jam, dan venue — saya cek ketersediaannya.</p>
+    <p>Kirim tanggal, jam, dan lokasi — saya cek ketersediaannya.</p>
     <a class="btn" href="https://wa.me/6289623290398?text=Halo%20RPXLABS%2C%20saya%20mau%20tanya%20soal%20sesi%20foto." target="_blank" rel="noopener"><i class="ph-fill ph-whatsapp-logo"></i>Booking Sesi</a>
   </div>
 
