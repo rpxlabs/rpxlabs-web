@@ -603,6 +603,47 @@
    ============================================================ */
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx1BYB1TACi2OSYFACowp38RVs1A8tq70hPn3dxbvjtLfJuYsS9LfuNEWQbOx5_o5KnLg/exec';
 
+/* ============================================================
+   TOKEN PORTAL — halaman ini hanya untuk admin.
+   Token didapat dari portal.html, dikirim lewat #t=... di URL.
+   ============================================================ */
+const K_TOKEN = 'rpxlabs_portal_token';
+const K_TIME  = 'rpxlabs_portal_time';
+const PORTAL_URL = 'https://rpxlabs-web.vercel.app/portal.html';
+
+(function readPortalToken(){
+    const m = /(?:^|[#&])t=([A-Za-z0-9]+)/.exec(location.hash || '');
+    if (m) {
+        localStorage.setItem(K_TOKEN, m[1]);
+        localStorage.setItem(K_TIME, String(Date.now()));
+        try { history.replaceState(null, '', location.pathname); } catch (e) {}
+    }
+})();
+
+var PORTAL_TOKEN = localStorage.getItem(K_TOKEN) || '';
+
+/* Kunci halaman kalau tidak ada token */
+function lockPage(){
+    document.body.innerHTML = `
+      <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:#000;color:#f0f0f0;font-family:Nunito,sans-serif;text-align:center">
+        <div style="max-width:360px">
+          <div style="font-size:2rem;opacity:.5;margin-bottom:16px"><ph-icon class="ph ph-lock-key"></ph-icon></div>
+          <h1 style="font-size:1.3rem;font-weight:700;margin-bottom:10px">Halaman Terkunci</h1>
+          <p style="font-size:.85rem;color:#7c7c8a;line-height:1.6;margin-bottom:22px">Masuk lewat portal dulu supaya halaman ini bisa dibuka.</p>
+          <a href="${PORTAL_URL}" style="display:inline-block;background:#f0f0f0;color:#000;font-weight:800;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border-radius:11px;padding:13px 22px">Buka Portal</a>
+        </div>
+      </div>`;
+}
+
+if (!PORTAL_TOKEN) {
+    lockPage();
+} else {
+    fetch(GOOGLE_SCRIPT_URL + '?action=verifyToken&token=' + encodeURIComponent(PORTAL_TOKEN))
+      .then(r => r.json())
+      .then(d => { if (!d || !d.success) lockPage(); })
+      .catch(() => { /* offline: biarkan, server tetap menolak tanpa token valid */ });
+}
+
 const SUBTYPES = {
     'Sport': ['Padel', 'Lari', 'Tenis', 'Basket', 'Futsal', 'Badminton'],
     'Event': ['Akad Nikah', 'Birthday Party', 'Corporate Event', 'Seminar', 'Gathering'],
@@ -864,8 +905,14 @@ async function checkConflictNow() {
 el('jobForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    if (!PORTAL_TOKEN) {
+        toast('Kamu belum login lewat portal', 'ph-warning');
+        return;
+    }
+
     const payload = {
         formType: 'other',
+        token: PORTAL_TOKEN,
         jenis: currentJenis,
         subType: el('subType').value,
         detail: el('detail').value.trim(),
