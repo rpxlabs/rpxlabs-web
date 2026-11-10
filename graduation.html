@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <title>RPXLABS Graduation Booking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #000000;
+            --text: #f0f0f0;
+            --muted: #9d9daa;
+            --purple: #ffffff;
+            --purple-deep: #ffffff;
+            --purple-glow: rgba(255, 255, 255, 0.6);
+            --line: rgba(255, 255, 255, 0.22);
+            --line-strong: rgba(255, 255, 255, 0.45);
+            --glass: linear-gradient(160deg, rgba(255,255,255,0.055) 0%, rgba(255,255,255,0.018) 45%, rgba(255,255,255,0.008) 100%);
+            --inset: inset 0 1px 0 rgba(255,255,255,0.10);
+        }
+
+        html { background: #000000; }
+
+        body {
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #000000;
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+            font-weight: 400;
+            min-height: 100vh;
+            position: relative;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ambient light — gives the glass something to refract */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(900px 520px at 12% -12%, rgba(255, 255, 255, 0.08), transparent 62%),
+                radial-gradient(760px 460px at 104% 12%, rgba(255, 255, 255, 0.06), transparent 66%),
+                radial-gradient(640px 420px at 50% 112%, rgba(255, 255, 255, 0.05), transparent 72%);
+        }
+
+        h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 30px;
+            border-radius: 20px;
+            background: var(--glass);
+            backdrop-filter: blur(20px) saturate(145%);
+            -webkit-backdrop-filter: blur(20px) saturate(145%);
+            border: 1px solid var(--line);
+            box-shadow:
+                var(--inset),
+                inset 0 -1px 0 rgba(255, 255, 255, 0.03),
+                0 0 46px rgba(255, 255, 255, 0.13),
+                0 30px 70px rgba(0, 0, 0, 0.78);
+        }
+
+        /* ---------- HEADER ---------- */
+        .header {
+            text-align: center;
+            padding: 1.2rem 0 1.5rem;
+            margin-bottom: 1.4rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .header .logo {
+            display: block;
+            width: min(280px, 72%);
+            height: auto;
+            margin: 0 auto 1rem;
+            /* black plate already removed from the PNG; screen blend is a safety net
+               so any residual dark pixels dissolve into the pure-black canvas */
+            mix-blend-mode: screen;
+            filter: contrast(1.06) brightness(1.04);
+        }
+
+        .header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-style: italic;
+            text-transform: uppercase;
+            letter-spacing: 0.26em;
+            margin: 0;
+            color: #ffffff;
+            text-shadow: none;
+        }
+
+        /* ---------- SECTION TITLES ---------- */
+        h2 {
+            position: relative;
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #ffffff;
+            margin: 2rem 0 1.2rem;
+            padding-bottom: 0.65rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -1px;
+            width: 76px;
+            height: 2px;
+            border-radius: 2px;
+            background: linear-gradient(90deg, var(--purple), var(--purple-deep), transparent);
+            box-shadow: 0 0 14px rgba(255, 255, 255, 0.65);
+        }
+
+        .form-group { margin-bottom: 20px; }
+
+        label {
+            display: block;
+            margin-bottom: 0.7rem;
+            color: #e9e6f8;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            
+        }
+
+        /* ---------- FIELDS ---------- */
+        input[type="text"],
+        input[type="tel"],
+        input[type="email"],
+        input[type="date"],
+        input[type="time"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 14px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 400;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        input:hover,
+        select:hover,
+        textarea:hover { border-color: rgba(255, 255, 255, 0.42); }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--purple);
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow:
+                0 0 0 3px rgba(255, 255, 255, 0.16),
+                0 0 24px rgba(255, 255, 255, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.09);
+        }
+
+        select option { background: #0a0a0f; color: var(--text); }
+        ::placeholder { color: #6f6f7d; }
+
+        textarea { resize: vertical; min-height: 80px; }
+
+        /* ---------- PACKAGE GRID (Thumbnail Selection Cards) ---------- */
+        .package-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .pkg-card {
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.04) 0%,
+                rgba(255, 255, 255, 0.018) 45%,
+                transparent 100%);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            padding-top: 1.75rem;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: visible;
+        }
+
+        .pkg-card:hover {
+            border-color: rgba(255, 255, 255, 0.6);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.12);
+        }
+
+        .pkg-card.selected {
+            border-color: #ffffff;
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.08) 0%,
+                rgba(255, 255, 255, 0.03) 100%);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3),
+                        0 8px 32px rgba(255, 255, 255, 0.15);
+        }
+
+        .pkg-badge {
+            position: absolute;
+            top: -10px;
+            right: 12px;
+            background: #ffffff;
+            color: #000;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.4);
+        }
+
+        .pkg-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .pkg-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.75rem;
+        }
+
+        .pkg-people {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .pkg-includes {
+            font-size: 0.8rem;
+            color: var(--muted);
+            line-height: 1.4;
+        }
+
+        /* ---------- PACKAGE CARDS ---------- */
+        .package-card {
+            display: none;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .package-card.active {
+            display: block;
+            max-height: 1600px;
+            overflow: visible;
+            padding: 1.4rem;
+            margin-bottom: 1rem;
+            border-radius: 14px;
+            background: linear-gradient(160deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.022) 55%, rgba(255, 255, 255, 0.008) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow:
+                var(--inset),
+                0 0 32px rgba(255, 255, 255, 0.13),
+                0 14px 34px rgba(0, 0, 0, 0.55);
+        }
+
+        .package-card h3 {
+            color: #ffffff;
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            
+        }
+
+        .package-card ul { list-style: none; padding-left: 0; }
+
+        .package-card li {
+            position: relative;
+            padding: 0.5rem 0 0.5rem 1.5rem;
+            font-size: 0.9rem;
+            color: #c9c9d6;
+            font-weight: 400;
+        }
+
+        .package-card li::before {
+            content: "\2713";
+            position: absolute;
+            left: 0;
+            color: #ffffff;
+            font-weight: bold;
+            
+        }
+
+        /* ---------- ADDONS + CHECKBOXES ---------- */
+        .addon-group {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 10px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .checkbox-group { display: flex; align-items: center; margin-bottom: 12px; }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            flex-shrink: 0;
+            position: relative;
+            border: 2px solid rgba(255, 255, 255, 0.55);
+            border-radius: 6px;
+            background-color: rgba(255, 255, 255, 0.03);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.18);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .checkbox-group input[type="checkbox"]:checked {
+            background-color: var(--purple);
+            border-color: var(--purple);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2), 0 0 20px rgba(255, 255, 255, 0.55);
+        }
+
+        .checkbox-group input[type="checkbox"]:checked::after {
+            content: '\2713';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #000;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .checkbox-group label { margin: 0; flex: 1; }
+
+        /* ---------- PRICE SUMMARY ---------- */
+        .price-summary {
+            padding: 1.5rem;
+            margin: 25px 0;
+            border-radius: 16px;
+            background: linear-gradient(160deg, rgba(255, 255, 255, 0.13) 0%, rgba(255, 255, 255, 0.02) 60%, rgba(255, 255, 255, 0.008) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow:
+                var(--inset),
+                0 0 34px rgba(255, 255, 255, 0.14),
+                0 16px 38px rgba(0, 0, 0, 0.5);
+        }
+
+        .price-line {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.7rem;
+            font-size: 0.95rem;
+            color: #c9c9d6;
+            font-weight: 400;
+        }
+
+        .price-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.8rem;
+            padding-top: 1rem;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #ffffff;
+            border-top: 1px solid rgba(255, 255, 255, 0.28);
+            
+        }
+
+        /* ---------- TERMS ---------- */
+        .terms {
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            color: #c2c2cf;
+            border-radius: 0 14px 14px 0;
+            border-left: 3px solid rgba(255, 255, 255, 0.65);
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.015) 100%);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 0 26px rgba(255, 255, 255, 0.08);
+        }
+
+        .terms h3 {
+            color: #ffffff;
+            margin-bottom: 0.8rem;
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            
+        }
+
+        .terms ul { list-style: none; padding-left: 0; }
+        .terms li { padding: 3px 0; }
+
+        /* ---------- PAYMENT ---------- */
+        .payment-info {
+            padding: 1.5rem;
+            margin: 2rem 0;
+            font-size: 0.95rem;
+            border-radius: 16px;
+            background: linear-gradient(160deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.015) 55%, rgba(255, 255, 255, 0.008) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: var(--inset), 0 0 30px rgba(255, 255, 255, 0.1), 0 16px 36px rgba(0, 0, 0, 0.5);
+        }
+
+        .payment-info h3 {
+            color: #ffffff;
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            
+        }
+
+        .payment-method {
+            padding: 1rem;
+            margin: 0.8rem 0;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            font-family: 'Nunito', monospace;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        }
+
+        .payment-method:hover {
+            border-color: rgba(255, 255, 255, 0.45);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 0 22px rgba(255, 255, 255, 0.16);
+        }
+
+        .payment-method strong {
+            color: #ffffff;
+            font-weight: 700;
+            
+        }
+        .account-number {
+            color: #ffffff !important;
+            text-decoration: none !important;
+            font-weight: 700;
+            letter-spacing: 1px;
+            
+        }
+        /* Anti mobile auto-link styling */
+        a[href^="tel"], .payment-method a {
+            color: inherit !important;
+            text-decoration: none !important;
+        }
+
+        /* ---------- BUTTON ---------- */
+        .btn {
+            width: 100%;
+            padding: 1.05rem;
+            margin-top: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 14px;
+            background: #ffffff;
+            color: #0a0a12;
+            font-size: 1rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow:
+                0 0 26px rgba(255, 255, 255, 0.45),
+                0 0 54px rgba(255, 255, 255, 0.25),
+                0 10px 28px rgba(0, 0, 0, 0.6);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            background: #ffffff;
+            border-color: rgba(255, 255, 255, 0.7);
+            box-shadow:
+                0 0 36px rgba(255, 255, 255, 0.7),
+                0 0 70px rgba(255, 255, 255, 0.4),
+                0 14px 34px rgba(0, 0, 0, 0.65);
+        }
+
+        .btn:active { transform: scale(0.985); }
+
+        .btn:disabled {
+            background: #3a3a45;
+            color: #8a8a96;
+            cursor: not-allowed;
+            opacity: 0.6;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* ---------- ALERTS ---------- */
+        .alert { padding: 15px; border-radius: 10px; margin: 15px 0; font-size: 14px; }
+        .alert-success { background: rgba(46, 204, 113, 0.12); border: 1px solid rgba(46, 204, 113, 0.45); color: #6ee7a0; }
+        .alert-error { background: rgba(231, 76, 60, 0.12); border: 1px solid rgba(231, 76, 60, 0.45); color: #ff8b80; }
+
+        .required { color: #ff5c8a; }
+
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .container { padding: 20px; border-radius: 16px; }
+            .header .logo { width: min(240px, 78%); }
+            .header h1 { letter-spacing: 0.2em; }
+        }
+    
+        /* --- portfolio cross-nav --- */
+        .pfnav{display:flex;align-items:center;justify-content:space-between;padding:18px 0 4px}
+        .pfnav a{display:inline-flex;align-items:center;gap:7px;color:rgba(255,255,255,0.55);text-decoration:none;
+            font-size:0.7rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;
+            padding:8px 15px;border-radius:100px;border:1px solid rgba(255,255,255,0.12);transition:all .2s;font-family:'Nunito',sans-serif}
+        .pfnav a:hover{color:#fff;border-color:rgba(255,255,255,0.42)}
+        .pfnav span{font-size:0.62rem;font-weight:800;letter-spacing:0.24em;color:rgba(255,255,255,0.3);font-family:'Nunito',sans-serif}
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="pfnav"><a href="/index.html"><i class="ph ph-arrow-left"></i> Beranda</a><span>RPXLABS</span></div>
+        <div class="header">
+            <img src="data:image/png;base64,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" alt="RPXLABS" class="logo">
+            <h1>Graduation Booking Form</h1>
+        </div>
+        
+        <!-- High-Demand Dates Banner -->
+        <div id="highDemandBanner" style="display: none; margin-bottom: 2rem;">
+            <div style="background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%); border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; padding: 1.5rem; overflow: hidden;">
+                <div style="display: flex; align-items: center; margin-bottom: 1.2rem;">
+                    <ph-icon class="ph ph-trend-up" style="color: #d7ff43; margin-right: 0.6rem; font-size: 1.5rem; font-weight: 400;"></ph-icon>
+                    <h3 style="margin: 0; font-size: 0.95rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #ffffff;">Jadwal Peak Season</h3>
+                </div>
+                <div id="highDemandCards" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem;"></div>
+            </div>
+        </div>
+        
+        <!-- Hint: Cara cek slot -->
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 1rem; margin-bottom: 2rem; font-size: 0.9rem; color: rgba(255,255,255,0.8); display: flex; align-items: flex-start; gap: 0.8rem; box-shadow: 0 0 14px rgba(255,255,255,0.08);">
+            <ph-icon class="ph ph-lightbulb" style="color: rgba(255,255,255,0.6); font-size: 1.2rem; flex-shrink: 0; margin-top: 0.15rem; font-weight: 400;"></ph-icon>
+            <div><strong style="color: rgba(255,255,255,0.9);">Cara cek slot:</strong> Pilih paket → Pilih tanggal → Jam tersedia muncul otomatis</div>
+        </div>
+        
+        <form id="bookingForm">
+            <h2><ph-icon class="ph ph-clipboard-text" style="color: #ffffff; margin-right: 0.4rem; font-size: 0.9em;"></ph-icon>Data Client</h2>
+            
+            <div class="form-group">
+                <label>Nama Lengkap <span class="required">*</span></label>
+                <input type="text" id="nama" name="nama" required placeholder="Masukkan nama lengkap">
+            </div>
+            
+            <div class="form-group">
+                <label>Nomor WhatsApp <span class="required">*</span></label>
+                <input type="tel" id="whatsapp" name="whatsapp" required placeholder="08xxxxxxxxxx">
+            </div>
+            
+            <div class="form-group">
+                <label>Instagram (Opsional)</label>
+                <input type="text" id="instagram" name="instagram" placeholder="@username">
+            </div>
+            
+            <h2><ph-icon class="ph ph-package" style="color: #ffffff; margin-right: 0.4rem; font-size: 0.9em;"></ph-icon>Paket & Harga</h2>
+            
+            <div class="form-group">
+                <label>Pilih Paket <span class="required">*</span></label>
+                <!-- Hidden select untuk form submit (backward compatible) -->
+                <select id="paket" name="paket" required style="display: none;">
+                    <option value="">-- Pilih Paket --</option>
+                    <option value="silver" data-price="450000" data-max-people="1">Silver - Rp 450.000 (Max 1 orang)</option>
+                    <option value="gold" data-price="600000" data-max-people="5" selected>Gold - Rp 600.000 (Max 5 orang)</option>
+                    <option value="platinum" data-price="750000" data-max-people="9">Platinum - Rp 750.000 (Max 9 orang)</option>
+                    <option value="bestie" data-price="800000" data-max-people="2">Bestie Graduation - Rp 800.000 (Max 2 wisudawan)</option>
+                </select>
+                <!-- Thumbnail cards untuk visual selection -->
+                <div class="package-grid">
+                    <div class="pkg-card" data-value="silver" data-price="450000" data-max-people="1">
+                        <div class="pkg-name">Silver</div>
+                        <div class="pkg-price">Rp 450.000</div>
+                        <div class="pkg-people">Max 1 orang</div>
+                        <div class="pkg-includes">15 foto edit, 1 spot, 60 menit</div>
+                    </div>
+                    <div class="pkg-card selected" data-value="gold" data-price="600000" data-max-people="5">
+                        <div class="pkg-badge">RECOMMENDED</div>
+                        <div class="pkg-name">Gold</div>
+                        <div class="pkg-price">Rp 600.000</div>
+                        <div class="pkg-people">Max 5 orang</div>
+                        <div class="pkg-includes">25 foto edit, 1 spot, 90 menit</div>
+                    </div>
+                    <div class="pkg-card" data-value="platinum" data-price="750000" data-max-people="9">
+                        <div class="pkg-name">Platinum</div>
+                        <div class="pkg-price">Rp 750.000</div>
+                        <div class="pkg-people">Max 9 orang</div>
+                        <div class="pkg-includes">50 foto edit, multi spot, 120 menit</div>
+                    </div>
+                    <div class="pkg-card" data-value="bestie" data-price="800000" data-max-people="2">
+                        <div class="pkg-name">Bestie</div>
+                        <div class="pkg-price">Rp 800.000</div>
+                        <div class="pkg-people">2 wisudawan</div>
+                        <div class="pkg-includes">35 foto edit, multi spot, 90 menit</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Package Details -->
+            <div id="package-silver" class="package-card">
+                <h3>Silver Package - Rp 450.000</h3>
+                <ul>
+                    <li>1 Graduate</li>
+                    <li>15 Edited Photos (Premium Color Tone)</li>
+                    <li>All Original Photos Included</li>
+                    <li>1 Spot Location</li>
+                    <li>Unlimited Shoots & Poses</li>
+                    <li>Session duration up to 60 minutes</li>
+                    <li>Google Drive Delivery</li>
+                    <li>3-5 Days</li>
+                </ul>
+            </div>
+            
+            <div id="package-gold" class="package-card">
+                <h3>Gold Package - Rp 600.000</h3>
+                <ul>
+                    <li>1 Graduate</li>
+                    <li>Family/friend (Max 4 People)</li>
+                    <li>25 Edited Photos (Premium Retouch)</li>
+                    <li>All Original Photos Included</li>
+                    <li>Session duration up to 90 minutes</li>
+                    <li>Unlimited Shoots & Poses</li>
+                    <li>1 Spot Location</li>
+                    <li>Google Drive Delivery</li>
+                    <li>3-5 Days</li>
+                </ul>
+            </div>
+            
+            <div id="package-platinum" class="package-card">
+                <h3>Platinum Package - Rp 750.000</h3>
+                <ul>
+                    <li>1 Graduate</li>
+                    <li>Family/Friend (Max 8 People)</li>
+                    <li>50 Edited Photos (Premium Retouch & Color)</li>
+                    <li>All Original Photos Included</li>
+                    <li>Unlimited Shoots & Poses</li>
+                    <li>Multiple Spots</li>
+                    <li>Session duration up to 120 minutes</li>
+                    <li>Priority delivery</li>
+                    <li>Google Drive Delivery</li>
+                    <li>3-5 Days</li>
+                </ul>
+            </div>
+            
+            <div id="package-bestie" class="package-card">
+                <h3>Bestie Graduation - Rp 800.000</h3>
+                <ul>
+                    <li>2 Graduates</li>
+                    <li>35 Edited Photos (Premium Retouch)</li>
+                    <li>All Original Photos Included</li>
+                    <li>Session duration up to 90 minutes</li>
+                    <li>Unlimited Shoots & Poses</li>
+                    <li>Multiple Spots</li>
+                    <li>Google Drive Delivery</li>
+                    <li>3-5 Days</li>
+                </ul>
+            </div>
+            
+            <div class="form-group">
+                <label>Jumlah Orang yang Difoto <span class="required">*</span></label>
+                <input type="number" id="jumlahOrang" name="jumlahOrang" min="1" required placeholder="Jumlah orang">
+                <div id="maxPeopleWarning" style="display: none; background: rgba(255, 255, 255, 0.12); color: #ded9f7; padding: 10px; margin-top: 8px; font-size: 12px; border-left: 3px solid #ffffff; border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.25); border-left-width: 3px;"></div>
+            </div>
+            
+            <h2><ph-icon class="ph ph-camera" style="color: #ffffff; margin-right: 0.4rem; font-size: 0.9em;"></ph-icon>Detail Sesi</h2>
+            
+            <div class="form-group">
+                <label>Universitas <span class="required">*</span></label>
+                <select id="universitas" name="universitas" required>
+                    <option value="">-- Pilih Universitas --</option>
+                    <option value="UPR - Universitas Palangkaraya">UPR / Universitas Palangkaraya</option>
+                    <option value="UMPR - Universitas Muhammadiyah Palangkaraya">UMPR / Universitas Muhammadiyah Palangkaraya</option>
+                    <option value="UIN - Universitas Islam Negeri Palangkaraya">UIN / Universitas Islam Negeri Palangkaraya</option>
+                    <option value="Poltekes Palangkaraya">Poltekes Palangkaraya</option>
+                    <option value="STIE YPBK Palangkaraya">STIE YPBK Palangkaraya</option>
+                    <option value="STIE Sampit">STIE Sampit</option>
+                    <option value="UNDA - Universitas Darwan Ali Sampit">UNDA / Universitas Darwan Ali Sampit</option>
+                    <option value="UMSA - Universitas Muhammadiyah Sampit">UMSA / Universitas Muhammadiyah Sampit</option>
+                    <option value="POLISAM - Politeknik Sampit">POLISAM / Politeknik Sampit</option>
+                    <option value="__custom__">Lainnya (isi manual)</option>
+                </select>
+                <input type="text" id="universitasCustom" name="universitasCustom" placeholder="Tulis nama kampus / universitas..." style="display: none; margin-top: 0.6rem;">
+            </div>
+            
+            <div class="form-group">
+                <label>Nominal DP (Down Payment) <span class="required">*</span></label>
+                <input type="text" id="nominalDP" name="nominalDP" required placeholder="Contoh: 150000">
+                <div id="dpLimitWarning" style="display: none; background: rgba(231, 76, 60, 0.15); color: #ff8b80; padding: 10px 12px; margin-top: 8px; font-size: 12px; border-radius: 6px; border: 1px solid rgba(231, 76, 60, 0.4); border-left: 3px solid #e74c3c;"></div>
+                <small style="color: #ff9800; font-size: 12px; display: block; margin-top: 6px;">
+                    💳 DP minimal Rp 150.000 (non-refund) dan maksimal sebesar total harga paket. Kirimkan bukti pembayaran via WhatsApp setelah mengisi form ini.
+                </small>
+            </div>
+            
+            <div class="form-group">
+                <label>Lokasi Foto <span class="required">*</span></label>
+                <input type="text" id="lokasi" name="lokasi" required placeholder="Contoh: Kampus utama, Auditorium, dll">
+            </div>
+            
+            <div class="form-group">
+                <label>Tanggal Sesi <span class="required">*</span></label>
+                <input type="date" id="tanggal" name="tanggal" required>
+                <div id="dateCapacityBadge" style="margin-top: 0.8rem; display: none;"></div>
+            </div>
+            
+            <div class="form-group">
+                <label>Pilih Slot Waktu <span class="required">*</span></label>
+                <select id="jam" name="jam" required>
+                    <option value="">-- Pilih tanggal dulu --</option>
+                </select>
+                <small style="color: #999; font-size: 12px; display: block; margin-top: 4px;">
+                    💡 Slot otomatis update berdasarkan ketersediaan tanggal yang dipilih
+                </small>
+            </div>
+            
+            <div class="form-group" id="customTimeGroup" style="display: none;">
+                <label>Jam Custom <span class="required">*</span></label>
+                <input type="time" id="jamCustom" name="jamCustom">
+                <small style="color: #ff9800; font-size: 12px; display: block; margin-top: 4px;">
+                    ⚠️ Jam custom perlu konfirmasi via WhatsApp sebelum final
+                </small>
+            </div>
+            
+            <h2><ph-icon class="ph ph-plus" style="color: #ffffff; margin-right: 0.4rem; font-size: 0.9em;"></ph-icon>Add-Ons</h2>
+            
+            <div class="addon-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="cinematic" name="cinematic" value="350000">
+                    <label for="cinematic">Cinematic Video (60 detik) - Rp 350.000</label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="number" id="extraEdit" name="extraEdit" min="0" value="0" style="width: 80px; display: inline-block; margin-right: 10px;">
+                    <label for="extraEdit">Extra Edit Photo (Rp 15.000/foto)</label>
+                </div>
+                
+                <div class="checkbox-group" id="extraPersonGroup">
+                    <input type="number" id="extraPerson" name="extraPerson" min="0" value="0" style="width: 80px; display: inline-block; margin-right: 10px;">
+                    <label for="extraPerson">Additional Person (Rp 30.000/orang)</label>
+                </div>
+                
+                <div class="checkbox-group" id="extraGraduateGroup" style="display: none;">
+                    <input type="number" id="extraGraduate" name="extraGraduate" min="0" value="0" style="width: 80px; display: inline-block; margin-right: 10px;">
+                    <label for="extraGraduate">Additional Graduate - Rp 275.000/orang (Only Bestie Package)</label>
+                </div>
+            </div>
+            
+            <div class="price-summary">
+                <div class="price-line">
+                    <span>Harga Paket:</span>
+                    <span id="packagePrice">Rp 0</span>
+                </div>
+                <div class="price-line" id="cinematicLine" style="display: none;">
+                    <span>Cinematic Video:</span>
+                    <span>Rp 350.000</span>
+                </div>
+                <div class="price-line" id="extraEditLine" style="display: none;">
+                    <span>Extra Edit (<span id="extraEditCount">0</span> foto):</span>
+                    <span id="extraEditPrice">Rp 0</span>
+                </div>
+                <div class="price-line" id="extraPersonLine" style="display: none;">
+                    <span>Extra Person (<span id="extraPersonCount">0</span> orang):</span>
+                    <span id="extraPersonPrice">Rp 0</span>
+                </div>
+                <div class="price-line" id="extraGraduateLine" style="display: none;">
+                    <span>Extra Graduate (<span id="extraGraduateCount">0</span> orang):</span>
+                    <span id="extraGraduatePrice">Rp 0</span>
+                </div>
+                <div class="price-total">
+                    <span>Total Harga:</span>
+                    <span id="totalPrice">Rp 0</span>
+                </div>
+                <div style="border-top: 1px solid #333; margin-top: 15px; padding-top: 15px; font-size: 13px;">
+                    <div class="price-line" id="dpPaymentLine" style="display: none; color: #ffffff; ">
+                        <span>DP (Dikirim sekarang):</span>
+                        <span id="dpAmount">Rp 0</span>
+                    </div>
+                    <div class="price-line" id="remainingLine" style="display: none; color: #ffffff;">
+                        <span><strong>Sisa Pembayaran:</strong></span>
+                        <span id="remainingPrice" style="font-weight: bold;">Rp 0</span>
+                    </div>
+                    <small style="color: #999; display: block; margin-top: 8px; font-style: italic;">
+                        💰 Sisa pembayaran wajib diselesaikan H-1 sebelum hari sesi foto
+                    </small>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Catatan Tambahan</label>
+                <textarea id="catatan" name="catatan" placeholder="Catatan khusus atau request..."></textarea>
+            </div>
+            
+            <div class="terms">
+                <h3><ph-icon class="ph ph-list" style="color: #ffffff; margin-right: 0.4rem; font-size: 0.85em;"></ph-icon>Ketentuan Booking</h3>
+                <ul>
+                    <li>• Jadwal di-lock setelah DP diterima</li>
+                    <li>• DP minimal Rp 150.000 dan bersifat non-refund</li>
+                    <li>• Sisa pembayaran setelah sesi foto selesai</li>
+                    <li>• Biaya izin lokasi ditanggung client</li>
+                    <li>• Perubahan jadwal mengikuti ketersediaan RPXLABS</li>
+                    <li>• Foto dikirim melalui Google Drive (estimasi 3-5 hari)</li>
+                    <li>• Link Google Drive aktif 14 hari sejak dikirim, lalu file dihapus</li>
+                    <li>• Pembatalan setelah pembayaran: DP tidak dapat dikembalikan</li>
+                </ul>
+            </div>
+            
+            <div class="payment-info">
+                <h3><ph-icon class="ph ph-credit-card" style="color: #ffffff; margin-right: 0.4rem; font-size: 0.85em;"></ph-icon>Metode Pembayaran DP</h3>
+                
+                <div style="text-align: center; margin: 20px 0; padding: 20px; background: #1a1a1a; border-radius: 8px;">
+                    <strong style="display: block; margin-bottom: 15px; color: #ffffff; ">QRIS - Scan untuk Bayar</strong>
+                    <img src="https://lh3.googleusercontent.com/d/1XwBIsop5sVxaZ8FA-iJyY8Q1bl23bR9z=w1000" 
+                         alt="QRIS RPXLABS" 
+                         style="max-width: 300px; width: 100%; border: 2px solid #333; border-radius: 8px; background: white; padding: 10px;">
+                    <small style="display: block; margin-top: 10px; color: #999;">Screenshot untuk pembayaran nanti</small>
+                </div>
+                
+                <div class="payment-method">
+                    <strong>BCA:</strong> <span class="account-number">6695401021</span><br>
+                    a/n A. Rifko Perdana Putra
+                </div>
+            </div>
+            
+            <div class="checkbox-group" style="margin: 20px 0;">
+                <input type="checkbox" id="agree" name="agree" required>
+                <label for="agree">Saya setuju dengan ketentuan booking di atas <span class="required">*</span></label>
+            </div>
+            
+            <div id="alertContainer"></div>
+            
+            <button type="submit" class="btn" id="submitBtn">Kirim Booking</button>
+        </form>
+    </div>
+    
+    <script>
+        // KONFIGURASI: Google Apps Script Web App URL
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx1BYB1TACi2OSYFACowp38RVs1A8tq70hPn3dxbvjtLfJuYsS9LfuNEWQbOx5_o5KnLg/exec';
+        
+        const form = document.getElementById('bookingForm');
+        const paketSelect = document.getElementById('paket');
+        const cinematicCheck = document.getElementById('cinematic');
+        const extraEditInput = document.getElementById('extraEdit');
+        const extraPersonInput = document.getElementById('extraPerson');
+        const extraGraduateInput = document.getElementById('extraGraduate');
+        const extraGraduateGroup = document.getElementById('extraGraduateGroup');
+        const submitBtn = document.getElementById('submitBtn');
+        const alertContainer = document.getElementById('alertContainer');
+        const tanggalInput = document.getElementById('tanggal');
+        const jamSelect = document.getElementById('jam');
+        const customTimeGroup = document.getElementById('customTimeGroup');
+        const jamCustomInput = document.getElementById('jamCustom');
+        const universitasSelect = document.getElementById('universitas');
+        const universitasCustomInput = document.getElementById('universitasCustom');
+        
+        // Toggle custom universitas input
+        universitasSelect.addEventListener('change', function() {
+            if (this.value === '__custom__') {
+                universitasCustomInput.style.display = 'block';
+                universitasCustomInput.required = true;
+            } else {
+                universitasCustomInput.style.display = 'none';
+                universitasCustomInput.required = false;
+                universitasCustomInput.value = '';
+            }
+        });
+        
+        // Generate available time slots dari 05:00 - 17:00 setiap 30 menit
+        function generateTimeSlots() {
+            const slots = [];
+            for (let hour = 5; hour <= 17; hour++) {
+                for (let min of [0, 30]) {
+                    if (hour === 17 && min === 30) break; // Stop at 17:00
+                    const timeStr = `${String(hour).padStart(2, '0')}:${String(min).padStart(2, '0')}`;
+                    slots.push({
+                        value: timeStr,
+                        label: timeStr
+                    });
+                }
+            }
+            slots.push({ value: 'custom', label: 'Jam Lain (Konfirmasi via WhatsApp)' });
+            return slots;
+        }
+        
+        const TIME_SLOTS = generateTimeSlots();
+        
+        // Fetch high-demand dates on page load
+        const highDemandBanner = document.getElementById('highDemandBanner');
+        const highDemandCards = document.getElementById('highDemandCards');
+        const dateCapacityBadge = document.getElementById('dateCapacityBadge');
+        
+        async function fetchHighDemandDates() {
+            try {
+                const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=getHighDemand`);
+                const data = await response.json();
+                
+                if (data.success && data.highDemand && data.highDemand.length > 0) {
+                    highDemandCards.innerHTML = data.highDemand.map(item => {
+                        const statusConfig = item.status === 'FULL' 
+                            ? { icon: 'ph-lock', color: '#ff8b80', text: 'Penuh' }
+                            : item.status === 'HIGH'
+                            ? { icon: 'ph-warning-circle', color: '#ff9800', text: `Sisa ${item.available} slot` }
+                            : { icon: 'ph-clock', color: '#d7ff43', text: `Sisa ${item.available} slot` };
+                        
+                        return `
+                        <div style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 1rem; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden;" onclick="document.getElementById('tanggal').value='${item.date}'; document.getElementById('tanggal').dispatchEvent(new Event('change', {bubbles:true}));" onmouseover="this.style.borderColor='rgba(215,255,67,0.4)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.15)'">
+                            <ph-icon class="ph ph-graduation-cap" style="position: absolute; top: 0.8rem; right: 0.8rem; font-size: 1.8rem; color: rgba(255,255,255,0.08); font-weight: 400;"></ph-icon>
+                            <div style="display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.5rem;">
+                                <ph-icon class="ph ph-calendar-blank" style="font-size: 0.9rem; color: #9d9daa; font-weight: 400;"></ph-icon>
+                                <div style="font-size: 0.85rem; color: #9d9daa;">${new Date(item.date).toLocaleDateString('id-ID', {month:'short', day:'numeric', year:'numeric'})}</div>
+                            </div>
+                            <div style="font-size: 0.95rem; font-weight: 600; color: #ffffff; margin-bottom: 0.7rem; line-height: 1.3;">${item.universitas}</div>
+                            <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem;">
+                                <ph-icon class="ph ${statusConfig.icon}" style="font-size: 1rem; color: ${statusConfig.color}; font-weight: 400;"></ph-icon>
+                                <span style="color: ${statusConfig.color}; font-weight: 500;">${statusConfig.text}</span>
+                            </div>
+                        </div>
+                        `;
+                    }).join('');
+                    highDemandBanner.style.display = 'block';
+                    
+                    // Store high-demand dates for badge lookup
+                    window.highDemandMap = {};
+                    data.highDemand.forEach(item => {
+                        window.highDemandMap[item.date] = item;
+                    });
+                }
+            } catch (err) {
+                console.log('High-demand fetch skip:', err.message);
+            }
+        }
+        
+        // Show capacity badge on date change
+        tanggalInput.addEventListener('change', function() {
+            const selectedDate = this.value;
+            if (!selectedDate || !window.highDemandMap) {
+                dateCapacityBadge.style.display = 'none';
+                return;
+            }
+            
+            const item = window.highDemandMap[selectedDate];
+            if (item) {
+                const color = item.status === 'FULL' ? '#ff8b80' : (item.status === 'HIGH' ? '#ff9800' : '#d7ff43');
+                const icon = item.status === 'FULL' ? 'ph-warning-octagon' : 'ph-warning-circle';
+                const title = item.status === 'FULL' ? 'Penuh' : (item.status === 'HIGH' ? 'Peak Day' : 'Medium');
+                const detail = item.status === 'FULL' 
+                    ? 'Jadwal ini sudah booking maksimal'
+                    : `${item.available} dari 4 slot tersisa`;
+                
+                dateCapacityBadge.innerHTML = `
+                    <div style="background: rgba(255,255,255,0.08); border: 1px solid ${color}40; border-left: 3px solid ${color}; border-radius: 6px; padding: 0.8rem; font-size: 0.85rem; color: ${color}; line-height: 1.5;">
+                        <div style="display: flex; align-items: flex-start; gap: 0.6rem;">
+                            <ph-icon class="ph ${icon}" style="font-size: 1.1rem; flex-shrink: 0; margin-top: 0.15rem; font-weight: 400;"></ph-icon>
+                            <div>
+                                <div style="font-weight: 600; margin-bottom: 0.3rem;">${title}</div>
+                                <div style="font-size: 0.8rem; color: rgba(255,255,255,0.7); margin-bottom: 0.3rem;">${detail}</div>
+                                <div style="font-size: 0.8rem; color: rgba(255,255,255,0.6);">
+                                    <ph-icon class="ph ph-graduation-cap" style="font-size: 0.8rem; vertical-align: -0.1em; margin-right: 0.3rem; font-weight: 400;"></ph-icon>${item.universitas}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                dateCapacityBadge.style.display = 'block';
+            } else {
+                dateCapacityBadge.style.display = 'none';
+            }
+        });
+        
+        // Load high-demand dates on page load
+        fetchHighDemandDates();
+        // Disable tanggal/jam sampai paket dipilih
+        tanggalInput.disabled = true;
+        jamSelect.disabled = true;
+        
+        // Enable tanggal ketika paket dipilih
+        paketSelect.addEventListener('change', function() {
+            if (this.value) {
+                tanggalInput.disabled = false;
+                // Re-fetch slots kalau tanggal sudah dipilih
+                if (tanggalInput.value) {
+                    tanggalInput.dispatchEvent(new Event('change'));
+                }
+            } else {
+                tanggalInput.disabled = true;
+                jamSelect.disabled = true;
+                jamSelect.innerHTML = '<option value="">-- Pilih paket & tanggal dulu --</option>';
+            }
+        });
+        
+        // Fetch available slots when date changes
+        tanggalInput.addEventListener('change', async function() {
+            const selectedDate = this.value;
+            
+            if (!selectedDate) {
+                jamSelect.innerHTML = '<option value="">-- Pilih tanggal dulu --</option>';
+                return;
+            }
+            
+            // Show loading
+            jamSelect.innerHTML = '<option value="">Memuat slot...</option>';
+            jamSelect.disabled = true;
+            
+            try {
+                // Get selected paket & calculate duration
+                const selectedPaket = paketSelect.options[paketSelect.selectedIndex].text;
+                let durationMinutes = 60; // default Silver
+                if (selectedPaket.includes('Gold')) durationMinutes = 90;
+                if (selectedPaket.includes('Platinum')) durationMinutes = 120;
+                if (selectedPaket.includes('Bestie')) durationMinutes = 90;
+                
+                // Fetch booked slots from API
+                const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=getSlots&date=${selectedDate}`);
+                const data = await response.json();
+                
+                const bookedSlots = data.success ? data.bookedSlots : [];
+                
+                // Populate dropdown
+                jamSelect.innerHTML = '<option value="">-- Pilih slot waktu --</option>';
+                
+                TIME_SLOTS.forEach(slot => {
+                    const option = document.createElement('option');
+                    option.value = slot.value;
+                    
+                    if (slot.value === 'custom') {
+                        option.textContent = slot.label;
+                    } else {
+                        // Tampilkan start - end time sesuai durasi paket
+                        const [slotHours, slotMins] = slot.value.split(':').map(Number);
+                        const slotStart = new Date(2000, 0, 1, slotHours, slotMins);
+                        const slotEnd = new Date(slotStart.getTime() + durationMinutes * 60000);
+                        const endStr = `${String(slotEnd.getHours()).padStart(2, '0')}:${String(slotEnd.getMinutes()).padStart(2, '0')}`;
+                        
+                        option.textContent = `${slot.value} - ${endStr}`;
+                    }
+                    
+                    // Check if slot is available (except "custom")
+                    if (slot.value !== 'custom') {
+                        const [slotHours, slotMins] = slot.value.split(':').map(Number);
+                        const slotStart = new Date(2000, 0, 1, slotHours, slotMins);
+                        const slotEnd = new Date(slotStart.getTime() + durationMinutes * 60000);
+                        
+                        // Check overlap dengan booked slots + 30min jeda SEBELUM & SESUDAH
+                        let isAvailable = true;
+                        for (let booked of bookedSlots) {
+                            const [bookedHours, bookedMins] = booked.startTime.split(':').map(Number);
+                            const bookedStart = new Date(2000, 0, 1, bookedHours, bookedMins);
+                            const bookedEnd = new Date(2000, 0, 1, ...booked.endTime.split(':').map(Number));
+                
+                            // Add 30min buffer sebelum dan sesudah booking
+                            const bufferBefore = new Date(bookedStart.getTime() - 30 * 60000);
+                            const bufferAfter = new Date(bookedEnd.getTime() + 30 * 60000);
+                
+                            // Check collision: slot.start < bufferAfter && slot.end > bufferBefore
+                            if (slotStart < bufferAfter && slotEnd > bufferBefore) {
+                                isAvailable = false;
+                                break;
+                            }
+                        }
+                        
+                        if (!isAvailable) {
+                            option.disabled = true;
+                            option.textContent += ' (Sudah Terisi)';
+                            option.style.color = '#999';
+                        }
+                    }
+                    
+                    jamSelect.appendChild(option);
+                });
+                
+                jamSelect.disabled = false;
+                
+            } catch (error) {
+                console.error('Error fetching slots:', error);
+                // Fallback: show all slots (tanpa cek availability)
+                jamSelect.innerHTML = '<option value="">-- Pilih slot waktu --</option>';
+                TIME_SLOTS.forEach(slot => {
+                    const option = document.createElement('option');
+                    option.value = slot.value;
+                    
+                    if (slot.value === 'custom') {
+                        option.textContent = slot.label;
+                    } else {
+                        // Tampilkan start - end time
+                        const [slotHours, slotMins] = slot.value.split(':').map(Number);
+                        const slotStart = new Date(2000, 0, 1, slotHours, slotMins);
+                        const slotEnd = new Date(slotStart.getTime() + durationMinutes * 60000);
+                        const endStr = `${String(slotEnd.getHours()).padStart(2, '0')}:${String(slotEnd.getMinutes()).padStart(2, '0')}`;
+                        option.textContent = `${slot.value} - ${endStr}`;
+                    }
+                    
+                    jamSelect.appendChild(option);
+                });
+                jamSelect.disabled = false;
+            }
+        });
+        
+        // Show/hide custom time input
+        jamSelect.addEventListener('change', function() {
+            if (this.value === 'custom') {
+                customTimeGroup.style.display = 'block';
+                jamCustomInput.required = true;
+            } else {
+                customTimeGroup.style.display = 'none';
+                jamCustomInput.required = false;
+                jamCustomInput.value = '';
+            }
+        });
+        
+        // Package card click handler — sync with hidden select
+        document.querySelectorAll('.pkg-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const value = this.getAttribute('data-value');
+                const price = this.getAttribute('data-price');
+                const maxPeople = this.getAttribute('data-max-people');
+                
+                // Update hidden select
+                paketSelect.value = value;
+                
+                // Update visual state
+                document.querySelectorAll('.pkg-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                // Trigger change event on select
+                const event = new Event('change', { bubbles: true });
+                paketSelect.dispatchEvent(event);
+            });
+        });
+        
+        // Package selection handler
+        paketSelect.addEventListener('change', function() {
+            // Hide all package cards
+            document.querySelectorAll('.package-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Show selected package card
+            if (this.value) {
+                document.getElementById('package-' + this.value).classList.add('active');
+            }
+            
+            // Bestie: sembunyikan Additional Person, tampilkan Additional Graduate
+            const extraPersonGroup = document.getElementById('extraPersonGroup');
+            if (this.value === 'bestie') {
+                if (extraPersonGroup) extraPersonGroup.style.display = 'none';
+                document.getElementById('extraGraduateGroup').style.display = 'flex';
+            } else {
+                if (extraPersonGroup) extraPersonGroup.style.display = 'flex';
+                document.getElementById('extraGraduateGroup').style.display = 'none';
+                extraGraduateInput.value = 0;
+            }
+            
+            calculateTotal();
+        });
+        
+        // Add-ons change handlers
+        cinematicCheck.addEventListener('change', calculateTotal);
+        extraEditInput.addEventListener('input', calculateTotal);
+        extraPersonInput.addEventListener('input', calculateTotal);
+        extraGraduateInput.addEventListener('input', calculateTotal);
+        
+        // Jumlah orang input handler - REALTIME VALIDATION + CALC
+        document.getElementById('jumlahOrang').addEventListener('input', calculateTotal);
+        
+        // Helper hitung total harga saat ini
+        function getCurrentTotalPrice() {
+            const selectedOption = paketSelect.options[paketSelect.selectedIndex];
+            const packagePrice = parseInt(selectedOption?.dataset?.price) || 0;
+            const packageMaxPeople = parseInt(selectedOption?.getAttribute('data-max-people')) || 1;
+            const jumlahOrangInput = parseInt(document.getElementById('jumlahOrang').value) || 1;
+            const isBestie = paketSelect.value === 'bestie';
+            const extraOrang = Math.max(0, jumlahOrangInput - packageMaxPeople);
+            
+            let extraPersonPrice = 0;
+            let extraGraduatePrice = 0;
+            if (isBestie) {
+                extraGraduatePrice = extraOrang * 275000;
+            } else {
+                extraPersonPrice = extraOrang * 30000;
+            }
+            
+            const cinematicPrice = cinematicCheck.checked ? 350000 : 0;
+            const extraEditCount = parseInt(extraEditInput.value) || 0;
+            const extraEditPrice = extraEditCount * 15000;
+            
+            return packagePrice + cinematicPrice + extraEditPrice + extraPersonPrice + extraGraduatePrice;
+        }
+
+        // Nominal DP input handler - format rupiah, cap limit max total, calc remaining
+        const nominalDPInput = document.getElementById('nominalDP');
+        const dpLimitWarning = document.getElementById('dpLimitWarning');
+
+        function enforceDPLimit() {
+            const rawDigits = nominalDPInput.value.replace(/\D/g, '');
+            if (!rawDigits) {
+                if (dpLimitWarning) dpLimitWarning.style.display = 'none';
+                return;
+            }
+            let val = parseInt(rawDigits);
+            const maxAllowed = getCurrentTotalPrice();
+            
+            if (maxAllowed > 0 && val > maxAllowed) {
+                val = maxAllowed;
+                nominalDPInput.value = val.toLocaleString('id-ID');
+                if (dpLimitWarning) {
+                    dpLimitWarning.textContent = `⚠️ Nominal DP tidak boleh melebihi total harga (Maksimal Rp ${maxAllowed.toLocaleString('id-ID')}). Otomatis disesuaikan.`;
+                    dpLimitWarning.style.display = 'block';
+                }
+            } else if (dpLimitWarning) {
+                dpLimitWarning.style.display = 'none';
+            }
+        }
+
+        nominalDPInput.addEventListener('input', function(e) {
+            let raw = this.value.replace(/\D/g, '');
+            if (raw) {
+                let num = parseInt(raw);
+                const currentTotal = getCurrentTotalPrice();
+                if (currentTotal > 0 && num > currentTotal) {
+                    num = currentTotal;
+                    if (dpLimitWarning) {
+                        dpLimitWarning.textContent = `⚠️ Nominal DP tidak boleh melebihi total harga (Maksimal Rp ${currentTotal.toLocaleString('id-ID')}). Otomatis disesuaikan.`;
+                        dpLimitWarning.style.display = 'block';
+                    }
+                } else if (dpLimitWarning) {
+                    dpLimitWarning.style.display = 'none';
+                }
+                this.value = num.toLocaleString('id-ID');
+            } else if (dpLimitWarning) {
+                dpLimitWarning.style.display = 'none';
+            }
+            calculateTotal();
+        });
+        
+        // Remove separator saat focus (easier edit)
+        nominalDPInput.addEventListener('focus', function() {
+            this.value = this.value.replace(/\./g, '');
+        });
+        
+        // Re-format saat blur + enforce
+        nominalDPInput.addEventListener('blur', function() {
+            enforceDPLimit();
+            let raw = this.value.replace(/\D/g, '');
+            if (raw) {
+                this.value = parseInt(raw).toLocaleString('id-ID');
+            }
+            calculateTotal();
+        });
+        
+        function calculateTotal() {
+            const selectedOption = paketSelect.options[paketSelect.selectedIndex];
+            const packagePrice = parseInt(selectedOption.dataset.price) || 0;
+            const packageMaxPeople = parseInt(selectedOption.getAttribute('data-max-people')) || 1;
+            
+            // Jumlah orang yang diinput (TOTAL)
+            const jumlahOrangInput = parseInt(document.getElementById('jumlahOrang').value) || 1;
+            const isBestie = paketSelect.value === 'bestie';
+            
+            // AUTO-CLEAR add-on otomatis dulu
+            extraPersonInput.value = 0;
+            extraGraduateInput.value = 0;
+            let extraPersonCount = 0;
+            let extraPersonPrice = 0;
+            let extraGraduateCount = 0;
+            let extraGraduatePrice = 0;
+            
+            const warningEl = document.getElementById('maxPeopleWarning');
+            const extraOrang = Math.max(0, jumlahOrangInput - packageMaxPeople);
+            
+            if (isBestie) {
+                // BESTIE: kelebihan orang => additional GRADUATE (bukan additional person)
+                if (extraOrang > 0) {
+                    extraGraduateCount = extraOrang;
+                    extraGraduatePrice = extraGraduateCount * 275000;
+                    extraGraduateInput.value = extraGraduateCount;
+                    if (warningEl) {
+                        warningEl.textContent = `Paket Bestie maksimal 2 wisudawan. Tambahan ${extraGraduateCount} wisudawan @ Rp 275.000 = Rp ${extraGraduatePrice.toLocaleString('id-ID')}.`;
+                        warningEl.style.display = 'block';
+                    }
+                } else if (warningEl) {
+                    warningEl.style.display = 'none';
+                }
+            } else {
+                // SILVER / GOLD / PLATINUM: kelebihan orang => additional person Rp 30.000/orang
+                if (extraOrang > 0) {
+                    extraPersonCount = extraOrang;
+                    extraPersonPrice = extraPersonCount * 30000;
+                    extraPersonInput.value = extraPersonCount;
+                    if (warningEl) {
+                        warningEl.textContent = `Paket ${selectedOption.text} maksimal ${packageMaxPeople} orang. Tambahan ${extraPersonCount} orang @ Rp 30.000 = Rp ${extraPersonPrice.toLocaleString('id-ID')}.`;
+                        warningEl.style.display = 'block';
+                    }
+                } else if (warningEl) {
+                    warningEl.style.display = 'none';
+                }
+            }
+            
+            const cinematicPrice = cinematicCheck.checked ? 350000 : 0;
+            const extraEditCount = parseInt(extraEditInput.value) || 0;
+            const extraEditPrice = extraEditCount * 15000;
+            
+            const total = packagePrice + cinematicPrice + extraEditPrice + extraPersonPrice + extraGraduatePrice;
+            
+            // Update display
+            document.getElementById('packagePrice').textContent = formatRupiah(packagePrice);
+            
+            // Show/hide cinematic line
+            if (cinematicCheck.checked) {
+                document.getElementById('cinematicLine').style.display = 'flex';
+            } else {
+                document.getElementById('cinematicLine').style.display = 'none';
+            }
+            
+            // Show/hide extra edit line
+            if (extraEditCount > 0) {
+                document.getElementById('extraEditLine').style.display = 'flex';
+                document.getElementById('extraEditCount').textContent = extraEditCount;
+                document.getElementById('extraEditPrice').textContent = formatRupiah(extraEditPrice);
+            } else {
+                document.getElementById('extraEditLine').style.display = 'none';
+            }
+            
+            // Show/hide extra person line
+            if (extraPersonCount > 0) {
+                document.getElementById('extraPersonLine').style.display = 'flex';
+                document.getElementById('extraPersonCount').textContent = extraPersonCount;
+                document.getElementById('extraPersonPrice').textContent = formatRupiah(extraPersonPrice);
+            } else {
+                document.getElementById('extraPersonLine').style.display = 'none';
+            }
+            
+            // Show/hide extra graduate line
+            if (extraGraduateCount > 0) {
+                document.getElementById('extraGraduateLine').style.display = 'flex';
+                document.getElementById('extraGraduateCount').textContent = extraGraduateCount;
+                document.getElementById('extraGraduatePrice').textContent = formatRupiah(extraGraduatePrice);
+            } else {
+                document.getElementById('extraGraduateLine').style.display = 'none';
+            }
+            
+            document.getElementById('totalPrice').textContent = formatRupiah(total);
+            
+            // Enforce limit jika total paket berubah
+            let dpDigits = document.getElementById('nominalDP').value.replace(/\D/g, '');
+            let dpAmount = dpDigits ? parseInt(dpDigits) : 0;
+            if (total > 0 && dpAmount > total) {
+                dpAmount = total;
+                document.getElementById('nominalDP').value = dpAmount.toLocaleString('id-ID');
+                if (dpLimitWarning) {
+                    dpLimitWarning.textContent = `⚠️ Nominal DP disesuaikan dengan total harga baru (Maksimal Rp ${total.toLocaleString('id-ID')}).`;
+                    dpLimitWarning.style.display = 'block';
+                }
+            }
+            
+            if (dpAmount > 0) {
+                document.getElementById('dpPaymentLine').style.display = 'flex';
+                document.getElementById('dpAmount').textContent = formatRupiah(dpAmount);
+                
+                const remaining = Math.max(0, total - dpAmount);
+                document.getElementById('remainingLine').style.display = 'flex';
+                document.getElementById('remainingPrice').textContent = formatRupiah(remaining);
+            } else {
+                document.getElementById('dpPaymentLine').style.display = 'none';
+                document.getElementById('remainingLine').style.display = 'none';
+            }
+        }
+        
+        function formatRupiah(number) {
+            return 'Rp ' + number.toLocaleString('id-ID');
+        }
+        
+        function showAlert(message, type) {
+            alertContainer.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+            setTimeout(() => {
+                alertContainer.innerHTML = '';
+            }, 5000);
+        }
+        
+        // Form submission
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Mengirim...';
+            
+            // Validasi DP: min 150k dan max total
+            const totalNumeric = parseInt(document.getElementById('totalPrice').textContent.replace(/\D/g, '')) || 0;
+            const dpNumeric = parseInt(document.getElementById('nominalDP').value.replace(/\D/g, '')) || 0;
+            
+            if (dpNumeric < 150000) {
+                showAlert('⚠️ Minimal pembayaran DP adalah Rp 150.000', 'error');
+                document.getElementById('nominalDP').focus();
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Kirim Booking';
+                return;
+            }
+            
+            if (dpNumeric > totalNumeric) {
+                showAlert(`⚠️ Nominal DP tidak boleh melebihi total harga (Rp ${totalNumeric.toLocaleString('id-ID')})`, 'error');
+                document.getElementById('nominalDP').focus();
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Kirim Booking';
+                return;
+            }
+
+            // Get jam value (handle custom time)
+            const selectedJam = document.getElementById('jam').value;
+            let finalJam = selectedJam;
+            
+            if (selectedJam === 'custom') {
+                const customJam = document.getElementById('jamCustom').value;
+                if (!customJam) {
+                    showAlert('⚠️ Silakan isi jam custom atau pilih slot lainnya', 'warning');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Kirim Booking';
+                    return;
+                }
+                finalJam = customJam + ' (Custom)';
+            }
+            
+            // Get universitas value (handle custom)
+            const selectedUniversitas = document.getElementById('universitas').value;
+            let finalUniversitas = selectedUniversitas;
+            if (selectedUniversitas === '__custom__') {
+                const customUniversitas = document.getElementById('universitasCustom').value.trim();
+                if (!customUniversitas) {
+                    showAlert('⚠️ Silakan isi nama universitas/kampus', 'warning');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Kirim Booking';
+                    return;
+                }
+                finalUniversitas = customUniversitas;
+            }
+            
+            const formData = {
+                timestamp: new Date().toISOString(),
+                nama: document.getElementById('nama').value,
+                whatsapp: document.getElementById('whatsapp').value,
+                instagram: document.getElementById('instagram').value,
+                universitas: finalUniversitas,
+                lokasi: document.getElementById('lokasi').value,
+                tanggal: document.getElementById('tanggal').value,
+                jam: finalJam,
+                paket: paketSelect.options[paketSelect.selectedIndex].text,
+                jumlahOrang: document.getElementById('jumlahOrang').value,
+                cinematicVideo: cinematicCheck.checked ? 'Ya' : 'Tidak',
+                extraEdit: parseInt(extraEditInput.value) || 0,
+                extraPerson: parseInt(extraPersonInput.value) || 0,
+                extraGraduate: parseInt(extraGraduateInput.value) || 0,
+                totalHarga: document.getElementById('totalPrice').textContent,
+                nominalDP: parseInt(document.getElementById('nominalDP').value.replace(/\D/g, '')) || 0,
+                sisaPembayaran: Math.max(0, parseInt(document.getElementById('totalPrice').textContent.replace(/\D/g, '')) - parseInt(document.getElementById('nominalDP').value.replace(/\D/g, ''))),
+                catatan: document.getElementById('catatan').value
+            };
+            
+            // Simpan ke Google Sheets (jika sudah dikonfigurasi)
+            if (GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+                try {
+                    await fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                } catch (error) {
+                    console.log('Google Sheets error:', error);
+                }
+            }
+            
+            // Compose WhatsApp message
+            let message = `Halo RPXLABS! 👋\n\n`;
+            message += `📋 *FORM BOOKING GRADUATION*\n\n`;
+            message += `*Data Client:*\n`;
+            message += `Nama: ${formData.nama}\n`;
+            message += `WhatsApp: ${formData.whatsapp}\n`;
+            if (formData.instagram) message += `Instagram: ${formData.instagram}\n`;
+            message += `\n*Detail Sesi:*\n`;
+            message += `Universitas: ${formData.universitas}\n`;
+            message += `Lokasi Foto: ${formData.lokasi}\n`;
+            message += `Tanggal & Jam: ${formData.tanggal} pukul ${formData.jam}\n`;
+            message += `Jumlah Orang: ${formData.jumlahOrang}\n`;
+            message += `\n*Paket:*\n`;
+            message += `${formData.paket}\n`;
+            
+            // Add-ons
+            const addons = [];
+            if (formData.cinematicVideo === 'Ya') addons.push('Cinematic Video (60s)');
+            if (formData.extraEdit > 0) addons.push(`Extra Edit ${formData.extraEdit} foto`);
+            if (formData.extraPerson > 0) addons.push(`Extra ${formData.extraPerson} orang`);
+            if (formData.extraGraduate > 0) addons.push(`Extra ${formData.extraGraduate} graduate`);
+            
+            if (addons.length > 0) {
+                message += `\n*Add-Ons:*\n`;
+                addons.forEach(addon => message += `• ${addon}\n`);
+            }
+            
+            message += `\n*Total Harga: ${formData.totalHarga}*\n`;
+            message += `DP Dikirim: Rp ${formData.nominalDP.toLocaleString('id-ID')}\n`;
+            message += `Sisa Pembayaran: Rp ${formData.sisaPembayaran.toLocaleString('id-ID')}\n`;
+            message += `\n📸 *WAJIB: Kirimkan bukti pembayaran DP di pesan ini setelah menekan tombol "Kirim Booking"*\n`;
+            message += `\n💰 *Sisa pembayaran wajib diselesaikan H-1 sebelum hari sesi foto*`;
+            if (formData.catatan) {
+                message += `\nCatatan: ${formData.catatan}\n`;
+            }
+            message += `\n---\nSaya setuju dengan ketentuan booking yang berlaku.`;
+            
+            // Open WhatsApp - iOS Safari fix with timeout
+            const encodedMessage = encodeURIComponent(message);
+            const waNumber = '6289623290398'; // RPXLABS WhatsApp
+            const waUrl = `https://wa.me/${waNumber}?text=${encodedMessage}`;
+            
+            // iOS Safari: use location.href for more reliable redirect
+            setTimeout(() => {
+                window.location.href = waUrl;
+            }, 500);
+            
+            // Reset form
+            showAlert('✅ Data tersimpan! Silakan lanjutkan konfirmasi via WhatsApp.', 'success');
+            setTimeout(() => {
+                form.reset();
+                calculateTotal();
+            }, 1000);
+            
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Kirim Booking';
+        });
+    </script>
+</body>
+</html>
