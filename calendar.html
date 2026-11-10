@@ -542,17 +542,10 @@
             <h1>Calendar &amp; Schedule</h1>
         </div>
 
-        <!-- PIN GATE -->
+        <!-- GERBANG: tanpa PIN. Hanya butuh token dari portal. -->
         <div id="pinGate">
-            <h2>Akses Terbatas</h2>
-            <p>Masukkan PIN untuk melihat jadwal</p>
-            <div class="pin-row">
-                <input type="password" id="pinInput" inputmode="numeric" placeholder="••••" maxlength="12" autocomplete="off">
-                <button class="btn" id="pinBtn">Buka</button>
-            </div>
-            <div id="pinError" class="err hidden" style="max-width:340px;margin:1rem auto 0;">
-                <i class="ph ph-warning-circle"></i><span>PIN salah. Coba lagi.</span>
-            </div>
+            <h2 id="gateTitle">Memuat jadwal…</h2>
+            <p id="gateNote">Sebentar ya.</p>
         </div>
 
         <!-- CALENDAR -->
@@ -614,9 +607,6 @@
 
         const pinGate = document.getElementById('pinGate');
         const calWrap = document.getElementById('calWrap');
-        const pinInput = document.getElementById('pinInput');
-        const pinBtn = document.getElementById('pinBtn');
-        const pinError = document.getElementById('pinError');
         const monthLabel = document.getElementById('monthLabel');
         const calGrid = document.getElementById('calGrid');
         const statsRow = document.getElementById('statsRow');
@@ -631,29 +621,6 @@
             return isoDate(n.getFullYear(), n.getMonth() + 1, n.getDate());
         }
 
-        async function unlock(pin) {
-            pinError.classList.add('hidden');
-            pinBtn.disabled = true;
-            pinBtn.textContent = '...';
-
-            const now = new Date();
-            currentYear = currentYear || now.getFullYear();
-            currentMonth = currentMonth || (now.getMonth() + 1);
-
-            const ok = await loadMonth(currentYear, currentMonth, pin);
-            pinBtn.disabled = false;
-            pinBtn.textContent = 'Buka';
-
-            if (ok) {
-                savedPin = pin;
-                pinGate.classList.add('hidden');
-                calWrap.classList.remove('hidden');
-            } else {
-                pinError.classList.remove('hidden');
-                pinInput.value = '';
-                pinInput.focus();
-            }
-        }
         async function loadMonth(year, month, pin) {
             try {
                 const url = GOOGLE_SCRIPT_URL + '?action=getCalendarMonth&year=' + year + '&month=' + month + '&token=' + encodeURIComponent(pin);
@@ -780,10 +747,7 @@
             detailPanel.classList.remove('hidden');
         }
 
-        pinBtn.addEventListener('click', () => unlock(pinInput.value.trim()));
-        pinInput.addEventListener('keydown', e => { if (e.key === 'Enter') unlock(pinInput.value.trim()); });
-
-        /* Auto-unlock: kalau token dari portal masih berlaku, jangan minta PIN lagi */
+        /* Auto-unlock: kalender tanpa PIN. Hanya butuh token dari portal. */
         (async function autoUnlock(){
             if (!portalToken) {
                 document.body.innerHTML = `
@@ -805,8 +769,15 @@
                 savedPin = portalToken;
                 pinGate.classList.add('hidden');
                 calWrap.classList.remove('hidden');
+                return;
             }
-            // kalau token kedaluwarsa: biarkan tampil gerbang PIN
+            // Token kedaluwarsa / server belum update: arahkan balik ke portal
+            localStorage.removeItem(K_TOKEN);
+            localStorage.removeItem(K_TIME);
+            document.getElementById('gateTitle').innerHTML = '<i class="ph ph-lock-key"></i> Sesi Habis';
+            document.getElementById('gateNote').innerHTML =
+              'Buka portal dulu untuk memperbarui akses.<br><br>' +
+              '<a href="' + PORTAL_URL + '" style="display:inline-block;background:#f0f0f0;color:#000;font-weight:800;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border-radius:11px;padding:12px 22px;margin-top:6px">Buka Portal</a>';
         })();
 
         document.getElementById('prevBtn').addEventListener('click', async () => {
