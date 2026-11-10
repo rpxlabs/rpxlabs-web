@@ -1,0 +1,19 @@
+=== Data album lama (link bio) - REFERENSI TES, tidak dipakai web ===
+
+--- EVENT RUNNING ---
+[
+    {judul:"RID Luwansa Hotel 2026", link:"https://photos.app.goo.gl/61guXMG9s7QQz2Kp6", tanggalTampil:"", waktu:""},
+    {judul:"Tambun Bungai Run 2026",  link:"https://photos.app.goo.gl/UfPKhonvsqHoWx6f9", tanggalTampil:"", waktu:""}
+  ]
+
+--- LARI HARIAN ---
+[
+    {judul:"Running Area Bumbes · 27 Sep",  link:"https://photos.app.goo.gl/8viQy1WHa1FAJWPv9", tanggalTampil:"27 Sep", waktu:"CFD"},
+    {judul:"Running Area Bumbes · 6 Sep",   link:"https://photos.app.goo.gl/XyrpeXVN5E4Nqx1i6", tanggalTampil:"6 Sep",  waktu:"CFD"},
+    {judul:"Running Area Bumbes · 5 Sep",   link:"https://photos.app.goo.gl/kb5XLiUW3DGDGDo56", tanggalTampil:"5 Sep",  waktu:"Pagi"},
+    {judul:"Running Area Bumbes · 29 Agu",  link:"https://photos.app.goo.gl/AN3y5fgg76p21JYy6", tanggalTampil:"29 Agu", waktu:"Pagi"},
+    {judul:"Running Area Bumbes · 25 Agu",  link:"https://photos.app.goo.gl/4PCB56XXLFXza7rB6", tanggalTampil:"25 Agu", waktu:"Pagi"},
+    {judul:"Running Area Jembatan · 25 Agu",link:"https://photos.app.goo.gl/suXLK7waqQqqV6h7A", tanggalTampil:"25 Agu", waktu:"Sore"},
+    {judul:"Running Area Jembatan · 14 Agu",link:"https://photos.app.goo.gl/L97H5WA4WFWAR5rM7", tanggalTampil:"14 Agu", waktu:"Sore"},
+    {judul:"Running Area Jembatan · 12 Agu",link:"https://photos.app.goo.gl/4KG4Xj5ZhLCW7y5q6", tanggalTampil:"12 Agu", waktu:"Sore"}
+  ]
