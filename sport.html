@@ -64,6 +64,16 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
 .head{padding:10px 0 30px}
 }
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
+
+  .bundle-band{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+  .bb{padding:20px 22px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(160deg,rgba(255,255,255,0.07),rgba(255,255,255,0.02)),radial-gradient(circle at 88% 0%,rgba(255,255,255,0.10),transparent 65%);transition:all .3s}
+  .bb:hover{border-color:rgba(255,255,255,0.42);transform:translateY(-3px);box-shadow:0 0 34px rgba(255,255,255,0.08)}
+  .bbl{font-size:0.66rem;font-weight:900;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.5)}
+  .bbd{font-size:0.86rem;font-weight:700;color:#fff;margin:7px 0 14px}
+  .bbp{display:flex;align-items:baseline;gap:12px}
+  .bbp s{font-size:0.84rem;color:rgba(255,255,255,0.36);font-weight:600}
+  .bbp b{font-size:1.62rem;font-weight:900;letter-spacing:-0.03em;color:#fff}
+  @media(max-width:680px){.bundle-band{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -97,27 +107,59 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
     <div class="venue"><div class="vi"><i class="ph-fill ph-map-pin"></i></div><div><div class="vt">Green Padel</div><div class="vs">Padel Court</div></div></div>
   </div>
 
-  <div class="sec-head"><h2>Sesi &amp; harga</h2><p>Harga sudah termasuk proses editing.</p></div>
+  <div class="sec-head"><h2>Sesi &amp; harga</h2><p>Harga sudah termasuk proses editing. Padel &amp; tenis memakai tarif per jam court.</p></div>
   <div class="price-band">
     <div class="pb">
-      <div class="pl">Sesi Standar</div>
+      <div class="pl">Padel Photo Session</div>
       <div class="pv">Rp 300.000</div>
-      <div class="pu">per jam · mulai dari</div>
+      <div class="pu">per jam court</div>
       <ul>
-        <li><i class="ph-fill ph-check-circle"></i>1 jam dokumentasi penuh</li>
-        <li><i class="ph-fill ph-check-circle"></i>Semua foto hasil editing</li>
-        <li><i class="ph-fill ph-check-circle"></i>File HD via Google Drive / WhatsApp</li>
+        <li><i class="ph-fill ph-check-circle"></i>1 sesi court</li>
+        <li><i class="ph-fill ph-check-circle"></i>Up to 50 foto hasil editing</li>
+        <li><i class="ph-fill ph-check-circle"></i>Semua file original (±700 foto)</li>
+        <li><i class="ph-fill ph-check-circle"></i>Pengiriman via Google Drive</li>
       </ul>
     </div>
     <div class="pb">
-      <div class="pl">Sesi Event / Turnamen</div>
-      <div class="pv">By Request</div>
-      <div class="pu">sesuai durasi &amp; kebutuhan</div>
+      <div class="pl">Padel Cinematic Reel</div>
+      <div class="pv">Rp 400.000</div>
+      <div class="pu">per jam court</div>
       <ul>
-        <li><i class="ph-fill ph-check-circle"></i>Turnamen internal maupun antar-club</li>
-        <li><i class="ph-fill ph-check-circle"></i>Dokumentasi sponsor &amp; pemenang</li>
-        <li><i class="ph-fill ph-check-circle"></i>Fleksibel multi-hari</li>
+        <li><i class="ph-fill ph-check-circle"></i>1 video reel vertikal hasil editing</li>
+        <li><i class="ph-fill ph-check-circle"></i>Durasi sampai 60 detik</li>
+        <li><i class="ph-fill ph-check-circle"></i>Cinematic color grading</li>
+        <li><i class="ph-fill ph-check-circle"></i>Slow motion highlights</li>
+        <li><i class="ph-fill ph-check-circle"></i>Dioptimalkan untuk Instagram Reels</li>
+        <li><i class="ph-fill ph-check-circle"></i>10 klip video original</li>
       </ul>
+    </div>
+  </div>
+
+  <div class="sec-head"><h2>Bundle foto &amp; video</h2><p>Gabungan sesi foto dan cinematic reel dengan harga lebih hemat.</p></div>
+  <div class="bundle-band">
+    <div class="bb">
+      <div class="bbl">Photo &amp; Cinematic Bundle</div>
+      <div class="bbd">1 jam durasi</div>
+      <div class="bbp"><s>Rp 700.000</s><b>Rp 650.000</b></div>
+    </div>
+    <div class="bb">
+      <div class="bbl">Photo &amp; Cinematic Bundle</div>
+      <div class="bbd">2 jam durasi</div>
+      <div class="bbp"><s>Rp 1.000.000</s><b>Rp 900.000</b></div>
+    </div>
+  </div>
+
+  <div class="sec-head"><h2>Event, turnamen &amp; cabang lain</h2><p>Tarif menyesuaikan durasi dan kebutuhan dokumentasi.</p></div>
+  <div class="grid2">
+    <div class="card">
+      <div class="ico"><i class="ph-fill ph-trophy"></i></div>
+      <h3>Event / Turnamen</h3>
+      <p>Turnamen internal maupun antar-club, dokumentasi sponsor &amp; pemenang, fleksibel multi-hari. Harga sesuai deal dan kebutuhan acara.</p>
+    </div>
+    <div class="card">
+      <div class="ico"><i class="ph-fill ph-shuttlecock"></i></div>
+      <h3>Basket, Badminton &amp; lainnya</h3>
+      <p>Belum ada tarif tetap — tanyakan langsung via WhatsApp untuk penawaran. Tenis mengikuti tarif Padel.</p>
     </div>
   </div>
 
