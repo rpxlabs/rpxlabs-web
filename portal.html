@@ -166,9 +166,9 @@ function showDash(){
   // halaman admin lama: kirim token lewat hash supaya tidak muncul di log server
   var t = localStorage.getItem(K_TOKEN) || '';
   // admin.html & calendar.html ada di rpxlabs-web (repo yang sama), bukan di domain lama
-  document.getElementById('t1').href = 'https://rpxlabs-web.vercel.app/calendar.html#t=' + t;
-  document.getElementById('t2').href = 'https://rpxlabs-web.vercel.app/admin.html#t=' + t;
-  document.getElementById('t3').href = 'https://rpxlabs-web.vercel.app/running.html';
+  document.getElementById('t1').href = '/calendar.html#t=' + t;
+  document.getElementById('t2').href = '/admin.html#t=' + t;
+  document.getElementById('t3').href = '/running.html';
   document.getElementById('t4').href = SHEET;
   document.getElementById('t4').target = '_blank';
 }
