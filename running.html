@@ -44,7 +44,10 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
 .ev-card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,0.36);background:linear-gradient(160deg,rgba(255,255,255,0.085),rgba(255,255,255,0.022) 55%,rgba(255,255,255,0.01));box-shadow:0 0 40px rgba(255,255,255,0.09),0 20px 44px rgba(0,0,0,0.6)}
 .ev-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .badge{font-size:0.58rem;font-weight:900;letter-spacing:0.16em;text-transform:uppercase;padding:5px 11px;border-radius:100px;background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.82)}
-.ev-ext{color:rgba(255,255,255,0.28);font-size:1rem;transition:all .24s}
+.ev-tag{display:inline-flex;align-items:center;gap:6px;font-size:0.58rem;font-weight:900;letter-spacing:0.13em;text-transform:uppercase;color:rgba(255,255,255,0.5);padding:5px 10px;border:1px solid rgba(255,255,255,0.13);border-radius:99px;background:rgba(255,255,255,0.035);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100% - 34px)}
+.ev-tag i{font-size:0.76rem;flex-shrink:0}
+.ev-card:hover .ev-tag{color:#fff;border-color:rgba(255,255,255,0.26)}
+.ev-ext{color:rgba(255,255,255,0.28);font-size:1rem;transition:all .24s;flex-shrink:0}
 .ev-card:hover .ev-ext{color:#fff;transform:translate(2px,-2px)}
 .ev-card h3{font-family:'Poppins',sans-serif;font-size:0.94rem;font-weight:600;line-height:1.42;margin-bottom:16px}
 .ev-foot{display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -173,8 +176,23 @@ document.getElementById('filters').addEventListener('click', e => {
   function card(a){
     const judul = a.judul || a.nama || "Album";
     const tgl   = a.tanggalTampil || "";
+    const kat   = String(a.kategori || "").trim().toLowerCase();
+    const wkt   = String(a.waktu || "").trim().toLowerCase();
+
+    // Label kategori di atas judul
+    let label = "Album";
+    let ic    = "ph-images";
+    if(kat.indexOf("event") === 0){ label = "Event Running"; ic = "ph-flag-checkered"; }
+    else if(wkt.indexOf("cfd") === 0){ label = "CFD"; ic = "ph-flag-banner"; }
+    else if(wkt.indexOf("pagi") === 0){ label = "Lari Harian \u00b7 Pagi"; ic = "ph-sun-horizon"; }
+    else if(wkt.indexOf("sore") === 0){ label = "Lari Harian \u00b7 Sore"; ic = "ph-sun"; }
+    else { label = "Lari Harian"; ic = "ph-sneaker-move"; }
+
     return '<a class="ev-card" href="' + a.link + '" target="_blank" rel="noopener">' +
-      '<div class="ev-top"><span class="ev-ext"><i class="ph ph-arrow-up-right"></i></span></div>' +
+      '<div class="ev-top">' +
+        '<span class="ev-tag"><i class="ph ' + ic + '"></i>' + label + '</span>' +
+        '<span class="ev-ext"><i class="ph ph-arrow-up-right"></i></span>' +
+      '</div>' +
       '<h3>' + judul + '</h3>' +
       '<div class="ev-foot"><span class="ev-note">' + tgl + '</span>' +
       '<span class="ev-go">Buka Album <i class="ph ph-arrow-right"></i></span></div></a>';
