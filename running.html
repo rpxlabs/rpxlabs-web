@@ -182,11 +182,10 @@ document.getElementById('filters').addEventListener('click', e => {
   }
 
   /* ---------- Lari Harian: dikelompokkan pagi / sore ---------- */
-  // Urutan grup: Pagi, Sore, lalu CFD paling bawah
+  // Hanya Pagi & Sore. CFD = running harian biasa (tanpa grup sendiri).
   const GROUPS = [
     {key:"pagi", label:"Pagi", icon:"ph-sun-horizon"},
-    {key:"sore", label:"Sore", icon:"ph-sun"},
-    {key:"cfd",  label:"CFD",  icon:"ph-flag-banner"}
+    {key:"sore", label:"Sore", icon:"ph-sun"}
   ];
 
   function renderDaily(list){
@@ -195,13 +194,12 @@ document.getElementById('filters').addEventListener('click', e => {
     if(!list || !list.length){ wrap.innerHTML = '<div class="empty">Belum ada album lari harian.</div>'; return; }
 
     // Normalisasi ke grup; yang tak dikenali masuk "lain"
-    const buckets = {pagi:[], sore:[], cfd:[], lain:[]};
+    const buckets = {pagi:[], sore:[], lain:[]};
     list.forEach(function(a){
       const w = String(a.waktu||"").trim().toLowerCase();
-      if(w.indexOf("cfd") === 0) buckets.cfd.push(a);
-      else if(w.indexOf("pagi") === 0 || w === "morning") buckets.pagi.push(a);
+      if(w.indexOf("pagi") === 0 || w === "morning") buckets.pagi.push(a);
       else if(w.indexOf("sore") === 0 || w.indexOf("senja") === 0 || w === "evening") buckets.sore.push(a);
-      else buckets.lain.push(a);
+      else buckets.lain.push(a);   // termasuk CFD -> harian biasa
     });
 
     let html = "";
@@ -213,7 +211,8 @@ document.getElementById('filters').addEventListener('click', e => {
               '<div class="grid">' + items.map(card).join("") + '</div></div>';
     });
     if(buckets.lain.length){
-      html += '<div class="dgrp"><div class="dgh"><i class="ph ph-clock"></i>Lainnya</div>' +
+      html += '<div class="dgrp"><div class="dgh"><i class="ph ph-sneaker-move"></i>Harian' +
+              '<span class="dgc">' + buckets.lain.length + '</span></div>' +
               '<div class="grid">' + buckets.lain.map(card).join("") + '</div></div>';
     }
     wrap.innerHTML = html || '<div class="empty">Belum ada album lari harian.</div>';

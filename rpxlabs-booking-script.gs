@@ -1475,6 +1475,7 @@ const ALBUM_SHEET = 'Albums Running';
 const ALBUM_HEADERS = ['Tanggal', 'Judul', 'Kategori', 'Waktu', 'Link Album', 'Aktif'];
 const ALBUM_KATEGORI = ['Event', 'Harian'];
 const ALBUM_WAKTU = ['Pagi', 'Sore', 'CFD'];
+const ALBUM_AKTIF = ['Ya', 'Tidak'];
 
 /** Buat tab album + header + dropdown. Jalankan sekali via ?action=setupAlbums */
 function setupAlbumsSheets() {
@@ -1512,15 +1513,31 @@ function setupAlbumsSheets() {
     .build();
   sh.getRange(2, 4, LAST, 1).setDataValidation(waktuRule);
 
-  // Format tanggal kolom A
-  sh.getRange(2, 1, LAST, 1).setNumberFormat('dd/mm/yyyy');
+  // Dropdown Aktif (kolom F): Ya / Tidak
+  const aktifRule = SpreadsheetApp.newDataValidation()
+    .requireValueInList(ALBUM_AKTIF, true)
+    .setAllowInvalid(false)
+    .setHelpText('Ya = tampil di web, Tidak = sembunyikan')
+    .build();
+  sh.getRange(2, 6, LAST, 1).setDataValidation(aktifRule);
+
+  // Kolom A (Tanggal): format tanggal + validasi tanggal + date picker di sel
+  const dateRange = sh.getRange(2, 1, LAST, 1);
+  dateRange.setNumberFormat('dd/mm/yyyy');
+  const dateRule = SpreadsheetApp.newDataValidation()
+    .requireDate()
+    .setAllowInvalid(false)
+    .setHelpText('Pilih tanggal dari kalender (atau ketik dd/mm/yyyy)')
+    .build();
+  dateRange.setDataValidation(dateRule);
 
   return {
     success: true,
     sheet: report,
     headers: ALBUM_HEADERS,
     dropdownKategori: ALBUM_KATEGORI,
-    dropdownWaktu: ALBUM_WAKTU
+    dropdownWaktu: ALBUM_WAKTU,
+    dropdownAktif: ALBUM_AKTIF
   };
 }
 
