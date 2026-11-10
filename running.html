@@ -128,6 +128,34 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
   </div>
   <div id="dailyWrap"><div class="loading">Memuat album…</div></div>
 
+  <div class="fotoyu">
+    <div class="fy-head">
+      <i class="ph-fill ph-images"></i>
+      <div>
+        <h3>Lihat Foto Lewat Fotoyu</h3>
+        <p>Pilih salah satu untuk membuka galeri foto lari di Fotoyu.</p>
+      </div>
+    </div>
+    <div class="fy-grid">
+      <a class="fy-card" href="https://fotoyu.com/link/fvSUgExuyWs4VtACT" target="_blank" rel="noopener">
+        <div class="fy-ico"><i class="ph-fill ph-image"></i></div>
+        <div class="fy-txt">
+          <span class="fy-lbl">Melihat Konten</span>
+          <span class="fy-sub">Foto lari yang sudah tampil di web</span>
+        </div>
+        <i class="ph ph-arrow-up-right fy-arrow"></i>
+      </a>
+      <a class="fy-card" href="https://fotoyu.com/link/aNl9SJXf3GYPGrnvi" target="_blank" rel="noopener">
+        <div class="fy-ico"><i class="ph-fill ph-squares-four"></i></div>
+        <div class="fy-txt">
+          <span class="fy-lbl">Melihat Portofolio</span>
+          <span class="fy-sub">Koleksi lengkap karya RPXLABS</span>
+        </div>
+        <i class="ph ph-arrow-up-right fy-arrow"></i>
+      </a>
+    </div>
+  </div>
+
   <div class="howto">
     <h2><i class="ph-fill ph-info"></i>Cara pemesanan</h2>
     <div class="steps">
@@ -160,13 +188,13 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
   </div>
 
   <div class="band">
-    <h2>Foto kamu tidak ada di album?</h2>
-    <p>Kirim tanggal dan lokasi sesi lari kamu — saya cek arsipnya.</p>
-    <a class="btn" href="https://wa.me/6289623290398?text=Halo%20RPXLABS%2C%20saya%20mau%20pesan%20foto%20running." target="_blank" rel="noopener"><i class="ph-fill ph-whatsapp-logo"></i>Tanya Admin</a>
+    <h2>Siap checkout foto kamu?</h2>
+    <p>Chat admin untuk menyelesaikan pembelian. Pesannya sudah terisi — tinggal lengkapi judul album dan nomor foto, lalu kirim.</p>
+    <a class="btn" href="https://wa.me/6289623290398?text=Checkout%20Foto%20Running%20RPXLABS%0A%0AHalo%20RPXLABS%2C%20saya%20mau%20beli%20foto%20running.%0A%0AJudul%20album%3A%20%0ANomor%20foto%20%2F%20deskripsi%3A%20%0ANama%3A%20%0A%0AMohon%20info%20total%20dan%20cara%20pembayarannya.%20Terima%20kasih." target="_blank" rel="noopener"><i class="ph-fill ph-whatsapp-logo"></i>Checkout via WhatsApp</a>
   </div>
 
 </div>
-<a class="fab" href="https://wa.me/6289623290398?text=Halo%20RPXLABS%2C%20saya%20mau%20pesan%20foto%20running." target="_blank" rel="noopener" aria-label="WhatsApp"><i class="ph-fill ph-whatsapp-logo"></i></a>
+<a class="fab" href="https://wa.me/6289623290398?text=Checkout%20Foto%20Running%20RPXLABS%0A%0AHalo%20RPXLABS%2C%20saya%20mau%20beli%20foto%20running.%0A%0AJudul%20album%3A%20%0ANomor%20foto%20%2F%20deskripsi%3A%20%0ANama%3A%20%0A%0AMohon%20info%20total%20dan%20cara%20pembayarannya.%20Terima%20kasih." target="_blank" rel="noopener" aria-label="Checkout via WhatsApp"><i class="ph-fill ph-whatsapp-logo"></i></a>
 <script>
 document.getElementById('filters').addEventListener('click', e => {
   const b = e.target.closest('.f'); if (!b) return;
@@ -181,6 +209,21 @@ document.getElementById('filters').addEventListener('click', e => {
 
 <style>
 
+  .fotoyu{margin:0 0 34px;border-radius:20px;padding:26px 24px;background:linear-gradient(150deg,rgba(255,255,255,0.075),rgba(255,255,255,0.02) 50%,rgba(255,255,255,0.008));border:1px solid rgba(255,255,255,0.2)}
+  .fy-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px}
+  .fy-head>i{font-size:1.3rem;color:rgba(255,255,255,0.9);margin-top:1px}
+  .fy-head h3{font-family:'Poppins',sans-serif;font-size:1rem;font-weight:700;margin-bottom:5px}
+  .fy-head p{font-size:0.76rem;color:var(--dim);line-height:1.6}
+  .fy-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .fy-card{display:flex;align-items:center;gap:13px;text-decoration:none;color:var(--text);background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.16);border-radius:14px;padding:15px 16px;transition:all .22s}
+  .fy-card:hover{background:rgba(255,255,255,0.11);border-color:rgba(255,255,255,0.38);transform:translateY(-2px)}
+  .fy-ico{flex-shrink:0;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);font-size:1.05rem}
+  .fy-txt{display:flex;flex-direction:column;gap:3px;min-width:0}
+  .fy-lbl{font-family:'Poppins',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:0.01em}
+  .fy-sub{font-size:0.66rem;color:var(--dim);line-height:1.45}
+  .fy-arrow{margin-left:auto;flex-shrink:0;font-size:0.95rem;color:rgba(255,255,255,0.45);transition:all .22s}
+  .fy-card:hover .fy-arrow{color:#fff;transform:translate(2px,-2px)}
+  @media(max-width:640px){.fy-grid{grid-template-columns:1fr}}
   .pay{margin-top:44px;background:var(--glass);border:1px solid var(--line-soft);border-radius:20px;padding:30px 24px;backdrop-filter:blur(16px)}
   .pay h2{display:flex;align-items:center;justify-content:center;gap:9px;font-family:'Poppins',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:9px;letter-spacing:0.01em}
   .pay h2 i{color:rgba(255,255,255,0.85);font-size:1.05em}
