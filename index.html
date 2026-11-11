@@ -117,49 +117,20 @@ nav .cta:hover{background:rgba(255,255,255,0.14);border-color:rgba(255,255,255,0
 
 /* ---------- SERVICE CARDS ---------- */
 .services{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:82px}
-.svc{
-  position:relative;display:block;text-decoration:none;color:inherit;
-  background:var(--glass);border:1px solid var(--line-soft);
-  border-radius:20px;padding:28px 26px;overflow:hidden;
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  transition:all .3s cubic-bezier(.4,0,.2,1);
-}
-.svc::after{
-  content:'';position:absolute;inset:0;border-radius:20px;pointer-events:none;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,0.07);
-  transition:box-shadow .3s;
-}
-.svc:hover{
-  transform:translateY(-4px);
-  border-color:rgba(255,255,255,0.36);
-  background:linear-gradient(160deg,rgba(255,255,255,0.085) 0%,rgba(255,255,255,0.025) 50%,rgba(255,255,255,0.01) 100%);
-  box-shadow:0 0 44px rgba(255,255,255,0.10),0 22px 48px rgba(0,0,0,0.62);
-}
-.svc:hover::after{box-shadow:inset 0 1px 0 rgba(255,255,255,0.16)}
-.svc .ico{
-  width:46px;height:46px;border-radius:13px;
-  display:grid;place-items:center;font-size:1.34rem;
-  background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.16);
-  color:#fff;margin-bottom:18px;transition:all .3s;
-}
-.svc:hover .ico{background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.4);box-shadow:0 0 20px rgba(255,255,255,0.2)}
+.svc{position:relative;display:block;text-decoration:none;color:#0a0a0a;background:linear-gradient(158deg,rgba(226,226,226,0.88) 0%,rgba(206,206,206,0.85) 48%,rgba(185,185,185,0.82) 100%);border:1px solid rgba(255,255,255,0.26);border-radius:20px;padding:28px 26px;overflow:hidden;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 1px 0 rgba(255,255,255,0.30) inset,0 14px 34px rgba(0,0,0,0.5);transition:all .3s cubic-bezier(.4,0,.2,1)}}
+.svc::after{content:'';position:absolute;inset:0;border-radius:20px;pointer-events:none;box-shadow:inset 0 1px 0 rgba(255,255,255,0.22);transition:box-shadow .3s}
+.svc:hover{transform:translateY(-4px);border-color:rgba(255,255,255,0.42);background:linear-gradient(158deg,rgba(240,240,240,0.94) 0%,rgba(220,220,220,0.91) 48%,rgba(200,200,200,0.88) 100%);box-shadow:0 1px 0 rgba(255,255,255,0.36) inset,0 0 18px rgba(255,255,255,0.09),0 20px 44px rgba(0,0,0,0.55)}}
+.svc:hover::after{box-shadow:inset 0 1px 0 rgba(255,255,255,0.32)}
+.svc .ico{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-size:1.34rem;background:#0a0a0a;border:1px solid #0a0a0a;color:#fff;margin-bottom:18px;transition:all .3s}
+.svc:hover .ico{background:#000;border-color:#000;box-shadow:0 6px 16px rgba(0,0,0,0.35)}
 .svc h3{font-family:'Poppins',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:8px}
-.svc p{font-size:0.8rem;color:var(--dim);line-height:1.62;margin-bottom:16px}
+.svc p{font-size:0.8rem;color:rgba(10,10,10,0.72);line-height:1.62;margin-bottom:16px}
 .svc .meta{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.svc .price{font-size:0.72rem;font-weight:800;letter-spacing:0.06em;color:rgba(255,255,255,0.72)}
-.svc .go{
-  display:inline-flex;align-items:center;gap:5px;
-  font-size:0.66rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;
-  color:rgba(255,255,255,0.5);transition:all .22s;
-}
-.svc:hover .go{color:#fff;gap:9px}
-.svc.featured{
-  grid-column:1/-1;
-  background:linear-gradient(150deg,rgba(255,255,255,0.10) 0%,rgba(255,255,255,0.03) 45%,rgba(255,255,255,0.012) 100%);
-  border-color:rgba(255,255,255,0.26);
-  box-shadow:0 0 34px rgba(255,255,255,0.07);
-}
-.svc.featured .ico{background:rgba(255,255,255,0.16);border-color:rgba(255,255,255,0.36)}
+.svc .price{font-size:0.72rem;font-weight:800;letter-spacing:0.06em;color:rgba(10,10,10,0.82)}
+.svc .go{display:inline-flex;align-items:center;gap:5px;font-size:0.66rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.72);transition:all .22s}
+.svc:hover .go{color:#000;gap:9px}
+.svc.featured{grid-column:1/-1;background:linear-gradient(158deg,rgba(242,242,242,0.95) 0%,rgba(224,224,224,0.92) 48%,rgba(206,206,206,0.89) 100%);border-color:rgba(255,255,255,0.45);box-shadow:0 1px 0 rgba(255,255,255,0.5) inset,0 18px 42px rgba(0,0,0,0.55)}
+.svc.featured .ico{background:#0a0a0a;border-color:#0a0a0a;color:#fff}
 
 /* ---------- TRUSTED ---------- */
 .trust{margin-bottom:82px}
@@ -195,15 +166,9 @@ nav .cta:hover{background:rgba(255,255,255,0.14);border-color:rgba(255,255,255,0
 .work a:hover span{opacity:1;transform:none}
 
 /* ---------- CTA BAND ---------- */
-.band{
-  text-align:center;padding:64px 30px;border-radius:24px;
-  background:linear-gradient(150deg,rgba(255,255,255,0.09) 0%,rgba(255,255,255,0.028) 48%,rgba(255,255,255,0.01) 100%);
-  border:1px solid rgba(255,255,255,0.24);
-  box-shadow:0 0 50px rgba(255,255,255,0.075);
-  margin-bottom:70px;
-}
+.band{text-align:center;padding:64px 30px;border-radius:24px;background:linear-gradient(152deg,rgba(220,220,220,0.86) 0%,rgba(200,200,200,0.83) 50%,rgba(180,180,180,0.80) 100%);border:1px solid rgba(255,255,255,0.24);color:#0a0a0a;box-shadow:0 1px 0 rgba(255,255,255,0.26) inset,0 14px 34px rgba(0,0,0,0.45);margin-bottom:70px}
 .band h2{font-family:'Poppins',sans-serif;font-size:clamp(1.15rem,2.9vw,1.62rem);font-weight:700;margin-bottom:12px}
-.band p{font-size:0.86rem;color:var(--dim);margin-bottom:26px;line-height:1.65}
+.band p{font-size:0.86rem;color:rgba(10,10,10,0.72);margin-bottom:26px;line-height:1.65}
 
 /* ---------- FOOTER ---------- */
 footer{
