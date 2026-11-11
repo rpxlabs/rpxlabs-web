@@ -1431,7 +1431,7 @@
                 lokasi: document.getElementById('lokasi').value,
                 tanggal: document.getElementById('tanggal').value,
                 jam: finalJam,
-                paket: paketSelect.options[paketSelect.selectedIndex].text,
+                paket: paketSelect.value,
                 jumlahOrang: document.getElementById('jumlahOrang').value,
                 cinematicVideo: cinematicCheck.checked ? 'Ya' : 'Tidak',
                 extraEdit: parseInt(extraEditInput.value) || 0,
@@ -1443,19 +1443,31 @@
                 catatan: document.getElementById('catatan').value
             };
             
-            // Simpan ke Google Sheets (jika sudah dikonfigurasi)
+            // Simpan ke Google Sheets (wajib berhasil sebelum lanjut)
             if (GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+                let simpan = null;
                 try {
-                    await fetch(GOOGLE_SCRIPT_URL, {
+                    const resp = await fetch(GOOGLE_SCRIPT_URL, {
                         method: 'POST',
-                        mode: 'no-cors',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                         body: JSON.stringify(formData)
                     });
+                    const teks = await resp.text();
+                    try {
+                        simpan = JSON.parse(teks);
+                    } catch (e) {
+                        simpan = { success: false, message: 'Balasan server tidak dikenali.' };
+                    }
                 } catch (error) {
-                    console.log('Google Sheets error:', error);
+                    simpan = { success: false, message: 'Gagal menghubungi server. Periksa koneksi internet.' };
+                }
+
+                if (!simpan || !simpan.success) {
+                    const pesanServer = (simpan && simpan.message) ? simpan.message : 'Booking gagal disimpan.';
+                    showAlert('⚠️ ' + pesanServer + ' Silakan coba lagi, atau kirim langsung lewat WhatsApp admin.', 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Kirim Booking';
+                    return;
                 }
             }
             
