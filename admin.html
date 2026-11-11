@@ -809,7 +809,7 @@ async function loadSchedule() {
     try {
         const from = todayISO();
         const to = addDays(from, 30);
-        const res = await fetch(`${GOOGLE_SCRIPT_URL}?action=getSchedule&from=${from}&to=${to}`, { cache: 'no-store' });
+        const res = await fetch(`${GOOGLE_SCRIPT_URL}?action=getSchedule&from=${from}&to=${to}&token=${encodeURIComponent(localStorage.getItem('rpxlabs_portal_token')||'')}`, { cache: 'no-store' });
         const data = await res.json();
 
         if (!data.success) throw new Error(data.error || 'Gagal memuat jadwal');
