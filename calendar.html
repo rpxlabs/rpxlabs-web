@@ -345,6 +345,17 @@
             transform: translateY(-1px);
         }
 
+        /* hari lampau yang ada job: diredupkan, ada titik kecil */
+        .cell.has-past { opacity: 0.42; }
+        .cell.has-past .dnum::after {
+            content: '';
+            display: inline-block;
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.55);
+            margin-left: 5px;
+            vertical-align: middle;
+        }
         .cell.today {
             border-color: #ffffff;
             box-shadow: 0 0 16px rgba(255,255,255,0.3);
@@ -655,8 +666,11 @@
             const summary = calData.summary || {};
 
             // Stats
+            // statistik hanya hitung hari ini ke depan (job lampau diarsipkan)
+            const todayS = todayISO();
             let totalJobs = 0, totalWisuda = 0, totalOther = 0, busyDays = 0;
             Object.keys(summary).forEach(d => {
+                if (d < todayS) return;
                 totalJobs += summary[d].count;
                 totalWisuda += summary[d].wisuda;
                 totalOther += summary[d].other;
@@ -680,11 +694,15 @@
 
             for (let d = 1; d <= lastDate; d++) {
                 const iso = isoDate(currentYear, currentMonth, d);
-                const list = days[iso] || [];
+                const listAll = days[iso] || [];
+                const isPast = iso < today;                 // hari sudah lewat
+                const list = isPast ? [] : listAll;         // job lampau tak ditampilkan
                 const has = list.length > 0;
+                const hasPast = isPast && listAll.length > 0;
 
                 let cls = 'cell';
                 if (has) cls += ' has-job';
+                if (hasPast) cls += ' has-past';
                 if (iso === today) cls += ' today';
                 if (iso === selectedDate) cls += ' selected';
 
@@ -695,7 +713,7 @@
                 });
                 if (list.length > 2) chips += '<div class="more">+' + (list.length - 2) + ' lagi</div>';
 
-                const onclick = has ? ' onclick="pickDate(\'' + iso + '\')"' : '';
+                const onclick = listAll.length ? ' onclick="pickDate(\'' + iso + '\')"' : '';
                 html += '<div class="' + cls + '"' + onclick + '>' +
                             '<div class="dnum" data-day="' + d + '">' + d + '</div>' +
                             (chips ? '<div class="chips">' + chips + '</div>' : '') +
@@ -722,7 +740,10 @@
             const dt = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
             const title = DAYNAMES[dt.getDay()] + ', ' + parseInt(parts[2]) + ' ' + MONTHS[parseInt(parts[1]) - 1] + ' ' + parts[0];
 
-            let html = '<h3><i class="ph ph-calendar-check"></i>' + title + '</h3>';
+            const isPastDay = iso < todayISO();
+            let html = '<h3><i class="ph ph-calendar-check"></i>' + title +
+                       (isPastDay ? ' <span style="font-size:.62rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:100px;background:rgba(255,255,255,0.08);color:#9a9aa6;margin-left:8px;vertical-align:middle">Sudah Lewat</span>' : '') +
+                       '</h3>';
 
             list.forEach(ev => {
                 const isW = ev.kind === 'WISUDA';

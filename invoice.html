@@ -491,9 +491,52 @@ body.is-kwitansi .p-sign{display:none}
   .paper::before{display:block}
   .card{display:none !important}
 }
+
+/* ---------- AUTH GATE ---------- */
+#gate{
+  position:fixed;inset:0;z-index:900;display:none;
+  align-items:center;justify-content:center;
+  background:#0f0f0f;padding:24px;
+}
+#gate.on{display:flex}
+body.locked .shell{display:none !important}
+body.locked{overflow:hidden}
+#gate .box{
+  width:100%;max-width:360px;text-align:center;
+  background:linear-gradient(160deg,rgba(255,255,255,0.058) 0%,rgba(255,255,255,0.018) 45%,rgba(255,255,255,0.008) 100%);
+  border:1px solid rgba(242,240,234,0.16);border-radius:18px;
+  padding:34px 26px;backdrop-filter:blur(12px);
+}
+#gate .box img{height:34px;margin:0 auto 20px;display:block;mix-blend-mode:screen}
+#gate h2{font-family:'Poppins',sans-serif;font-size:1.15rem;font-weight:600;margin-bottom:7px}
+#gate p{font-size:.78rem;color:#8a8a96;line-height:1.55;margin-bottom:20px}
+#gate input{
+  width:100%;text-align:center;font-size:1.35rem;font-weight:800;
+  letter-spacing:.4em;padding:13px;border-radius:11px;
+  background:rgba(0,0,0,0.45);border:1px solid rgba(242,240,234,0.16);
+  color:#f0f0f0;font-family:'Nunito',sans-serif;margin-bottom:12px;
+}
+#gate input:focus{outline:none;border-color:rgba(242,240,234,0.55)}
+#gate button{width:100%;justify-content:center;padding:12px;border-radius:11px;letter-spacing:.1em}
+#gate .err{font-size:.72rem;color:#ff9b9b;margin-top:11px;min-height:16px}
+#gate .back{display:block;margin-top:16px;font-size:.68rem;color:#5f5f6b;text-decoration:none;letter-spacing:.06em;text-align:center}
+#gate .back:hover{color:#f0f0f0}
+
 </style>
 </head>
 <body>
+<div id="gate">
+  <div class="box">
+    <img src="assets/logo-rpx-footer.png" alt="RPXLABS" onerror="this.style.display='none'">
+    <h2>Invoice &amp; Kwitansi</h2>
+    <p>Masukkan PIN admin untuk lanjut.</p>
+    <input id="gatePin" type="password" inputmode="numeric" maxlength="6" placeholder="••••" autocomplete="off">
+    <button class="primary" onclick="gateUnlock()"><i class="ph ph-lock-key"></i>Buka</button>
+    <div class="err" id="gateErr"></div>
+    <a class="back" href="/portal.html">← Kembali ke Portal</a>
+  </div>
+</div>
+
 <div class="shell">
 
   <nav>
@@ -950,7 +993,9 @@ async function loadBookings(){
     }
     BOOKINGS = data.bookings || [];
     renderBookingList();
-    toast(BOOKINGS.length + ' booking dimuat');
+    const todayISO2 = new Date().toISOString().slice(0,10);
+    const active = BOOKINGS.filter(b => !b.tanggal || String(b.tanggal) >= todayISO2).length;
+    toast(active + ' jadwal aktif dimuat');
   } catch(err){
     box.innerHTML = '<p class="hint" style="color:#ff9b9b">Error: ' + esc(err.message) + '</p>';
   }
@@ -959,8 +1004,15 @@ async function loadBookings(){
 function renderBookingList(){
   const q = ($('f_search').value || '').toLowerCase().trim();
   const box = $('bookingList');
-  let list = BOOKINGS;
-  if(q) list = BOOKINGS.filter(b =>
+
+  // sembunyikan booking yang tanggal sesinya sudah lewat (H+1)
+  const todayISO = new Date().toISOString().slice(0,10);
+  let list = BOOKINGS.filter(b => {
+    if(!b.tanggal) return true;              // tanpa tanggal: tetap tampil
+    return String(b.tanggal) >= todayISO;    // hanya hari ini dan ke depan
+  });
+
+  if(q) list = list.filter(b =>
     (b.nama||'').toLowerCase().includes(q) ||
     (b.paket||'').toLowerCase().includes(q) ||
     (b.universitas||'').toLowerCase().includes(q) ||
@@ -969,7 +1021,11 @@ function renderBookingList(){
   );
 
   if(!list.length){
-    box.innerHTML = '<p class="hint">' + (BOOKINGS.length ? 'Tidak ada yang cocok.' : 'Klik <b>Muat Data Booking</b>.') + '</p>';
+    const hidden = BOOKINGS.length - BOOKINGS.filter(b => !b.tanggal || String(b.tanggal) >= todayISO).length;
+    box.innerHTML = '<p class="hint">' +
+      (BOOKINGS.length
+        ? 'Tidak ada jadwal aktif.' + (hidden > 0 ? ' (' + hidden + ' jadwal lampau disembunyikan)' : '')
+        : 'Klik <b>Muat Data Booking</b>.') + '</p>';
     return;
   }
 
@@ -1123,6 +1179,81 @@ function renderKwitansi(items, subtotal, total, paid){
   $('kw_bal').textContent   = rp(Math.max(0, total - bayar));
 }
 
+
+
+/* ---------- AUTH GATE ---------- */
+const GATE_KEY = 'rpxlabs_invoice_unlocked';
+const PORTAL_TOKEN_KEY = 'rpxlabs_portal_token';
+
+function hasPortalToken(){
+  try {
+    const tok = localStorage.getItem(PORTAL_TOKEN_KEY);
+    const tm  = localStorage.getItem('rpxlabs_portal_time');
+    if(!tok) return false;
+    if(tm && (Date.now() - parseInt(tm,10)) > 12*60*60*1000) return false;
+    return true;
+  } catch(e){ return false; }
+}
+
+function checkGate(){
+  // 1. token portal aktif (dari portal.html)
+  if(hasPortalToken()){
+    localStorage.setItem(GATE_KEY, '1');
+    unlockUI();
+    return;
+  }
+  // 2. sudah pernah buka PIN di sesi ini
+  if(localStorage.getItem(GATE_KEY) === '1'){
+    unlockUI();
+    return;
+  }
+  // 3. hash URL berisi token (#t=...)
+  const h = location.hash || '';
+  const m = h.match(/[#&]t=([A-Za-z0-9]+)/);
+  if(m && m[1]){
+    localStorage.setItem(PORTAL_TOKEN_KEY, m[1]);
+    localStorage.setItem('rpxlabs_portal_time', String(Date.now()));
+    localStorage.setItem(GATE_KEY, '1');
+    history.replaceState(null, '', location.pathname);
+    unlockUI();
+    return;
+  }
+  // 4. terkunci
+  document.body.classList.add('locked');
+  $('gate').classList.add('on');
+  setTimeout(() => { const el = $('gatePin'); if(el) el.focus(); }, 120);
+}
+
+function unlockUI(){
+  document.body.classList.remove('locked');
+  $('gate').classList.remove('on');
+}
+
+function gateUnlock(){
+  const v = ($('gatePin').value || '').trim();
+  const err = $('gateErr');
+  if(!v){ err.textContent = 'PIN masih kosong.'; return; }
+  err.textContent = 'Memeriksa...';
+  // verifikasi ke server: getBookings butuh PIN/token yang valid
+  fetch(`${SCRIPT_URL}?action=getBookings&pin=${encodeURIComponent(v)}`, { cache:'no-store' })
+    .then(r => r.json())
+    .then(d => {
+      if(d && d.success){
+        localStorage.setItem(GATE_KEY, '1');
+        unlockUI();
+        $('gatePin').value = '';
+        err.textContent = '';
+        BOOKINGS = d.bookings || [];
+        renderBookingList();
+        toast('PIN benar — ' + BOOKINGS.length + ' booking dimuat');
+      } else {
+        err.textContent = 'PIN salah.';
+        $('gatePin').value = '';
+        $('gatePin').focus();
+      }
+    })
+    .catch(e => { err.textContent = 'Gagal konek: ' + e.message; });
+}
 
 /* ---------- KATALOG PRODUK (harga resmi RPXLABS) ---------- */
 const CATALOG = [
@@ -1400,6 +1531,13 @@ function newInvoice(){
   $('f_search').addEventListener('input', renderBookingList);
   $('f_prodSearch').addEventListener('input', renderCatalog);
   renderCatalog();
+
+  // auth gate
+  checkGate();
+  const gp = $('gatePin');
+  if(gp){
+    gp.addEventListener('keydown', e => { if(e.key === 'Enter') gateUnlock(); });
+  }
   $('f_paytype').addEventListener('change', render);
   $('f_paymethod').addEventListener('change', render);
 

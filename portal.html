@@ -129,6 +129,11 @@ button{font-family:'Nunito',sans-serif;cursor:pointer;border:none;transition:all
         <div class="txt"><b>Album Running</b><small>Halaman album yang dilihat client.</small></div>
         <div class="arw"><i class="ph ph-arrow-right"></i></div>
       </a>
+      <a class="tile" id="t5" href="#">
+        <div class="ic"><i class="ph ph-receipt"></i></div>
+        <div class="txt"><b>Invoice &amp; Kwitansi</b><small>Buat tagihan &amp; bukti bayar, tarik data dari booking.</small></div>
+        <div class="arw"><i class="ph ph-arrow-right"></i></div>
+      </a>
       <a class="tile" id="t4" href="#">
         <div class="ic"><i class="ph ph-table"></i></div>
         <div class="txt"><b>Google Sheet</b><small>Buka spreadsheet induk.</small></div>
@@ -169,6 +174,7 @@ function showDash(){
   document.getElementById('t1').href = '/calendar.html#t=' + t;
   document.getElementById('t2').href = '/admin.html#t=' + t;
   document.getElementById('t3').href = '/running.html';
+  document.getElementById('t5').href = '/invoice.html';
   document.getElementById('t4').href = SHEET;
   document.getElementById('t4').target = '_blank';
 }
