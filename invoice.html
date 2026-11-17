@@ -790,7 +790,7 @@ body.is-kwitansi .p-sign{display:none}
 
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx1BYB1TACi2OSYFACowp38RVs1A8tq70hPn3dxbvjtLfJuYsS9LfuNEWQbOx5_o5KnLg/exec';
-const CALENDAR_PIN = '2026';
+const PORTAL_PIN = '2006';
 let BOOKINGS = [];
 
 const STORE_KEY = 'rpxlabs_invoices_v1';
@@ -942,7 +942,7 @@ async function loadBookings(){
   const box = $('bookingList');
   box.innerHTML = '<p class="hint">Memuat data dari Sheet...</p>';
   try {
-    const res = await fetch(`${SCRIPT_URL}?action=getBookings&pin=${encodeURIComponent(CALENDAR_PIN)}`, { cache: 'no-store' });
+    const res = await fetch(`${SCRIPT_URL}?action=getBookings&pin=${encodeURIComponent(PORTAL_PIN)}`, { cache: 'no-store' });
     const data = await res.json();
     if(!data.success){
       box.innerHTML = '<p class="hint" style="color:#ff9b9b">Gagal: ' + esc(data.error || 'unknown') + '</p>';
