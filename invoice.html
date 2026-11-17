@@ -15,7 +15,7 @@
   --line:rgba(242,240,234,0.16);
   --line-soft:rgba(242,240,234,0.08);
   --glass:linear-gradient(160deg,rgba(255,255,255,0.058) 0%,rgba(255,255,255,0.018) 45%,rgba(255,255,255,0.008) 100%);
-  --accent:#d7ff43;
+  --accent:#f0f0f0;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{
@@ -57,8 +57,8 @@ button,.btn{
   transition:all .18s;
 }
 button:hover,.btn:hover{background:rgba(255,255,255,0.11);border-color:rgba(242,240,234,0.42)}
-button.primary{background:var(--accent);border-color:var(--accent);color:#0f0f0f}
-button.primary:hover{background:#e4ff77;border-color:#e4ff77}
+button.primary{background:#f0f0f0;border-color:#f0f0f0;color:#0f0f0f}
+button.primary:hover{background:#fff;border-color:#fff}
 button.danger:hover{border-color:#ff6b6b;color:#ff9b9b}
 button.mini{padding:6px 10px;font-size:.66rem;letter-spacing:.06em}
 button i{font-size:1rem}
@@ -77,7 +77,7 @@ button i{font-size:1rem}
   font-weight:900;color:var(--dim);margin-bottom:16px;
   display:flex;align-items:center;gap:8px;
 }
-.card h2 i{font-size:1.05rem;color:var(--accent)}
+.card h2 i{font-size:1.05rem;color:#f0f0f0}
 
 /* ---------- FORM ---------- */
 .field{margin-bottom:13px}
@@ -92,7 +92,7 @@ input,select,textarea{
   padding:9px 11px;transition:border-color .18s,background .18s;
 }
 input:focus,select:focus,textarea:focus{
-  outline:none;border-color:var(--accent);background:rgba(0,0,0,0.62);
+  outline:none;border-color:rgba(242,240,234,0.55);background:rgba(0,0,0,0.62);
 }
 input[type=number]{-moz-appearance:textfield}
 input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
@@ -121,9 +121,64 @@ textarea{resize:vertical;min-height:62px;line-height:1.5}
   font-size:.72rem;letter-spacing:.1em;
 }
 .doc-btn.active{
-  background:var(--accent);border-color:var(--accent);color:#0f0f0f;
+  background:#f0f0f0;border-color:#f0f0f0;color:#0f0f0f;
 }
-.doc-btn.active:hover{background:#e4ff77;border-color:#e4ff77}
+.doc-btn.active:hover{background:#fff;border-color:#fff}
+
+
+/* ---------- KATALOG PRODUK ---------- */
+#prodList{max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:5px;padding-right:3px}
+#prodList::-webkit-scrollbar{width:5px}
+#prodList::-webkit-scrollbar-thumb{background:rgba(242,240,234,0.2);border-radius:4px}
+.pd{
+  display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:8px;
+  border:1px solid var(--line-soft);background:rgba(0,0,0,0.28);
+  cursor:pointer;transition:all .15s;
+}
+.pd:hover{border-color:rgba(242,240,234,0.5);background:rgba(255,255,255,0.05)}
+.pd .cat{
+  font-size:.56rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;
+  padding:2px 6px;border-radius:4px;background:rgba(255,255,255,0.08);
+  color:var(--dim);flex-shrink:0;min-width:52px;text-align:center;
+}
+.pd .nm{flex:1;font-size:.76rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pd .pr{font-size:.7rem;font-weight:800;color:#f0f0f0;font-variant-numeric:tabular-nums;flex-shrink:0}
+.pd add{}
+
+/* ---------- PAYMENT TRACKER ---------- */
+.pay-row{display:grid;grid-template-columns:1fr 96px 92px 26px;gap:7px;align-items:center}
+.pay-row input{padding:8px 9px;font-size:.78rem}
+.pay-row .amt{text-align:right}
+.pay-row .del{width:26px;height:26px;padding:0;justify-content:center;border-radius:7px;border-color:var(--line-soft);color:var(--dim)}
+.pay-row .del:hover{border-color:#ff6b6b;color:#ff6b6b;background:rgba(255,107,107,0.08)}
+.pay-sum{
+  margin-top:11px;padding:11px 13px;border-radius:9px;
+  background:rgba(255,255,255,0.045);border:1px solid var(--line-soft);
+  display:flex;flex-direction:column;gap:6px;font-size:.76rem;
+}
+.pay-sum div{display:flex;justify-content:space-between;color:var(--dim)}
+.pay-sum div span:last-child{font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.pay-sum .sisa span:last-child{color:var(--accent);font-size:.86rem}
+.pay-sum .overdue-tag{
+  margin-top:3px;padding:4px 9px;border-radius:6px;text-align:center;
+  background:rgba(255,107,107,0.14);color:#ff9b9b;
+  font-size:.64rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;
+}
+
+/* ---------- PAPER: payment history ---------- */
+.p-pays{margin-top:16px;padding-top:13px;border-top:1px solid rgba(242,240,234,0.12)}
+.p-pays h3{font-size:8px;letter-spacing:.2em;text-transform:uppercase;font-weight:900;color:#8f8f9c;margin-bottom:8px}
+.p-pays table{width:100%;border-collapse:collapse}
+.p-pays th{font-size:7.5px;letter-spacing:.14em;text-transform:uppercase;color:#8f8f9c;text-align:left;padding:5px 8px 5px 0;border-bottom:1px solid rgba(242,240,234,0.14);font-weight:900}
+.p-pays th.r{text-align:right;padding-right:0}
+.p-pays td{padding:6px 8px 6px 0;font-size:10px;color:#dcdce4;border-bottom:1px solid rgba(242,240,234,0.05)}
+.p-pays td.r{text-align:right;padding-right:0;font-weight:700;color:#fff;font-variant-numeric:tabular-nums}
+.p-pays .paid-tag{
+  padding:1px 7px;border-radius:100px;font-size:7.5px;font-weight:900;
+  letter-spacing:.1em;text-transform:uppercase;
+  background:rgba(255,255,255,0.09);color:#d8d8e0;
+}
+.p-title .badge.overdue{background:rgba(255,107,107,0.14);color:#ff9b9b;border-color:rgba(255,107,107,0.45)}
 
 /* ---------- BOOKING LIST ---------- */
 .bk-list{max-height:246px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;padding-right:3px}
@@ -140,7 +195,79 @@ textarea{resize:vertical;min-height:62px;line-height:1.5}
 .bk .info{flex:1;min-width:0}
 .bk .nm{font-size:.79rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bk .mt{font-size:.64rem;color:var(--dim);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.bk .amt{font-size:.7rem;font-weight:800;color:var(--accent);white-space:nowrap;font-variant-numeric:tabular-nums}
+.bk .amt{font-size:.7rem;font-weight:800;color:#f0f0f0;white-space:nowrap;font-variant-numeric:tabular-nums}
+.bk button{flex-shrink:0}
+
+/* ---------- KATALOG PRODUK ---------- */
+#prodList{max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:5px;padding-right:3px}
+#prodList::-webkit-scrollbar{width:5px}
+#prodList::-webkit-scrollbar-thumb{background:rgba(242,240,234,0.2);border-radius:4px}
+.pd{
+  display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:8px;
+  border:1px solid var(--line-soft);background:rgba(0,0,0,0.28);
+  cursor:pointer;transition:all .15s;
+}
+.pd:hover{border-color:rgba(242,240,234,0.5);background:rgba(255,255,255,0.05)}
+.pd .cat{
+  font-size:.56rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;
+  padding:2px 6px;border-radius:4px;background:rgba(255,255,255,0.08);
+  color:var(--dim);flex-shrink:0;min-width:52px;text-align:center;
+}
+.pd .nm{flex:1;font-size:.76rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pd .pr{font-size:.7rem;font-weight:800;color:#f0f0f0;font-variant-numeric:tabular-nums;flex-shrink:0}
+.pd add{}
+
+/* ---------- PAYMENT TRACKER ---------- */
+.pay-row{display:grid;grid-template-columns:1fr 96px 92px 26px;gap:7px;align-items:center}
+.pay-row input{padding:8px 9px;font-size:.78rem}
+.pay-row .amt{text-align:right}
+.pay-row .del{width:26px;height:26px;padding:0;justify-content:center;border-radius:7px;border-color:var(--line-soft);color:var(--dim)}
+.pay-row .del:hover{border-color:#ff6b6b;color:#ff6b6b;background:rgba(255,107,107,0.08)}
+.pay-sum{
+  margin-top:11px;padding:11px 13px;border-radius:9px;
+  background:rgba(255,255,255,0.045);border:1px solid var(--line-soft);
+  display:flex;flex-direction:column;gap:6px;font-size:.76rem;
+}
+.pay-sum div{display:flex;justify-content:space-between;color:var(--dim)}
+.pay-sum div span:last-child{font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.pay-sum .sisa span:last-child{color:var(--accent);font-size:.86rem}
+.pay-sum .overdue-tag{
+  margin-top:3px;padding:4px 9px;border-radius:6px;text-align:center;
+  background:rgba(255,107,107,0.14);color:#ff9b9b;
+  font-size:.64rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;
+}
+
+/* ---------- PAPER: payment history ---------- */
+.p-pays{margin-top:16px;padding-top:13px;border-top:1px solid rgba(242,240,234,0.12)}
+.p-pays h3{font-size:8px;letter-spacing:.2em;text-transform:uppercase;font-weight:900;color:#8f8f9c;margin-bottom:8px}
+.p-pays table{width:100%;border-collapse:collapse}
+.p-pays th{font-size:7.5px;letter-spacing:.14em;text-transform:uppercase;color:#8f8f9c;text-align:left;padding:5px 8px 5px 0;border-bottom:1px solid rgba(242,240,234,0.14);font-weight:900}
+.p-pays th.r{text-align:right;padding-right:0}
+.p-pays td{padding:6px 8px 6px 0;font-size:10px;color:#dcdce4;border-bottom:1px solid rgba(242,240,234,0.05)}
+.p-pays td.r{text-align:right;padding-right:0;font-weight:700;color:#fff;font-variant-numeric:tabular-nums}
+.p-pays .paid-tag{
+  padding:1px 7px;border-radius:100px;font-size:7.5px;font-weight:900;
+  letter-spacing:.1em;text-transform:uppercase;
+  background:rgba(255,255,255,0.09);color:#d8d8e0;
+}
+.p-title .badge.overdue{background:rgba(255,107,107,0.14);color:#ff9b9b;border-color:rgba(255,107,107,0.45)}
+
+/* ---------- BOOKING LIST ---------- */
+.bk-list{max-height:246px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;padding-right:3px}
+.bk-list::-webkit-scrollbar{width:5px}
+.bk-list::-webkit-scrollbar-thumb{background:rgba(242,240,234,0.2);border-radius:4px}
+.bk{
+  display:flex;align-items:center;gap:9px;
+  padding:8px 10px;border-radius:9px;
+  border:1px solid var(--line-soft);
+  background:rgba(0,0,0,0.28);
+  transition:all .16s;
+}
+.bk:hover{border-color:rgba(242,240,234,0.34);background:rgba(255,255,255,0.05)}
+.bk .info{flex:1;min-width:0}
+.bk .nm{font-size:.79rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bk .mt{font-size:.64rem;color:var(--dim);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bk .amt{font-size:.7rem;font-weight:800;color:#f0f0f0;white-space:nowrap;font-variant-numeric:tabular-nums}
 .bk button{flex-shrink:0}
 
 /* ---------- PREVIEW / PAPER (RPXLABS branding) ---------- */
@@ -148,7 +275,7 @@ textarea{resize:vertical;min-height:62px;line-height:1.5}
 .paper{
   position:relative;overflow:hidden;
   background:
-    radial-gradient(720px 420px at 100% -10%,rgba(215,255,67,0.09),transparent 62%),
+    radial-gradient(720px 420px at 100% -10%,rgba(255,255,255,0.055),transparent 62%),
     radial-gradient(560px 340px at -10% 108%,rgba(255,255,255,0.045),transparent 66%),
     linear-gradient(165deg,#141414 0%,#0c0c0c 55%,#0a0a0a 100%);
   color:#f0f0f0;
@@ -160,7 +287,7 @@ textarea{resize:vertical;min-height:62px;line-height:1.5}
 }
 .paper::before{
   content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
-  background:linear-gradient(180deg,var(--accent) 0%,rgba(215,255,67,0.28) 42%,transparent 100%);
+  background:linear-gradient(180deg,rgba(242,240,234,0.85) 0%,rgba(242,240,234,0.22) 45%,transparent 100%);
 }
 .paper *{color:inherit}
 
@@ -181,15 +308,15 @@ textarea{resize:vertical;min-height:62px;line-height:1.5}
 }
 .p-title .num{
   font-family:'Poppins',sans-serif;font-size:10.5px;font-weight:600;
-  color:#d7ff43;margin-top:7px;letter-spacing:.04em;
+  color:#f0f0f0;margin-top:7px;letter-spacing:.04em;font-weight:700;
 }
 .p-title .badge{
   display:inline-block;margin-top:10px;padding:4px 11px;border-radius:100px;
   font-size:8.5px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
-  background:rgba(215,255,67,0.14);color:#d7ff43;
-  border:1px solid rgba(215,255,67,0.42);
+  background:rgba(255,255,255,0.07);color:#d8d8e0;
+  border:1px solid rgba(242,240,234,0.28);
 }
-.p-title .badge.lunas{background:rgba(215,255,67,0.92);color:#0f0f0f;border-color:#d7ff43}
+.p-title .badge.lunas{background:#f0f0f0;color:#0f0f0f;border-color:#f0f0f0;font-weight:900}
 
 .p-parties{display:grid;grid-template-columns:1fr 1fr;gap:26px;padding:22px 0}
 .p-parties h3{
@@ -235,12 +362,12 @@ table.p-items tbody td.desc small{display:block;font-weight:400;color:#8a8a96;fo
 .p-totals .tr span:last-child{font-weight:700;font-variant-numeric:tabular-nums;color:#e8e8ef}
 .p-totals .grand{
   margin-top:9px;padding:12px 14px;border-radius:9px;
-  background:rgba(215,255,67,0.09);
-  border:1px solid rgba(215,255,67,0.34);
+  background:rgba(255,255,255,0.055);
+  border:1px solid rgba(242,240,234,0.26);
   font-family:'Poppins',sans-serif;font-size:15px;font-weight:800;
   color:#fff;align-items:center;
 }
-.p-totals .grand span:last-child{color:#d7ff43;font-size:17px}
+.p-totals .grand span:last-child{color:#fff;font-size:17px}
 .p-totals .tr.balance{padding:11px 14px;margin-top:7px;border-radius:9px;background:rgba(255,255,255,0.045);color:#f0f0f0}
 .p-totals .tr.balance span:last-child{color:#fff}
 
@@ -290,13 +417,13 @@ body.is-kwitansi .p-sign{display:none}
 .kw-title{
   font-family:'Poppins',sans-serif;font-size:13px;font-weight:800;
   letter-spacing:.2em;text-transform:uppercase;
-  color:#d7ff43;padding-bottom:13px;
-  border-bottom:1px solid rgba(215,255,67,0.28);
+  color:#f0f0f0;padding-bottom:13px;
+  border-bottom:1px solid rgba(242,240,234,0.24);
   margin-bottom:17px;display:flex;align-items:center;gap:9px;
 }
 .kw-title::before{
   content:'';width:6px;height:6px;border-radius:50%;
-  background:var(--accent);box-shadow:0 0 10px rgba(215,255,67,0.75);
+  background:#f0f0f0;box-shadow:0 0 8px rgba(242,240,234,0.5);
   flex-shrink:0;
 }
 .kw-grid{display:grid;grid-template-columns:104px 1fr;gap:10px 16px;font-size:11.5px;align-items:baseline}
@@ -307,10 +434,10 @@ body.is-kwitansi .p-sign{display:none}
 .kw-grid dd{font-weight:700;color:#f0f0f0;line-height:1.5}
 .kw-amount{
   margin-top:18px;padding:16px 18px;border-radius:10px;
-  background:linear-gradient(120deg,rgba(215,255,67,0.96) 0%,rgba(215,255,67,0.82) 100%);
+  background:linear-gradient(120deg,#f5f3ee 0%,#e6e4df 100%);
   color:#0f0f0f;display:flex;justify-content:space-between;
   align-items:center;gap:14px;
-  box-shadow:0 8px 26px rgba(215,255,67,0.16);
+  box-shadow:0 6px 20px rgba(0,0,0,0.3);
 }
 .kw-amount .lbl{
   font-size:8.5px;letter-spacing:.17em;text-transform:uppercase;
@@ -323,7 +450,7 @@ body.is-kwitansi .p-sign{display:none}
 .kw-terbilang{
   margin-top:13px;font-size:10.5px;font-style:italic;color:#a8a8b4;
   padding:10px 14px;border-radius:8px;
-  border-left:2px solid rgba(215,255,67,0.6);
+  border-left:2px solid rgba(242,240,234,0.4);
   background:rgba(255,255,255,0.028);
 }
 .kw-sisa{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -333,7 +460,7 @@ body.is-kwitansi .p-sign{display:none}
   color:#9a9aa6;
 }
 .kw-sisa span:last-child{font-weight:800;color:#fff;font-variant-numeric:tabular-nums}
-.kw-sisa div:last-child span:last-child{color:#d7ff43}
+.kw-sisa div:last-child span:last-child{color:#fff}
 .kw-sign{margin-top:24px;display:flex;justify-content:flex-end}
 .kw-sign .box{text-align:center;width:180px}
 .kw-sign .space{height:46px}
@@ -397,6 +524,15 @@ body.is-kwitansi .p-sign{display:none}
           <p class="hint">Klik <b>Muat</b> untuk ambil data dari Sheet.</p>
         </div>
         <button class="mini" style="margin-top:10px" onclick="loadBookings()"><i class="ph ph-arrows-clockwise"></i>Muat Data Booking</button>
+      </div>
+
+      <div class="card">
+        <h2><i class="ph ph-package"></i>Katalog Produk</h2>
+        <div class="field" style="margin-bottom:9px">
+          <input id="f_prodSearch" placeholder="Cari paket / produk..." autocomplete="off">
+        </div>
+        <div id="prodList"></div>
+        <p class="hint">Klik produk → masuk ke daftar item invoice.</p>
       </div>
 
       <div class="card">
@@ -502,6 +638,17 @@ body.is-kwitansi .p-sign{display:none}
       </div>
 
       <div class="card">
+        <h2><i class="ph ph-wallet"></i>Riwayat Pembayaran <button class="mini" style="margin-left:auto" onclick="addPayment()"><i class="ph ph-plus"></i>Tambah</button></h2>
+        <div id="payList" style="display:flex;flex-direction:column;gap:7px"></div>
+        <div class="pay-sum">
+          <div><span>Total Tagihan</span><span id="psum_total">Rp 0</span></div>
+          <div><span>Sudah Dibayar</span><span id="psum_paid">Rp 0</span></div>
+          <div class="sisa"><span>Sisa Tagihan</span><span id="psum_bal">Rp 0</span></div>
+          <div id="psum_overdue" class="overdue-tag" style="display:none">Lewat Jatuh Tempo</div>
+        </div>
+      </div>
+
+      <div class="card">
         <h2><i class="ph ph-bank"></i>Pembayaran</h2>
         <div class="field">
           <label>Rekening / Metode</label>
@@ -600,6 +747,14 @@ body.is-kwitansi .p-sign{display:none}
               <div class="role">RPXLABS</div>
             </div>
           </div>
+        </div>
+
+        <div class="p-pays" id="pPaysWrap" style="display:none">
+          <h3>Riwayat Pembayaran</h3>
+          <table>
+            <thead><tr><th>Tanggal</th><th>Metode</th><th>Ket.</th><th class="r">Jumlah</th></tr></thead>
+            <tbody id="pPays"></tbody>
+          </table>
         </div>
 
         <div class="p-notes">
@@ -722,7 +877,6 @@ function render(){
   $('p_num2').textContent = $('f_num').value || '—';
   $('p_date').textContent = fmtDate($('f_date').value);
   $('p_due').textContent  = fmtDate($('f_due').value);
-  $('p_status').textContent = $('f_status').value;
   $('p_status').classList.toggle('lunas', /lunas/i.test($('f_status').value));
 
   $('p_cname').textContent = $('f_cname').value.trim() || 'Nama Klien';
@@ -750,8 +904,15 @@ function render(){
   const base = Math.max(0, subtotal - disc);
   const ppn = base * ppnPct / 100;
   const total = base + ppn;
-  const paid = num($('f_paid').value);
+  // sinkron: total dibayar dari riwayat pembayaran
+  const paysCalc = renderPayments(total) || {};
+  const paid = paysCalc.paidTotal || 0;
+  $('f_paid').value = paid;
   const bal = total - paid;
+
+  // status badge (butuh paysCalc)
+  $('p_status').textContent = paysCalc.isOverdue ? 'LEWAT JATUH TEMPO' : $('f_status').value;
+  $('p_status').classList.toggle('overdue', !!paysCalc.isOverdue);
 
   $('p_sub').textContent = rp(subtotal);
   $('p_disc_row').style.display = disc > 0 ? 'flex' : 'none';
@@ -869,8 +1030,15 @@ function applyBooking(b){
     });
   }
 
-  // DP & sisa
-  $('f_paid').value = num(b.nominalDP);
+  // DP masuk ke riwayat pembayaran
+  $('payList').innerHTML = '';
+  if(num(b.nominalDP) > 0){
+    addPayment({
+      date: new Date().toISOString().slice(0,10),
+      method: 'Transfer',
+      amount: num(b.nominalDP)
+    });
+  }
   $('f_disc').value = 0;
   $('f_ppn').value  = 0;
 
@@ -955,6 +1123,139 @@ function renderKwitansi(items, subtotal, total, paid){
   $('kw_bal').textContent   = rp(Math.max(0, total - bayar));
 }
 
+
+/* ---------- KATALOG PRODUK (harga resmi RPXLABS) ---------- */
+const CATALOG = [
+  // --- Paket Wisuda ---
+  {cat:'Wisuda', name:'Graduation Silver — Max 1 orang', price:450000},
+  {cat:'Wisuda', name:'Graduation Gold — Max 5 orang', price:600000},
+  {cat:'Wisuda', name:'Graduation Platinum — Max 9 orang', price:750000},
+  {cat:'Wisuda', name:'Bestie Graduation — Max 2 wisudawan', price:800000},
+  {cat:'Wisuda', name:'Graduation Session MINI', price:250000},
+  // --- Add-on Wisuda ---
+  {cat:'Add-on', name:'Additional Person (per orang)', price:30000},
+  {cat:'Add-on', name:'Additional Graduate (Bestie only)', price:275000},
+  {cat:'Add-on', name:'Extra Edit Photo (per foto)', price:15000},
+  {cat:'Add-on', name:'Additional Original File (semua file mentah)', price:100000},
+  {cat:'Add-on', name:'Cinematic Video', price:150000},
+  // --- Running ---
+  {cat:'Running', name:'Running Session — Single', price:250000},
+  {cat:'Running', name:'Running Session — Group (max 5)', price:400000},
+  // --- Event / Sport ---
+  {cat:'Event', name:'Event Coverage — Half Day (4 jam)', price:750000},
+  {cat:'Event', name:'Event Coverage — Full Day (8 jam)', price:1200000},
+  {cat:'Sport', name:'Padel / Sport Session', price:300000},
+  // --- Lain ---
+  {cat:'Lain', name:'Cetak Album 20x30', price:150000},
+  {cat:'Lain', name:'Transport Luar Kota (per trip)', price:200000},
+];
+
+let CATALOG_EDITABLE = JSON.parse(localStorage.getItem('rpxlabs_catalog_custom') || '[]');
+
+function allProducts(){ return CATALOG.concat(CATALOG_EDITABLE); }
+
+function renderCatalog(){
+  const q = ($('f_prodSearch').value || '').toLowerCase().trim();
+  let list = allProducts();
+  if(q) list = list.filter(x => x.name.toLowerCase().includes(q) || x.cat.toLowerCase().includes(q));
+
+  const box = $('prodList');
+  if(!list.length){ box.innerHTML = '<p class="hint">Tidak ada produk cocok.</p>'; return; }
+
+  box.innerHTML = list.map((pr,i) => `
+    <div class="pd" data-i="${allProducts().indexOf(pr)}">
+      <span class="cat">${esc(pr.cat)}</span>
+      <span class="nm">${esc(pr.name)}</span>
+      <span class="pr">${rp(pr.price)}</span>
+    </div>`).join('');
+
+  box.querySelectorAll('.pd').forEach(el => {
+    el.onclick = () => addProductToItems(allProducts()[+el.dataset.i]);
+  });
+}
+
+function addProductToItems(pr){
+  if(!pr) return;
+  // kalau item terakhir kosong total, pakai baris itu
+  const rows = [...$('items').children];
+  const empty = rows.find(r => !r.querySelector('.desc').value.trim() && num(r.querySelector('.price').value) === 0);
+  const row = empty || null;
+  if(row){
+    row.querySelector('.desc').value = pr.name;
+    row.querySelector('.price').value = pr.price;
+    row.querySelectorAll('input').forEach(i => i.dispatchEvent(new Event('input',{bubbles:true})));
+  } else {
+    addItem({desc: pr.name, qty: 1, price: pr.price});
+  }
+  toast('+ ' + pr.name);
+}
+
+/* ---------- RIWAYAT PEMBAYARAN ---------- */
+function addPayment(data){
+  const wrap = document.createElement('div');
+  wrap.className = 'pay-row';
+  wrap.innerHTML = `
+    <input class="pdate" type="date" title="Tanggal bayar">
+    <input class="pmethod" placeholder="Transfer" title="Metode">
+    <input class="amt" type="number" min="0" step="1000" value="0" title="Jumlah">
+    <button class="del" title="Hapus"><i class="ph ph-x"></i></button>`;
+  $('payList').appendChild(wrap);
+
+  const today = new Date().toISOString().slice(0,10);
+  wrap.querySelector('.pdate').value = data?.date || today;
+  wrap.querySelector('.pmethod').value = data?.method || 'Transfer BCA';
+  wrap.querySelector('.amt').value = data?.amount || 0;
+
+  wrap.querySelector('.del').onclick = () => { wrap.remove(); render(); };
+  wrap.querySelectorAll('input').forEach(i => i.addEventListener('input', render));
+  render();
+}
+
+function readPayments(){
+  return [...$('payList').children].map(r => ({
+    date: r.querySelector('.pdate').value,
+    method: r.querySelector('.pmethod').value.trim(),
+    amount: num(r.querySelector('.amt').value)
+  })).filter(p => p.amount > 0);
+}
+
+function renderPayments(total){
+  const pays = readPayments();
+  const paidTotal = pays.reduce((s,p) => s + p.amount, 0);
+
+  // panel kiri
+  $('psum_total').textContent = rp(total);
+  $('psum_paid').textContent  = rp(paidTotal);
+  $('psum_bal').textContent   = rp(Math.max(0, total - paidTotal));
+
+  // overdue check
+  const due = $('f_due').value;
+  const today = new Date().toISOString().slice(0,10);
+  const isOverdue = due && due < today && (total - paidTotal) > 0.5;
+  $('psum_overdue').style.display = isOverdue ? 'block' : 'none';
+
+  // label status otomatis
+  if(!isOverdue){
+    if(total > 0 && paidTotal >= total - 0.5) $('f_status').value = 'LUNAS';
+    else if(paidTotal > 0)                    $('f_status').value = 'DP Dibayar';
+    else                                      $('f_status').value = 'Belum Dibayar';
+  }
+
+  // tabel di paper
+  const wrap = $('pPaysWrap');
+  if(!pays.length){ wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  $('pPays').innerHTML = pays.map(p => `
+    <tr>
+      <td>${fmtDate(p.date)}</td>
+      <td>${esc(p.method || '-')}</td>
+      <td><span class="paid-tag">Paid</span></td>
+      <td class="r">${rp(p.amount)}</td>
+    </tr>`).join('');
+
+  return {paidTotal, isOverdue};
+}
+
 /* ---------- persist ---------- */
 function collect(){
   return {
@@ -973,6 +1274,7 @@ function collect(){
     bank: $('f_bank').value.trim(),
     terms: $('f_terms').value.trim(),
     foot: $('f_foot').value.trim(),
+    payments: readPayments(),
     paytype: $('f_paytype').value,
     paymethod: $('f_paymethod').value,
     doctype: DOC_TYPE
@@ -993,6 +1295,8 @@ function apply(d){
   $('f_bank').value = d.bank || '';
   $('f_terms').value = d.terms || '';
   $('f_foot').value = d.foot || '';
+  $('payList').innerHTML = '';
+  (d.payments && d.payments.length ? d.payments : []).forEach(addPayment);
   $('f_paytype').value = d.paytype || 'DP';
   $('f_paymethod').value = d.paymethod || 'Transfer Bank';
   setDocType(d.doctype || 'invoice');
@@ -1059,6 +1363,7 @@ function newInvoice(){
   $('f_status').value = 'Belum Dibayar';
   $('f_cname').value = ''; $('f_ccontact').value = ''; $('f_caddr').value = '';
   $('f_disc').value = 0; $('f_paid').value = 0; $('f_ppn').value = 0;
+  $('payList').innerHTML = '';
   $('f_bank').value = bank; $('f_terms').value = terms; $('f_foot').value = foot;
   $('items').innerHTML = '';
   addItem();
@@ -1093,6 +1398,8 @@ function newInvoice(){
 
   // listeners
   $('f_search').addEventListener('input', renderBookingList);
+  $('f_prodSearch').addEventListener('input', renderCatalog);
+  renderCatalog();
   $('f_paytype').addEventListener('change', render);
   $('f_paymethod').addEventListener('change', render);
 
