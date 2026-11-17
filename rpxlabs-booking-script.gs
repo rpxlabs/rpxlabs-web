@@ -165,6 +165,18 @@ function doGet(e) {
         .setMimeType(ContentService.MimeType.JSON);
     }
 
+    // API: Daftar booking untuk invoice generator
+    if (params.action === 'getBookings') {
+      const pin = String(params.pin || params.token || '').trim();
+      if (CALENDAR_PIN && pin !== CALENDAR_PIN) {
+        return ContentService.createTextOutput(JSON.stringify({
+          success: false, error: 'PIN_SALAH'
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      return ContentService.createTextOutput(JSON.stringify(getBookingsForInvoice()))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
     // API: Cek tabrakan jadwal
     if (params.action === 'checkConflict' && params.date && params.start && params.end) {
       const conflicts = checkConflicts(params.date, params.start, params.end);
@@ -1341,6 +1353,83 @@ function getAllEvents(dateFrom, dateTo) {
 
   events.sort((a, b2) => (a.date + a.start).localeCompare(b2.date + b2.start));
   return events;
+}
+
+/**
+ * Ambil daftar booking untuk invoice generator.
+ * Return field lengkap client + paket + nominal DP.
+ */
+function getBookingsForInvoice() {
+  const ss = SpreadsheetApp.openById(CONFIG.SHEET_ID);
+  const out = [];
+
+  // --- Wisuda (tab Bookings) ---
+  const b = ss.getSheetByName(CONFIG.SHEET_NAME);
+  if (b && b.getLastRow() > 1) {
+    const rows = b.getRange(2, 1, b.getLastRow() - 1, 19).getValues();
+    rows.forEach(function (r, idx) {
+      const nama = String(r[1] || '').trim();
+      if (!nama) return;
+      const status = String(r[18] || '').trim();
+      out.push({
+        source: 'wisuda',
+        row: idx + 2,
+        timestamp: _toISODate(r[0]) || '',
+        nama: nama,
+        whatsapp: String(r[2] || ''),
+        instagram: String(r[3] || ''),
+        universitas: String(r[4] || ''),
+        lokasi: String(r[5] || ''),
+        tanggal: _toISODate(r[6]) || '',
+        jam: _toHHMM(r[7]) || '',
+        paket: String(r[8] || ''),
+        jumlahOrang: r[9] || '',
+        cinematicVideo: String(r[10] || ''),
+        extraEdit: r[11] || 0,
+        extraPerson: r[12] || 0,
+        extraGraduate: r[13] || 0,
+        totalHarga: r[14] || 0,
+        nominalDP: r[15] || 0,
+        sisaPembayaran: r[16] || 0,
+        catatan: String(r[17] || ''),
+        status: status || 'Pending',
+        jenis: 'Wisuda'
+      });
+    });
+  }
+
+  // --- Other Jobs ---
+  const o = ss.getSheetByName(OTHER_SHEET_NAME);
+  if (o && o.getLastRow() > 1) {
+    const rows = o.getRange(2, 1, o.getLastRow() - 1, OTHER_HEADERS.length).getValues();
+    rows.forEach(function (r, idx) {
+      const nama = String(r[3] || '').trim();
+      if (!nama) return;
+      out.push({
+        source: 'other',
+        row: idx + 2,
+        timestamp: _toISODate(r[0]) || '',
+        nama: nama,
+        whatsapp: '',
+        instagram: '',
+        universitas: '',
+        lokasi: String(r[4] || ''),
+        tanggal: _toISODate(r[5]) || '',
+        jam: _toHHMM(r[6]) || '',
+        paket: String(r[2] || ''),
+        jenis: String(r[1] || ''),
+        totalHarga: r[10] || 0,
+        nominalDP: r[9] || 0,
+        sisaPembayaran: (r[10] || 0) - (r[9] || 0),
+        catatan: String(r[12] || ''),
+        status: String(r[11] || '')
+      });
+    });
+  }
+
+  // terbaru dulu
+  out.sort(function (a, b2) { return String(b2.timestamp).localeCompare(String(a.timestamp)); });
+  return { success: true, count: out.length, bookings: out };
 }
 
 /** Cek tabrakan jadwal untuk slot yang mau dipesan */
