@@ -175,6 +175,19 @@ textarea{resize:vertical;min-height:62px;line-height:1.5}
 .p-title .badge.overdue{background:rgba(255,107,107,0.14);color:#ff9b9b;border-color:rgba(255,107,107,0.45)}
 
 /* ---------- BOOKING LIST ---------- */
+.bk-group{margin-bottom:14px}
+.bk-group:last-child{margin-bottom:0}
+.bk-gh{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:6px 3px 7px;border-bottom:1px solid rgba(255,255,255,0.09);
+  margin-bottom:7px;
+}
+.bk-gt{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:.62rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#fff;
+}
+.bk-gt i{font-size:.85rem;color:#9a9aa8}
+.bk-gc{font-size:.6rem;color:#8f8f9c;font-weight:700;letter-spacing:.03em}
 .bk-list{max-height:246px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;padding-right:3px}
 .bk-list::-webkit-scrollbar{width:5px}
 .bk-list::-webkit-scrollbar-thumb{background:rgba(242,240,234,0.2);border-radius:4px}
@@ -1060,16 +1073,39 @@ function renderBookingList(){
     return;
   }
 
-  box.innerHTML = list.slice(0, 80).map((b, i) => {
+  // kelompokkan: Wisuda vs Other Job
+  const isWisuda = b => String(b.source||'') === 'wisuda'
+                     || /silver|gold|platinum|bestie/i.test(String(b.paket||''));
+  const groups = [
+    { key:'wisuda', label:'Wisuda', icon:'ph-graduation-cap', items: list.filter(isWisuda) },
+    { key:'other',  label:'Other Job', icon:'ph-camera',     items: list.filter(b => !isWisuda(b)) }
+  ];
+
+  const cardHtml = b => {
     const idx = BOOKINGS.indexOf(b);
     const total = num(b.totalHarga);
+    const mt = isWisuda(b)
+      ? [b.paket, b.universitas, b.tanggal, b.jam].filter(Boolean).join(' · ')
+      : [b.jenis, b.lokasi, b.tanggal, b.jam].filter(Boolean).join(' · ');
     return `<div class="bk">
       <div class="info">
         <div class="nm">${esc(b.nama || '-')}</div>
-        <div class="mt">${esc(b.paket || b.jenis || '-')} · ${esc(b.tanggal || '')} ${esc(b.jam || '')} · ${esc(b.status || '')}</div>
+        <div class="mt">${esc(mt || '-')} · ${esc(b.status || '')}</div>
       </div>
       <div class="amt">${rp(total)}</div>
       <button class="mini" data-i="${idx}"><i class="ph ph-arrow-right"></i></button>
+    </div>`;
+  };
+
+  box.innerHTML = groups.map(g => {
+    if(!g.items.length) return '';
+    const sum = g.items.reduce((s,b)=>s+num(b.totalHarga), 0);
+    return `<div class="bk-group">
+      <div class="bk-gh">
+        <span class="bk-gt"><i class="ph ${g.icon}"></i>${g.label}</span>
+        <span class="bk-gc">${g.items.length} klien · ${rp(sum)}</span>
+      </div>
+      ${g.items.map(cardHtml).join('')}
     </div>`;
   }).join('');
 
@@ -1077,6 +1113,7 @@ function renderBookingList(){
     btn.onclick = () => applyBooking(BOOKINGS[+btn.dataset.i]);
   });
 }
+
 
 /* ---------- APPLY BOOKING → INVOICE ---------- */
 function applyBooking(b){
