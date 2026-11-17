@@ -103,15 +103,27 @@ textarea{resize:vertical;min-height:62px;line-height:1.5}
 /* ---------- ITEM ROWS ---------- */
 #items{display:flex;flex-direction:column;gap:9px}
 .item{
-  display:grid;grid-template-columns:1fr 54px 92px 30px;gap:7px;align-items:center;
+  display:grid;grid-template-columns:1fr 54px 92px 30px;gap:7px;align-items:start;
 }
+.item .ben{
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);
+  color:#9a9aa8;font-family:'Nunito',sans-serif;font-size:.58rem;font-weight:800;
+  letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:6px;
+  cursor:pointer;display:inline-flex;align-items:center;gap:4px;line-height:1;
+}
+.item .ben:hover{color:#fff;border-color:rgba(255,255,255,0.3)}
 .item .del{
   width:30px;height:30px;padding:0;justify-content:center;border-radius:8px;
   border-color:rgba(255,107,107,0.32);color:#ff9b9b;background:rgba(255,107,107,0.06);
 }
 .item .del:hover{border-color:#ff6b6b;color:#fff;background:rgba(255,107,107,0.28)}
 .item .del i{font-size:.95rem}
-.item input{padding:8px 9px;font-size:.8rem}
+.item input,.item textarea{padding:8px 9px;font-size:.8rem}
+.item textarea.desc{
+  resize:none;min-height:34px;line-height:1.45;
+  overflow:hidden;font-family:'Nunito',sans-serif;
+  white-space:pre-wrap;word-break:break-word;
+}
 .item .qty,.item .price{text-align:right}
 .hint{font-size:.66rem;color:var(--dim);margin-top:7px;line-height:1.5}
 
@@ -126,33 +138,6 @@ textarea{resize:vertical;min-height:62px;line-height:1.5}
 }
 .doc-btn.active:hover{background:#fff;border-color:#fff}
 
-
-/* ---------- KATALOG PRODUK ---------- */
-#prodList{max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:5px;padding-right:3px}
-#prodList::-webkit-scrollbar{width:5px}
-#prodList::-webkit-scrollbar-thumb{background:rgba(242,240,234,0.2);border-radius:4px}
-.pd{
-  display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:8px;
-  border:1px solid var(--line-soft);background:rgba(0,0,0,0.28);
-  cursor:pointer;transition:all .15s;
-}
-.pd:hover{border-color:rgba(242,240,234,0.5);background:rgba(255,255,255,0.05)}
-.pd .cat{
-  font-size:.56rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;
-  padding:2px 6px;border-radius:4px;background:rgba(255,255,255,0.08);
-  color:var(--dim);flex-shrink:0;min-width:52px;text-align:center;
-}
-.pd .nm{flex:1;font-size:.76rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pd .pr{font-size:.7rem;font-weight:800;color:#f0f0f0;font-variant-numeric:tabular-nums;flex-shrink:0}
-.pd add{}
-
-/* ---------- ITEM KOSONG ---------- */
-.items-empty{
-  padding:22px 14px;text-align:center;
-  border:1px dashed rgba(242,240,234,0.2);border-radius:10px;
-  color:var(--dim);font-size:.76rem;line-height:1.6;
-}
-.items-empty b{color:#f0f0f0}
 
 /* ---------- PAYMENT TRACKER ---------- */
 .pay-row{display:grid;grid-template-columns:1fr 96px 92px 26px;gap:7px;align-items:center}
@@ -206,25 +191,6 @@ textarea{resize:vertical;min-height:62px;line-height:1.5}
 .bk .mt{font-size:.64rem;color:var(--dim);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bk .amt{font-size:.7rem;font-weight:800;color:#f0f0f0;white-space:nowrap;font-variant-numeric:tabular-nums}
 .bk button{flex-shrink:0}
-
-/* ---------- KATALOG PRODUK ---------- */
-#prodList{max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:5px;padding-right:3px}
-#prodList::-webkit-scrollbar{width:5px}
-#prodList::-webkit-scrollbar-thumb{background:rgba(242,240,234,0.2);border-radius:4px}
-.pd{
-  display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:8px;
-  border:1px solid var(--line-soft);background:rgba(0,0,0,0.28);
-  cursor:pointer;transition:all .15s;
-}
-.pd:hover{border-color:rgba(242,240,234,0.5);background:rgba(255,255,255,0.05)}
-.pd .cat{
-  font-size:.56rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;
-  padding:2px 6px;border-radius:4px;background:rgba(255,255,255,0.08);
-  color:var(--dim);flex-shrink:0;min-width:52px;text-align:center;
-}
-.pd .nm{flex:1;font-size:.76rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pd .pr{font-size:.7rem;font-weight:800;color:#f0f0f0;font-variant-numeric:tabular-nums;flex-shrink:0}
-.pd add{}
 
 /* ---------- PAYMENT TRACKER ---------- */
 .pay-row{display:grid;grid-template-columns:1fr 96px 92px 26px;gap:7px;align-items:center}
@@ -360,7 +326,7 @@ table.p-items tbody td.r{
   text-align:right;padding-right:0;font-weight:700;
   font-variant-numeric:tabular-nums;white-space:nowrap;color:#fff;
 }
-table.p-items tbody td.desc{font-weight:700;color:#fff}
+table.p-items tbody td.desc{font-weight:700;color:#fff;white-space:pre-line}
 table.p-items tbody td.desc small{display:block;font-weight:400;color:#8a8a96;font-size:10px;margin-top:2px}
 
 .p-totals{margin-left:auto;width:56%;margin-top:16px}
@@ -579,15 +545,6 @@ body.locked{overflow:hidden}
       </div>
 
       <div class="card">
-        <h2><i class="ph ph-package"></i>Katalog Produk</h2>
-        <div class="field" style="margin-bottom:9px">
-          <input id="f_prodSearch" placeholder="Cari paket / produk..." autocomplete="off">
-        </div>
-        <div id="prodList"></div>
-        <p class="hint">Klik produk → masuk ke daftar item invoice.</p>
-      </div>
-
-      <div class="card">
         <h2><i class="ph ph-files"></i>Jenis Dokumen</h2>
         <div class="doc-toggle">
           <button id="btnInv" class="doc-btn active" onclick="setDocType('invoice')"><i class="ph ph-receipt"></i>Invoice</button>
@@ -612,6 +569,16 @@ body.locked{overflow:hidden}
               </select>
             </div>
           </div>
+          <div class="field">
+            <label>Nominal Kwitansi (Rp) — bisa diedit</label>
+            <input id="f_kwamount" type="number" min="0" step="1000" placeholder="0">
+            <p class="hint" style="margin-top:6px">
+              <button class="mini" style="padding:4px 9px;font-size:.6rem" onclick="fillKwAmount('DP')">Isi DP 30%</button>
+              <button class="mini" style="padding:4px 9px;font-size:.6rem" onclick="fillKwAmount('SISA')">Isi Sisa</button>
+              <button class="mini" style="padding:4px 9px;font-size:.6rem" onclick="fillKwAmount('TOTAL')">Isi Total</button>
+              <button class="mini" style="padding:4px 9px;font-size:.6rem" onclick="fillKwAmount('PAID')">Total Dibayar</button>
+            </p>
+          </div>
         </div>
       </div>
 
@@ -635,9 +602,11 @@ body.locked{overflow:hidden}
           <div class="field">
             <label>Status</label>
             <select id="f_status">
+              <option value="auto">Otomatis (dari pembayaran)</option>
               <option value="Belum Dibayar">Belum Dibayar</option>
               <option value="DP Dibayar">DP Dibayar</option>
               <option value="LUNAS">Lunas</option>
+              <option value="Batal">Batal</option>
             </select>
           </div>
         </div>
@@ -666,7 +635,7 @@ body.locked{overflow:hidden}
           <button class="mini" onclick="addItem()"><i class="ph ph-plus"></i>Tambah Item</button>
           <button class="mini" onclick="clearItems()"><i class="ph ph-trash"></i>Kosongkan</button>
         </div>
-        <p class="hint" style="margin-top:10px">Ketik manual nama produk di kolom paling kiri, atau pilih dari <b>Katalog Produk</b> di atas. Tombol <b>&times;</b> di kanan menghapus baris.</p>
+        <p class="hint" style="margin-top:10px">Ketik nama produk di kolom paling kiri, isi Qty &amp; harga. Tombol <b>tempat sampah</b> di kanan menghapus baris.</p>
       </div>
 
       <div class="card">
@@ -696,6 +665,7 @@ body.locked{overflow:hidden}
       <div class="card">
         <h2><i class="ph ph-wallet"></i>Riwayat Pembayaran <button class="mini" style="margin-left:auto" onclick="addPayment()"><i class="ph ph-plus"></i>Tambah</button></h2>
         <div id="payList" style="display:flex;flex-direction:column;gap:7px"></div>
+        <button class="mini" style="margin-top:9px;width:100%;justify-content:center" onclick="savePaymentsToSheet()"><i class="ph ph-cloud-arrow-up"></i>Simpan Pembayaran ke Sheet</button>
         <div class="pay-sum">
           <div><span>Total Tagihan</span><span id="psum_total">Rp 0</span></div>
           <div><span>Sudah Dibayar</span><span id="psum_paid">Rp 0</span></div>
@@ -708,7 +678,7 @@ body.locked{overflow:hidden}
         <h2><i class="ph ph-bank"></i>Pembayaran</h2>
         <div class="field">
           <label>Rekening / Metode</label>
-          <textarea id="f_bank" placeholder="BCA 1234567890&#10;a.n. Rifko Perdana"></textarea>
+          <textarea id="f_bank" placeholder="BCA 6695-4010-21&#10;a.n. Rifko Perdana"></textarea>
         </div>
         <div class="field">
           <label>Syarat &amp; Ketentuan</label>
@@ -898,10 +868,11 @@ function addItem(data){
   const wrap = document.createElement('div');
   wrap.className = 'item';
   wrap.innerHTML = `
-    <input class="desc" placeholder="Nama produk / jasa (ketik manual)" autocomplete="off">
+    <textarea class="desc" rows="1" placeholder="Nama produk / jasa (Enter = baris baru)" autocomplete="off"></textarea>
     <input class="qty" type="number" min="1" step="1" value="1" title="Qty" placeholder="Qty">
     <input class="price" type="number" min="0" step="1000" value="0" title="Harga satuan">
-    <button class="del" title="Hapus baris ini"><i class="ph ph-trash"></i></button>`;
+    <button class="del" title="Hapus baris ini"><i class="ph ph-trash"></i></button>
+    <button class="ben" title="Isi deskripsi benefit paket" style="grid-column:1/2;justify-self:start;margin-top:-2px"><i class="ph ph-list-checks"></i>Benefit</button>`;
   $('items').appendChild(wrap);
   wrap.querySelector('.del').onclick = () => {
     wrap.remove();
@@ -913,7 +884,28 @@ function addItem(data){
     wrap.querySelector('.qty').value = data.qty || 1;
     wrap.querySelector('.price').value = data.price || 0;
   }
-  wrap.querySelectorAll('input').forEach(i => i.addEventListener('input', render));
+
+  // textarea deskripsi: auto-grow + Enter bikin baris baru (default textarea)
+  const ta = wrap.querySelector('.desc');
+  const grow = () => {
+    ta.style.height = 'auto';
+    ta.style.height = Math.max(34, ta.scrollHeight) + 'px';
+  };
+  ta.addEventListener('input', grow);
+  requestAnimationFrame(grow);
+
+  // tombol isi benefit: tebak paket dari judul, lalu susun bullet
+  wrap.querySelector('.ben').addEventListener('click', () => {
+    const judul = (ta.value || '').split('\n')[0].trim() || 'Paket';
+    const key = detectPaket(judul);
+    if(!key){ toast('Nama paket tidak dikenali (Silve/Gold/Platinum/Bestie/Running/Padel/Event)'); return; }
+    ta.value = descPaket(judul, key, '');
+    grow();
+    render();
+    toast('Benefit ' + key + ' terisi');
+  });
+
+  wrap.querySelectorAll('input,textarea').forEach(i => i.addEventListener('input', render));
   render();
 }
 
@@ -935,7 +927,7 @@ function renderEmptyState(){
     const div = document.createElement('div');
     div.id = 'itemsEmpty';
     div.className = 'items-empty';
-    div.innerHTML = 'Belum ada item.<br>Ketik <b>nama produk</b> di kolom atas, atau pilih dari <b>Katalog Produk</b>.';
+    div.innerHTML = 'Belum ada item.<br>Klik <b>+ Tambah Item</b> lalu ketik nama produknya.';
     $('items').appendChild(div);
   }
 }
@@ -1108,18 +1100,21 @@ function applyBooking(b){
   $('items').innerHTML = '';
   const isWisuda = b.source === 'wisuda';
 
+  const key = detectPaket(b.paket) || (isWisuda ? 'gold' : 'event');
+  const sesi = b.tanggal ? `Sesi: ${fmtDate(b.tanggal)} ${b.jam || ''}`.trim() : '';
+
   if(isWisuda){
     const paketLabel = prettyPaket(b.paket);
-    const jml = b.jumlahOrang ? ` (${b.jumlahOrang} orang) ` : ' ';
-    const sesi = b.tanggal ? `— Sesi ${fmtDate(b.tanggal)} ${b.jam || ''}`.trim() : '';
+    const jml = b.jumlahOrang ? ` — ${b.jumlahOrang} orang` : '';
     addItem({
-      desc: `${paketLabel}${jml}${sesi}`.trim(),
+      desc: descPaket(paketLabel + jml, key, sesi),
       qty: 1,
       price: num(b.totalHarga)
     });
   } else {
+    const judul = `${b.jenis || 'Jasa Fotografi'}${b.paket ? ' — ' + b.paket : ''}`;
     addItem({
-      desc: `${b.jenis || 'Jasa Fotografi'}${b.paket ? ' — ' + b.paket : ''}${b.tanggal ? ' — ' + fmtDate(b.tanggal) + ' ' + (b.jam||'') : ''}`.trim(),
+      desc: descPaket(judul, key, sesi),
       qty: 1,
       price: num(b.totalHarga)
     });
@@ -1152,6 +1147,97 @@ function applyBooking(b){
   toast('Data ' + (b.nama||'') + ' dimuat');
 }
 
+/* ---------- BENEFIT PAKET (deskripsi jasa) ---------- */
+const PAKET_BENEFIT = {
+  silver: [
+    '1 wisudawan',
+    '15 foto edit (premium color tone)',
+    'Semua file original',
+    '1 spot lokasi',
+    'Unlimited shoot & pose',
+    'Durasi sesi 60 menit',
+    'Kirim via Google Drive',
+    'Pengerjaan 3-5 hari'
+  ],
+  gold: [
+    '1 wisudawan',
+    'Keluarga/teman maks 4 orang',
+    '25 foto edit (premium retouch)',
+    'Semua file original',
+    'Durasi sesi 90 menit',
+    'Unlimited shoot & pose',
+    '1 spot lokasi',
+    'Kirim via Google Drive',
+    'Pengerjaan 3-5 hari'
+  ],
+  platinum: [
+    '1 wisudawan',
+    'Keluarga/teman maks 8 orang',
+    '50 foto edit (premium retouch & color)',
+    'Semua file original',
+    'Unlimited shoot & pose',
+    'Multi spot lokasi',
+    'Durasi sesi 120 menit',
+    'Priority delivery',
+    'Kirim via Google Drive',
+    'Pengerjaan 3-5 hari'
+  ],
+  bestie: [
+    '2 wisudawan',
+    '35 foto edit (premium retouch)',
+    'Semua file original',
+    'Durasi sesi 90 menit',
+    'Unlimited shoot & pose',
+    'Multi spot lokasi',
+    'Kirim via Google Drive',
+    'Pengerjaan 3-5 hari'
+  ],
+  running: [
+    'Foto race day (start-finish)',
+    'Momen crossing finish line',
+    'Editing warna natural',
+    'Kirim via Google Drive',
+    'Pengerjaan 2-3 hari'
+  ],
+  padel: [
+    'Foto aksi lapangan',
+    'Momen rally & smash',
+    'Editing warna natural',
+    'Kirim via Google Drive',
+    'Pengerjaan 2-3 hari'
+  ],
+  event: [
+    'Dokumentasi acara',
+    'Momen utama & candid',
+    'Editing warna natural',
+    'Kirim via Google Drive',
+    'Pengerjaan 3-5 hari'
+  ]
+};
+
+/** Deteksi kunci paket dari teks bebas */
+function detectPaket(text){
+  const s = String(text || '').toLowerCase();
+  if(s.includes('silver'))   return 'silver';
+  if(s.includes('gold'))     return 'gold';
+  if(s.includes('platinum')) return 'platinum';
+  if(s.includes('bestie'))   return 'bestie';
+  if(s.includes('running') || s.includes('lari') || s.includes('marathon')) return 'running';
+  if(s.includes('padel') || s.includes('sport') || s.includes('tenis'))     return 'padel';
+  if(s.includes('event') || s.includes('acara') || s.includes('wisuda event')) return 'event';
+  return null;
+}
+
+/** Deskripsi multi-baris: judul paket + bullet benefit */
+function descPaket(judul, key, extra){
+  const rows = [];
+  rows.push(judul);
+  const bf = PAKET_BENEFIT[key];
+  if(bf && bf.length) bf.forEach(b => rows.push('• ' + b));
+  if(extra) rows.push(extra);
+  return rows.join('\n');
+}
+
 function prettyPaket(p){
   const s = String(p || '').toLowerCase();
   if(s.includes('silver'))   return 'Paket Silver';
@@ -1163,6 +1249,27 @@ function prettyPaket(p){
 
 /* ---------- ANGKA → TERBILANG ---------- */
 const SATUAN = ['','satu','dua','tiga','empat','lima','enam','tujuh','delapan','sembilan','sepuluh','sebelas'];
+
+/* ---------- NOMINAL KWITANSI ---------- */
+function fillKwAmount(mode){
+  const sub   = calcSubtotal();
+  const total = calcTotal();
+  const pays  = readPayments();
+  const paid  = pays.reduce((s,p)=>s+p.amount, 0);
+  const sisa  = Math.max(0, total - paid);
+  let v = 0;
+  if(mode === 'DP')    v = Math.round(total * 0.30 / 1000) * 1000;
+  if(mode === 'SISA')  v = sisa;
+  if(mode === 'TOTAL') v = total;
+  if(mode === 'PAID')  v = paid;
+  $('f_kwamount').value = v;
+  render();
+}
+
+function kwAmount(total){
+  const manual = num($('f_kwamount').value);
+  return manual > 0 ? manual : total;
+}
 
 function terbilang(n){
   n = Math.floor(Math.abs(n));
@@ -1199,7 +1306,8 @@ function setDocType(t){
 }
 
 function renderKwitansi(items, subtotal, total, paid){
-  const bayar = paid > 0 ? paid : 0;
+  const manual = num($('f_kwamount') ? $('f_kwamount').value : 0);
+  const bayar = manual > 0 ? manual : (paid > 0 ? paid : 0);
   const payType = $('f_paytype').value;
   const typeLabel = payType === 'DP' ? 'UANG MUKA (DP)'
                   : payType === 'PELUNASAN' ? 'PELUNASAN'
@@ -1216,6 +1324,9 @@ function renderKwitansi(items, subtotal, total, paid){
   $('kw_words').textContent = terbilangRp(bayar) + '.';
   $('kw_total').textContent = rp(total);
   $('kw_bal').textContent   = rp(Math.max(0, total - bayar));
+
+  const inp = $('f_kwamount');
+  if(inp && !inp.value) inp.placeholder = String(manual > 0 ? manual : (paid > 0 ? paid : total));
 }
 
 
@@ -1294,70 +1405,6 @@ function gateUnlock(){
     .catch(e => { err.textContent = 'Gagal konek: ' + e.message; });
 }
 
-/* ---------- KATALOG PRODUK (harga resmi RPXLABS) ---------- */
-const CATALOG = [
-  // --- Paket Wisuda ---
-  {cat:'Wisuda', name:'Graduation Silver — Max 1 orang', price:450000},
-  {cat:'Wisuda', name:'Graduation Gold — Max 5 orang', price:600000},
-  {cat:'Wisuda', name:'Graduation Platinum — Max 9 orang', price:750000},
-  {cat:'Wisuda', name:'Bestie Graduation — Max 2 wisudawan', price:800000},
-  // --- Add-on Wisuda ---
-  {cat:'Add-on', name:'Additional Person (per orang)', price:30000},
-  {cat:'Add-on', name:'Additional Graduate (Bestie only)', price:275000},
-  {cat:'Add-on', name:'Extra Edit Photo (per foto)', price:15000},
-  {cat:'Add-on', name:'Additional Original File (semua file mentah)', price:100000},
-  {cat:'Add-on', name:'Cinematic Video', price:150000},
-  // --- Running ---
-  {cat:'Running', name:'Running Session — Single', price:250000},
-  {cat:'Running', name:'Running Session — Group (max 5)', price:400000},
-  // --- Event / Sport ---
-  {cat:'Event', name:'Event Coverage — 6 jam', price:1500000},
-  {cat:'Event', name:'Event Coverage — Full Day (8 jam)', price:1200000},
-  {cat:'Sport', name:'Padel / Sport Session', price:300000},
-  // --- Lain ---
-  {cat:'Lain', name:'Transport Luar Kota (per trip)', price:200000},
-];
-
-let CATALOG_EDITABLE = JSON.parse(localStorage.getItem('rpxlabs_catalog_custom') || '[]');
-
-function allProducts(){ return CATALOG.concat(CATALOG_EDITABLE); }
-
-function renderCatalog(){
-  const q = ($('f_prodSearch').value || '').toLowerCase().trim();
-  let list = allProducts();
-  if(q) list = list.filter(x => x.name.toLowerCase().includes(q) || x.cat.toLowerCase().includes(q));
-
-  const box = $('prodList');
-  if(!list.length){ box.innerHTML = '<p class="hint">Tidak ada produk cocok.</p>'; return; }
-
-  box.innerHTML = list.map((pr,i) => `
-    <div class="pd" data-i="${allProducts().indexOf(pr)}">
-      <span class="cat">${esc(pr.cat)}</span>
-      <span class="nm">${esc(pr.name)}</span>
-      <span class="pr">${rp(pr.price)}</span>
-    </div>`).join('');
-
-  box.querySelectorAll('.pd').forEach(el => {
-    el.onclick = () => addProductToItems(allProducts()[+el.dataset.i]);
-  });
-}
-
-function addProductToItems(pr){
-  if(!pr) return;
-  // kalau item terakhir kosong total, pakai baris itu
-  const rows = [...$('items').querySelectorAll('.item')];
-  const empty = rows.find(r => !r.querySelector('.desc').value.trim() && num(r.querySelector('.price').value) === 0);
-  const row = empty || null;
-  if(row){
-    row.querySelector('.desc').value = pr.name;
-    row.querySelector('.price').value = pr.price;
-    row.querySelectorAll('input').forEach(i => i.dispatchEvent(new Event('input',{bubbles:true})));
-  } else {
-    addItem({desc: pr.name, qty: 1, price: pr.price});
-  }
-  toast('+ ' + pr.name);
-}
-
 /* ---------- RIWAYAT PEMBAYARAN ---------- */
 function addPayment(data){
   const wrap = document.createElement('div');
@@ -1402,11 +1449,16 @@ function renderPayments(total){
   const isOverdue = due && due < today && (total - paidTotal) > 0.5;
   $('psum_overdue').style.display = isOverdue ? 'block' : 'none';
 
-  // label status otomatis
-  if(!isOverdue){
-    if(total > 0 && paidTotal >= total - 0.5) $('f_status').value = 'LUNAS';
-    else if(paidTotal > 0)                    $('f_status').value = 'DP Dibayar';
-    else                                      $('f_status').value = 'Belum Dibayar';
+  // label status: otomatis kecuali user pilih manual
+  const autoStatus = () => {
+    if(total > 0 && paidTotal >= total - 0.5) return 'LUNAS';
+    if(paidTotal > 0) return 'DP Dibayar';
+    return 'Belum Dibayar';
+  };
+  const sel = $('f_status');
+  if(sel.value === 'auto' || sel.dataset.auto !== '0'){
+    sel.value = autoStatus();
+    sel.dataset.prevAuto = sel.value;
   }
 
   // tabel di paper
@@ -1422,6 +1474,32 @@ function renderPayments(total){
     </tr>`).join('');
 
   return {paidTotal, isOverdue};
+}
+
+/* ---------- SIMPAN PEMBAYARAN KE SHEET ---------- */
+async function savePaymentsToSheet(){
+  const nomor = $('f_num').value.trim();
+  if(!nomor){ toast('Nomor invoice kosong'); return; }
+  const pays = readPayments();
+  if(!pays.length){ toast('Belum ada pembayaran'); return; }
+
+  let ok = 0, fail = 0;
+  for(const p of pays){
+    try {
+      const res = await fetch(SCRIPT_URL, {
+        method:'POST',
+        headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body: JSON.stringify({
+          formType:'payment',
+          payment:{ nomor, tanggal:p.date, metode:p.method, jumlah:p.amount,
+                    jenisBayar: $('f_paytype').value, _pin: PORTAL_PIN }
+        })
+      });
+      const out = await res.json();
+      out.success ? ok++ : fail++;
+    } catch(e){ fail++; }
+  }
+  toast(ok + ' pembayaran tersimpan' + (fail ? ', ' + fail + ' gagal' : ''));
 }
 
 /* ---------- persist ---------- */
@@ -1460,7 +1538,7 @@ function apply(d){
   $('f_disc').value = d.disc || 0;
   $('f_ppn').value = d.ppn || 0;
   $('f_paid').value = d.paid || 0;
-  $('f_bank').value = d.bank || '';
+  $('f_bank').value = d.bank || 'BCA 6695-4010-21\na.n. Rifko Perdana';
   $('f_terms').value = d.terms || '';
   $('f_foot').value = d.foot || '';
   $('payList').innerHTML = '';
@@ -1483,38 +1561,107 @@ function loadAll(){
   try { return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); } catch(e){ return []; }
 }
 
-function saveInvoice(){
-  const data = collect();
-  if(!data.cname){ toast('Nama klien masih kosong'); return; }
-  if(!data.items.length){ toast('Belum ada item'); return; }
-  const list = loadAll();
-  const idx = list.findIndex(x => x.num === data.num && data.num);
-  if(idx >= 0){
-    data.id = list[idx].id;
-    list[idx] = data;
-  } else {
-    list.unshift(data);
+async function saveInvoice(){
+  const d = collect();
+  if(!d.cname){ toast('Nama klien masih kosong'); return; }
+  if(!d.items.length){ toast('Belum ada item'); return; }
+  if(!d.num){ d.num = nextNumber(); $('f_num').value = d.num; }
+
+  const btn = document.querySelector('nav .acts button:nth-child(2)');
+  const oldHtml = btn ? btn.innerHTML : '';
+  if(btn){ btn.disabled = true; btn.innerHTML = '<i class="ph ph-circle-notch"></i>Menyimpan...'; }
+
+  const subtotal = calcSubtotal();
+  const total    = calcTotal();
+  const paid     = readPayments().reduce((s,p)=>s+p.amount, 0);
+
+  const payload = {
+    formType: 'invoice',
+    invoice: {
+      id: d.id || ('INV-' + (d.num||'').replace(/[^A-Za-z0-9]/g,'')),
+      nomor: d.num,
+      jenis: DOC_TYPE,
+      tanggal: d.date || '',
+      jatuhTempo: d.due || '',
+      status: $('f_status').value,
+      klien: d.cname || '',
+      kontak: d.ccontact || '',
+      alamat: d.caddr || '',
+      items: (d.items||[]).map(i => ({desc:i.desc, qty:i.qty, price:i.price})),
+      subtotal: subtotal, diskon: d.disc, ppn: d.ppn, total: total,
+      dibayar: paid, sisa: Math.max(0, total - paid),
+      catatanKaki: d.foot || '', syarat: d.terms || '',
+      rekening: d.bank || '', sumber: d.sumber || '',
+      _pin: PORTAL_PIN
+    }
+  };
+
+  try {
+    const res = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      headers: {'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify(payload)
+    });
+    const out = await res.json();
+    if(btn){ btn.disabled = false; btn.innerHTML = oldHtml; }
+    if(!out.success){ toast('Gagal: ' + (out.error || 'unknown')); return; }
+    localStorage.setItem('rpxlabs_invoice_draft_id', d.num);
+    toast((out.mode === 'update' ? 'Diperbarui' : 'Tersimpan') + ': ' + d.num);
+  } catch(err){
+    if(btn){ btn.disabled = false; btn.innerHTML = oldHtml; }
+    toast('Error koneksi: ' + err.message);
   }
-  localStorage.setItem(STORE_KEY, JSON.stringify(list));
-  toast('Invoice disimpan: ' + (data.num || '(tanpa nomor)'));
 }
 
-function openHistory(){
-  const list = loadAll();
-  if(!list.length){ toast('Belum ada invoice tersimpan'); return; }
-  const pick = prompt(
-    'Pilih nomor invoice (ketik nomornya):\n\n' +
-    list.map(i => {
-      const t = i.items.reduce((s,x)=>s+x.qty*x.price,0) - (i.disc||0);
-      const tot = t * (1 + (i.ppn||0)/100);
-      return '• ' + (i.num||'(tanpa nomor)') + '  |  ' + (i.cname||'-') + '  |  ' + rp(tot) + '  |  ' + (i.status||'');
-    }).join('\n')
-  );
-  if(!pick) return;
-  const found = list.find(i => i.num === pick.trim());
-  if(!found){ toast('Nomor tidak ditemukan'); return; }
-  apply(found);
-  toast('Dimuat: ' + found.num);
+function calcSubtotal(){
+  return readItems().reduce((s,i) => s + i.qty * i.price, 0);
+}
+function calcTotal(){
+  const sub = calcSubtotal();
+  const disc = num($('f_disc').value);
+  const ppn = num($('f_ppn').value);
+  return Math.max(0, sub - disc) * (1 + ppn/100);
+}
+
+async function openHistory(){
+  toast('Memuat riwayat...');
+  try {
+    const res = await fetch(`${SCRIPT_URL}?action=invoiceList`, { cache:'no-store' });
+    const d = await res.json();
+    if(!d.success || !d.count){ toast('Belum ada invoice tersimpan'); return; }
+
+    const lines = d.invoices.slice(0, 40).map(v =>
+      v.nomor + '  |  ' + (v.klien||'-') + '  |  ' + rp(v.total) + '  |  ' + (v.status||'-')
+    ).join('\n');
+
+    const pick = prompt('Ketik NOMOR invoice yang mau dibuka:\n\n' + lines);
+    if(!pick) return;
+
+    const found = d.invoices.find(v => v.nomor === pick.trim());
+    if(!found){ toast('Nomor tidak ada'); return; }
+
+    // ambil detail + pembayaran
+    const det = await fetch(`${SCRIPT_URL}?action=invoiceDetail&nomor=${encodeURIComponent(found.nomor)}`, {cache:'no-store'}).then(r=>r.json());
+    if(!det.success){ toast('Gagal memuat detail'); return; }
+
+    const inv = det.invoice;
+    // rekonstruksi items dari string "desc | qty x price ;; ..."
+    const items = String(inv.items||'').split(' ;; ').filter(Boolean).map(chunk => {
+      const m = chunk.match(/^(.*)\s\|\s*(\d+(?:\.\d+)?)\s*x\s*(\d+(?:\.\d+)?)$/);
+      if(m) return {desc:m[1], qty:parseFloat(m[2]), price:parseFloat(m[3])};
+      return {desc:chunk, qty:1, price:0};
+    });
+
+    apply({
+      num: inv.nomor, date: inv.tanggal, due: inv.jatuhTempo,
+      status: inv.status, cname: inv.klien, ccontact: inv.kontak, caddr: inv.alamat,
+      items: items, disc: inv.diskon, ppn: inv.ppn, paid: inv.dibayar,
+      bank: inv.rekening, terms: inv.syarat, foot: inv.catatanKaki,
+      payments: (det.payments||[]).map(x => ({date:x.tanggal, method:x.metode, amount:x.jumlah})),
+      doctype: inv.jenis || 'invoice'
+    });
+    toast('Dibuka: ' + inv.nomor);
+  } catch(e){ toast('Error: ' + e.message); }
 }
 
 function newInvoice(){
@@ -1541,12 +1688,17 @@ function newInvoice(){
 
 /* ---------- init ---------- */
 (function init(){
-  const defaultBank  = 'BCA 1234 5678 90\na.n. Rifko Perdana';
+  const defaultBank  = 'BCA 6695-4010-21\na.n. Rifko Perdana';
   const defaultTerms = '- DP 30% untuk mengunci jadwal\n- Sisa pelunasan H-1 acara\n- File mentah tidak diserahkan\n- Revisi maksimal 2x';
   const defaultFoot  = 'Terima kasih atas kepercayaan Anda.';
 
   let draft = null;
   try { draft = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null'); } catch(e){}
+
+  // migrasi: buang nomor rekening lama yang salah
+  if(draft && draft.bank && /1234\s*5678\s*90/.test(draft.bank)){
+    draft.bank = '';
+  }
 
   if(draft){
     apply(draft);
@@ -1566,8 +1718,6 @@ function newInvoice(){
 
   // listeners
   $('f_search').addEventListener('input', renderBookingList);
-  $('f_prodSearch').addEventListener('input', renderCatalog);
-  renderCatalog();
 
   // auth gate
   checkGate();
@@ -1578,7 +1728,20 @@ function newInvoice(){
   $('f_paytype').addEventListener('change', render);
   $('f_paymethod').addEventListener('change', render);
 
-  ['f_num','f_date','f_due','f_status','f_cname','f_ccontact','f_caddr',
+  // status: bedakan otomatis vs manual
+  (function(){
+    const sel = $('f_status');
+    sel.dataset.auto = '1';
+    let last = sel.value;
+    sel.addEventListener('change', () => {
+      const isAutoOpt = (sel.value === 'auto');
+      sel.dataset.auto = isAutoOpt ? '1' : '0';
+      if(isAutoOpt){ render(); }
+      last = sel.value;
+    });
+  })();
+
+  ['f_num','f_date','f_due','f_kwamount','f_cname','f_ccontact','f_caddr',
    'f_disc','f_paid','f_ppn','f_bank','f_terms','f_foot'].forEach(id => {
     $(id).addEventListener('input', render);
     $(id).addEventListener('change', render);
