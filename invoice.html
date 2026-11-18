@@ -630,7 +630,7 @@ body.locked{overflow:hidden}
         </div>
         <div class="row2">
           <div class="field">
-            <label>Jatuh Tempo</label>
+            <label>Jatuh Tempo Pelunasan</label>
             <input id="f_due" type="date">
           </div>
           <div class="field">
@@ -1147,12 +1147,22 @@ function applyBooking(b){
   const addr = [b.universitas, b.lokasi].filter(Boolean).join('\n');
   $('f_caddr').value = addr;
 
-  // Tanggal invoice = hari ini, jatuh tempo +7
+  // Tanggal invoice = hari ini
   const today = new Date();
   const iso = d => d.toISOString().slice(0,10);
-  if(!$('f_date').value) $('f_date').value = iso(today);
-  if(!$('f_due').value)  $('f_due').value  = iso(new Date(today.getTime() + 7*864e5));
-  if(!$('f_num').value)  $('f_num').value  = nextNumber();
+  $('f_date').value = iso(today);
+  if(!$('f_num').value) $('f_num').value = nextNumber();
+
+  // Jatuh tempo pelunasan = H-1 dari tanggal sesi foto (tetap bisa diedit manual)
+  if(b.tanggal){
+    const sesi = new Date(String(b.tanggal) + 'T00:00:00');
+    sesi.setDate(sesi.getDate() - 1);
+    $('f_due').value = iso(sesi);
+    window.DUE_AUTO = true;
+  } else {
+    $('f_due').value = iso(new Date(today.getTime() + 7*864e5));
+    window.DUE_AUTO = true;
+  }
 
   // Items dari paket + addons
   $('items').innerHTML = '';
@@ -1891,6 +1901,12 @@ function newInvoice(){
       if(isAutoOpt){ render(); }
       last = sel.value;
     });
+  })();
+
+    // jatuh tempo: kalau diubah manual, tandai supaya tidak ditimpa auto
+  (function(){
+    const el = $('f_due');
+    el.addEventListener('change', () => { window.DUE_AUTO = false; });
   })();
 
   ['f_num','f_date','f_due','f_kwamount','f_cname','f_ccontact','f_caddr',
