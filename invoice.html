@@ -637,8 +637,8 @@ body.locked{overflow:hidden}
             <label>Status</label>
             <select id="f_status">
               <option value="auto">Otomatis (dari pembayaran)</option>
+              <option value="Pelunasan">Pelunasan</option>
               <option value="Belum Dibayar">Belum Dibayar</option>
-              <option value="DP Dibayar">DP Dibayar</option>
               <option value="LUNAS">Lunas</option>
               <option value="Batal">Batal</option>
             </select>
@@ -716,7 +716,7 @@ body.locked{overflow:hidden}
         </div>
         <div class="field">
           <label>Syarat &amp; Ketentuan</label>
-          <textarea id="f_terms" placeholder="- DP 50% mengunci jadwal&#10;- Sisa dilunasi H-1&#10;- File mentah tidak diserahkan"></textarea>
+          <textarea id="f_terms" placeholder="- DP 30% untuk mengunci jadwal&#10;- Sisa pelunasan H-1 acara"></textarea>
         </div>
       </div>
 
@@ -1240,7 +1240,7 @@ function applyBooking(b){
   // Status pembayaran
   const total = num(b.totalHarga), dp = num(b.nominalDP);
   if(total > 0 && dp >= total)      $('f_status').value = 'LUNAS';
-  else if(dp > 0)                   $('f_status').value = 'DP Dibayar';
+  else if(dp > 0)                   $('f_status').value = 'Pelunasan';
   else                              $('f_status').value = 'Belum Dibayar';
 
   // Catatan klien → terms
@@ -1582,7 +1582,7 @@ function renderPayments(total){
   // label status: otomatis kecuali user pilih manual
   const autoStatus = () => {
     if(total > 0 && paidTotal >= total - 0.5) return 'LUNAS';
-    if(paidTotal > 0) return 'DP Dibayar';
+    if(paidTotal > 0) return 'Pelunasan';
     return 'Belum Dibayar';
   };
   const sel = $('f_status');
@@ -1819,7 +1819,9 @@ async function bukaInvoice(nomor){
     // status manual: hormati nilai dari Sheet
     const sel = $('f_status');
     sel.dataset.auto = '0';
-    sel.value = inv.status === 'LUNAS' ? 'LUNAS' : inv.status;
+    sel.value = (inv.status === 'LUNAS') ? 'LUNAS'
+              : (inv.status === 'DP Dibayar' || inv.status === 'Pelunasan') ? 'Pelunasan'
+              : inv.status;
     render();
     toast('Dibuka: ' + inv.nomor);
   } catch(e){ toast('Error: ' + e.message); }
@@ -1860,6 +1862,14 @@ function newInvoice(){
   // migrasi: buang nomor rekening lama yang salah
   if(draft && draft.bank && /1234\s*5678\s*90/.test(draft.bank)){
     draft.bank = '';
+  }
+  // migrasi: buang baris syarat yang sudah tidak dipakai
+  if(draft && draft.terms){
+    draft.terms = String(draft.terms)
+      .split('\n')
+      .filter(l => !/file mentah/i.test(l) && !/revisi maksimal/i.test(l))
+      .join('\n')
+      .trim();
   }
 
   if(draft){
