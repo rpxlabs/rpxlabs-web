@@ -1161,22 +1161,59 @@ function applyBooking(b){
   const key = detectPaket(b.paket) || (isWisuda ? 'gold' : 'event');
   const sesi = b.tanggal ? `Sesi: ${fmtDate(b.tanggal)} ${b.jam || ''}`.trim() : '';
 
+  // Harga paket (tanpa add-on) — add-on jadi baris terpisah
+  const hargaPaket = num(b.hargaPaket) || num(b.totalHarga);
+  const totalHarga = num(b.totalHarga) || hargaPaket;
+  const addons = Math.max(0, totalHarga - hargaPaket);
+
   if(isWisuda){
     const paketLabel = prettyPaket(b.paket);
     const jml = b.jumlahOrang ? ` — ${b.jumlahOrang} orang` : '';
     addItem({
       desc: descPaket(paketLabel + jml, key, sesi),
       qty: 1,
-      price: num(b.totalHarga)
+      price: hargaPaket
     });
+
+    // Add-on baris terpisah — harga diambil dari data Sheet (addonsTotal),
+    // dibagi ke tiap jenis add-on sesuai porsinya. Kalau hanya 1 jenis, harga = selisih asli.
+    const jenisAddon = [];
+    if(num(b.extraPerson)   > 0) jenisAddon.push({ name:'Additional Person',   qty: num(b.extraPerson) });
+    if(num(b.extraGraduate) > 0) jenisAddon.push({ name:'Additional Graduate', qty: num(b.extraGraduate) });
+    if(num(b.extraEdit)     > 0) jenisAddon.push({ name:'Extra Edited Photo',  qty: num(b.extraEdit) });
+    if(String(b.cinematicVideo || '').toLowerCase() === 'ya') jenisAddon.push({ name:'Cinematic Video', qty: 1 });
+
+    const bobot = { 'Additional Person':30000, 'Additional Graduate':275000, 'Extra Edited Photo':15000, 'Cinematic Video':150000 };
+    const totalBobot = jenisAddon.reduce((s,x) => s + bobot[x.name] * x.qty, 0);
+
+    if(addons > 0 && jenisAddon.length){
+      let sisaAddon = addons;
+      jenisAddon.forEach((x, i) => {
+        const last = i === jenisAddon.length - 1;
+        let harga;
+        if(last){
+          harga = Math.round(sisaAddon / x.qty);       // baris terakhir serap sisa
+        } else {
+          harga = Math.round((bobot[x.name] * x.qty / totalBobot) * addons / x.qty);
+          harga = Math.round(harga / 500) * 500;
+          sisaAddon -= harga * x.qty;
+        }
+        if(harga > 0) addItem({ desc: x.name, qty: x.qty, price: harga });
+      });
+    } else if(addons > 0){
+      addItem({ desc: 'Add-on', qty: 1, price: addons });
+    }
   } else {
     const judul = `${b.jenis || 'Jasa Fotografi'}${b.paket ? ' — ' + b.paket : ''}`;
     addItem({
       desc: descPaket(judul, key, sesi),
       qty: 1,
-      price: num(b.totalHarga)
+      price: totalHarga
     });
   }
+
+  // ingat asal booking untuk update status Done nanti
+  window.CURRENT_BOOKING = { source: b.source || 'wisuda', row: b.row || 0, nama: b.nama || '' };
 
   // DP masuk ke riwayat pembayaran
   $('payList').innerHTML = '';
@@ -1307,6 +1344,31 @@ function prettyPaket(p){
 
 /* ---------- ANGKA → TERBILANG ---------- */
 const SATUAN = ['','satu','dua','tiga','empat','lima','enam','tujuh','delapan','sembilan','sepuluh','sebelas'];
+
+
+/* ---------- AUTO SELESAI: kwitansi pelunasan -> booking Done ---------- */
+async function markBookingDone(){
+  const cb = window.CURRENT_BOOKING;
+  if(!cb || !cb.row){ return { skipped: true }; }
+  try {
+    const url = `${SCRIPT_URL}?action=setBookingStatus&source=${encodeURIComponent(cb.source)}&row=${cb.row}&status=Done`;
+    const r = await fetch(url, { cache:'no-store' }).then(x=>x.json());
+    return r;
+  } catch(e){ return { success: false, error: e.message }; }
+}
+
+/** Cek apakah kwitansi ini pelunasan (sisa jadi 0) */
+function isPelunasan(){
+  if(DOC_TYPE !== 'kwitansi') return false;
+  const total = calcTotal();
+  const paid  = readPayments().reduce((s,p)=>s+p.amount, 0);
+  const manual = num($('f_kwamount').value);
+  const effective = manual > 0 ? paid : paid;
+  const jenis = $('f_paytype').value;
+  if(jenis === 'FULL') return true;
+  if(jenis === 'PELUNASAN') return true;
+  return total > 0 && paid >= total - 0.5;
+}
 
 /* ---------- NOMINAL KWITANSI ---------- */
 function fillKwAmount(mode){
@@ -1664,7 +1726,14 @@ async function saveInvoice(){
     if(btn){ btn.disabled = false; btn.innerHTML = oldHtml; }
     if(!out.success){ toast('Gagal: ' + (out.error || 'unknown')); return; }
     localStorage.setItem('rpxlabs_invoice_draft_id', d.num);
-    toast((out.mode === 'update' ? 'Diperbarui' : 'Tersimpan') + ': ' + d.num);
+
+    // kwitansi pelunasan / lunas -> status booking di Sheet jadi Done
+    let extra = '';
+    if(isPelunasan()){
+      const mk = await markBookingDone();
+      if(mk && mk.success) extra = ' · booking jadi Done';
+    }
+    toast((out.mode === 'update' ? 'Diperbarui' : 'Tersimpan') + ': ' + d.num + extra);
   } catch(err){
     if(btn){ btn.disabled = false; btn.innerHTML = oldHtml; }
     toast('Error koneksi: ' + err.message);
