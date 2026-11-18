@@ -8,4 +8,4 @@ Disallow: /calendar.html
 Disallow: /invoice.html
 Disallow: /penawaran-website.html
 
-Sitemap: https://rpxlabsphotography.vercel.app/sitemap.xml
+Sitemap: https://rpxlabs.id/sitemap.xml

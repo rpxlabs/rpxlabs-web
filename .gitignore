@@ -3,3 +3,6 @@
 penawaran-website.html
 penawaran-website.pdf
 penawaran-website-v2.pdf
+
+.vercel
+.env*
