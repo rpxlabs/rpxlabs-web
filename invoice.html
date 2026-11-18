@@ -510,6 +510,27 @@ body.locked{overflow:hidden}
 #gate .back{display:block;margin-top:16px;font-size:.68rem;color:#5f5f6b;text-decoration:none;letter-spacing:.06em;text-align:center}
 #gate .back:hover{color:#f0f0f0}
 
+/* ---------- MODAL RIWAYAT ---------- */
+.modal{display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.72);
+  backdrop-filter:blur(6px);padding:24px;overflow:auto}
+.modal.show{display:flex;align-items:flex-start;justify-content:center}
+.modal-box{width:100%;max-width:560px;margin-top:40px;background:#121214;
+  border:1px solid rgba(255,255,255,.13);border-radius:14px;overflow:hidden}
+.modal-hd{display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.09);
+  font-size:.78rem;font-weight:800;color:#fff;letter-spacing:.02em}
+.modal-hd span{display:inline-flex;align-items:center;gap:7px}
+.modal-hd i{font-size:1rem;color:#9a9aa8}
+.modal-bd{padding:10px 12px;max-height:60vh;overflow:auto}
+.hrow{display:grid;grid-template-columns:1fr 32px 32px;gap:7px;align-items:center;
+  padding:9px 10px;border:1px solid rgba(255,255,255,.08);border-radius:9px;margin-bottom:7px;
+  background:rgba(255,255,255,.025)}
+.hrow:hover{border-color:rgba(255,255,255,.2)}
+.hnm{font-size:.74rem;font-weight:800;color:#fff}
+.hmt{font-size:.62rem;color:#8f8f9c;margin-top:2px;font-weight:600}
+.hrow .mini{width:32px;height:32px;padding:0;justify-content:center}
+.hrow .mini.del{color:#ff9b9b;border-color:rgba(255,107,107,.3)}
+.hrow .mini.del:hover{background:rgba(255,107,107,.12)}
 </style>
 </head>
 <body>
@@ -1661,45 +1682,70 @@ function calcTotal(){
 }
 
 async function openHistory(){
-  toast('Memuat riwayat...');
+  const box = $('histList');
+  if(!box){ toast('Panel riwayat tidak ada'); return; }
+  box.innerHTML = '<p class="hint">Memuat...</p>';
+  $('histModal').classList.add('show');
+
   try {
-    const res = await fetch(`${SCRIPT_URL}?action=invoiceList`, { cache:'no-store' });
-    const d = await res.json();
-    if(!d.success || !d.count){ toast('Belum ada invoice tersimpan'); return; }
+    const d = await fetch(`${SCRIPT_URL}?action=invoiceList`, { cache:'no-store' }).then(r=>r.json());
+    if(!d.success || !d.count){
+      box.innerHTML = '<p class="hint">Belum ada invoice tersimpan di Sheet.</p>';
+      return;
+    }
+    box.innerHTML = d.invoices.map(v => `
+      <div class="hrow">
+        <div class="hinfo">
+          <div class="hnm">${esc(v.nomor)} · ${esc(v.klien || '-')}</div>
+          <div class="hmt">${esc(v.tanggal||'')} · ${esc(v.status||'-')} · ${rp(v.total)}${v.sisa>0?' · sisa '+rp(v.sisa):''}</div>
+        </div>
+        <button class="mini" data-open="${esc(v.nomor)}"><i class="ph ph-pencil-simple"></i></button>
+        <button class="mini del" data-del="${esc(v.nomor)}"><i class="ph ph-trash"></i></button>
+      </div>`).join('');
 
-    const lines = d.invoices.slice(0, 40).map(v =>
-      v.nomor + '  |  ' + (v.klien||'-') + '  |  ' + rp(v.total) + '  |  ' + (v.status||'-')
-    ).join('\n');
-
-    const pick = prompt('Ketik NOMOR invoice yang mau dibuka:\n\n' + lines);
-    if(!pick) return;
-
-    const found = d.invoices.find(v => v.nomor === pick.trim());
-    if(!found){ toast('Nomor tidak ada'); return; }
-
-    // ambil detail + pembayaran
-    const det = await fetch(`${SCRIPT_URL}?action=invoiceDetail&nomor=${encodeURIComponent(found.nomor)}`, {cache:'no-store'}).then(r=>r.json());
-    if(!det.success){ toast('Gagal memuat detail'); return; }
-
-    const inv = det.invoice;
-    // rekonstruksi items dari string "desc | qty x price ;; ..."
-    const items = String(inv.items||'').split(' ;; ').filter(Boolean).map(chunk => {
-      const m = chunk.match(/^(.*)\s\|\s*(\d+(?:\.\d+)?)\s*x\s*(\d+(?:\.\d+)?)$/);
-      if(m) return {desc:m[1], qty:parseFloat(m[2]), price:parseFloat(m[3])};
-      return {desc:chunk, qty:1, price:0};
+    box.querySelectorAll('button[data-open]').forEach(b => {
+      b.onclick = () => { $('histModal').classList.remove('show'); bukaInvoice(b.dataset.open); };
     });
+    box.querySelectorAll('button[data-del]').forEach(b => {
+      b.onclick = async () => {
+        if(!confirm('Hapus invoice ' + b.dataset.del + ' beserta riwayat pembayarannya?')) return;
+        const r = await fetch(`${SCRIPT_URL}?action=deleteInvoice&nomor=${encodeURIComponent(b.dataset.del)}`, {cache:'no-store'}).then(x=>x.json());
+        if(r.success){ toast('Terhapus: ' + b.dataset.del); openHistory(); }
+        else toast('Gagal: ' + (r.error||'unknown'));
+      };
+    });
+  } catch(e){
+    box.innerHTML = '<p class="hint">Error: ' + esc(e.message) + '</p>';
+  }
+}
 
+async function bukaInvoice(nomor){
+  try {
+    const det = await fetch(`${SCRIPT_URL}?action=invoiceDetail&nomor=${encodeURIComponent(nomor)}`, {cache:'no-store'}).then(r=>r.json());
+    if(!det.success){ toast('Gagal memuat: ' + (det.error||'')); return; }
+    const inv = det.invoice;
+    const items = String(inv.items||'').split(' ;; ').filter(Boolean).map(chunk => {
+      const m = chunk.match(/^(.*)\s\|\s*([\d.]+)\s*x\s*([\d.]+)$/s);
+      return m ? {desc:m[1], qty:parseFloat(m[2]), price:parseFloat(m[3])}
+               : {desc:chunk, qty:1, price:0};
+    });
     apply({
       num: inv.nomor, date: inv.tanggal, due: inv.jatuhTempo,
-      status: inv.status, cname: inv.klien, ccontact: inv.kontak, caddr: inv.alamat,
-      items: items, disc: inv.diskon, ppn: inv.ppn, paid: inv.dibayar,
+      cname: inv.klien, ccontact: inv.kontak, caddr: inv.alamat,
+      items: items, disc: inv.diskon, ppn: inv.ppn,
       bank: inv.rekening, terms: inv.syarat, foot: inv.catatanKaki,
       payments: (det.payments||[]).map(x => ({date:x.tanggal, method:x.metode, amount:x.jumlah})),
       doctype: inv.jenis || 'invoice'
     });
+    // status manual: hormati nilai dari Sheet
+    const sel = $('f_status');
+    sel.dataset.auto = '0';
+    sel.value = inv.status === 'LUNAS' ? 'LUNAS' : inv.status;
+    render();
     toast('Dibuka: ' + inv.nomor);
   } catch(e){ toast('Error: ' + e.message); }
 }
+
 
 function newInvoice(){
   if(!confirm('Buat invoice baru? Draft sekarang akan disimpan sebagai draft.')) return;
@@ -1790,5 +1836,14 @@ function newInvoice(){
   });
 })();
 </script>
+<div id="histModal" class="modal">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <span><i class="ph ph-files"></i> Riwayat Invoice &amp; Kwitansi</span>
+      <button class="mini" onclick="document.getElementById('histModal').classList.remove('show')"><i class="ph ph-x"></i></button>
+    </div>
+    <div id="histList" class="modal-bd"></div>
+  </div>
+</div>
 </body>
 </html>
