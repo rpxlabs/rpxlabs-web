@@ -52,16 +52,9 @@ nav .brand img{height:30px;width:auto;mix-blend-mode:screen}
 nav .links{display:flex;gap:22px;font-size:0.74rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700}
 nav .links a{color:rgba(255,255,255,0.55);text-decoration:none;transition:color .2s}
 nav .links a:hover{color:#fff}
-nav .cta{
-  display:inline-flex;align-items:center;gap:7px;
-  padding:8px 16px;border-radius:100px;
-  border:1px solid rgba(255,255,255,0.34);
-  background:rgba(255,255,255,0.06);
-  color:#fff;text-decoration:none;
-  font-size:0.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;
-  transition:all .22s;
-}
-nav .cta:hover{background:rgba(255,255,255,0.14);border-color:rgba(255,255,255,0.6);box-shadow:0 0 20px rgba(255,255,255,0.18)}
+nav .navlogo{display:inline-flex;align-items:center;text-decoration:none;transition:opacity .22s,transform .22s}
+nav .navlogo img{height:26px;width:auto;display:block;mix-blend-mode:screen}
+nav .navlogo:hover{opacity:0.82;transform:translateY(-1px)}
 
 /* ---------- HERO ---------- */
 .hero{text-align:center;padding:88px 0 64px}
@@ -322,7 +315,7 @@ footer .fnote{font-size:0.66rem;color:rgba(255,255,255,0.32);letter-spacing:0.1e
     <a href="#karya">Karya</a>
     <a href="#kontak">Kontak</a>
   </div>
-  <a class="cta" href="https://wa.me/6289623290398?text=Halo%20RPXLABS%2C%20saya%20mau%20tanya%20soal%20booking%20foto." target="_blank" rel="noopener"><i class="ph-fill ph-whatsapp-logo"></i>Booking</a>
+  <a class="navlogo" href="https://wa.me/6289623290398?text=Halo%20RPXLABS%2C%20saya%20mau%20tanya%20soal%20booking%20foto." target="_blank" rel="noopener" aria-label="Booking via WhatsApp"><img src="/assets/logo-rpx-sport.png" alt="RPX Booking"></a>
 </nav>
 
 <div class="wrap">
