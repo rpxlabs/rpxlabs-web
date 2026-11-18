@@ -637,8 +637,8 @@ body.locked{overflow:hidden}
             <label>Status</label>
             <select id="f_status">
               <option value="auto">Otomatis (dari pembayaran)</option>
-              <option value="Pelunasan">Pelunasan</option>
               <option value="Belum Dibayar">Belum Dibayar</option>
+              <option value="DP Dibayar">DP Dibayar</option>
               <option value="LUNAS">Lunas</option>
               <option value="Batal">Batal</option>
             </select>
@@ -1240,7 +1240,7 @@ function applyBooking(b){
   // Status pembayaran
   const total = num(b.totalHarga), dp = num(b.nominalDP);
   if(total > 0 && dp >= total)      $('f_status').value = 'LUNAS';
-  else if(dp > 0)                   $('f_status').value = 'Pelunasan';
+  else if(dp > 0)                   $('f_status').value = 'DP Dibayar';
   else                              $('f_status').value = 'Belum Dibayar';
 
   // Catatan klien → terms
@@ -1582,7 +1582,7 @@ function renderPayments(total){
   // label status: otomatis kecuali user pilih manual
   const autoStatus = () => {
     if(total > 0 && paidTotal >= total - 0.5) return 'LUNAS';
-    if(paidTotal > 0) return 'Pelunasan';
+    if(paidTotal > 0) return 'DP Dibayar';
     return 'Belum Dibayar';
   };
   const sel = $('f_status');
@@ -1819,9 +1819,7 @@ async function bukaInvoice(nomor){
     // status manual: hormati nilai dari Sheet
     const sel = $('f_status');
     sel.dataset.auto = '0';
-    sel.value = (inv.status === 'LUNAS') ? 'LUNAS'
-              : (inv.status === 'DP Dibayar' || inv.status === 'Pelunasan') ? 'Pelunasan'
-              : inv.status;
+    sel.value = (inv.status === 'Pelunasan') ? 'DP Dibayar' : inv.status;
     render();
     toast('Dibuka: ' + inv.nomor);
   } catch(e){ toast('Error: ' + e.message); }
