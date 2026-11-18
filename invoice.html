@@ -883,9 +883,9 @@ function toast(msg){
 function nextNumber(){
   const y = new Date().getFullYear();
   let seq = parseInt(localStorage.getItem(COUNTER_KEY + '_' + y) || '0', 10) + 1;
-  const list = loadAll();
-  // pastikan tidak bentrok dengan nomor yang sudah dipakai
-  const used = new Set(list.map(i => i.num));
+  const used = new Set(loadAll().map(i => i.num));
+  // sertakan nomor yang sudah ada di Sheet
+  (window.SHEET_NUMS || []).forEach(n => used.add(n));
   let candidate = 'RPX/' + y + '/' + String(seq).padStart(3,'0');
   while(used.has(candidate)){
     seq++;
@@ -893,6 +893,24 @@ function nextNumber(){
   }
   localStorage.setItem(COUNTER_KEY + '_' + y, String(seq));
   return candidate;
+}
+
+/** Sinkronkan daftar nomor yang sudah dipakai di Sheet */
+async function syncNumberPool(){
+  try {
+    const d = await fetch(`${SCRIPT_URL}?action=invoiceList`, {cache:'no-store'}).then(r=>r.json());
+    window.SHEET_NUMS = (d.invoices || []).map(v => v.nomor);
+    // naikkan counter lokal ke nomor tertinggi
+    const y = new Date().getFullYear();
+    let maxSeq = 0;
+    window.SHEET_NUMS.forEach(n => {
+      const m = String(n).match(/^RPX\/(\d{4})\/(\d+)$/);
+      if(m && Number(m[1]) === y) maxSeq = Math.max(maxSeq, Number(m[2]));
+    });
+    const cur = parseInt(localStorage.getItem(COUNTER_KEY + '_' + y) || '0', 10);
+    if(maxSeq > cur) localStorage.setItem(COUNTER_KEY + '_' + y, String(maxSeq));
+    return window.SHEET_NUMS;
+  } catch(e){ window.SHEET_NUMS = window.SHEET_NUMS || []; return window.SHEET_NUMS; }
 }
 
 /* ---------- items ---------- */
@@ -1151,7 +1169,10 @@ function applyBooking(b){
   const today = new Date();
   const iso = d => d.toISOString().slice(0,10);
   $('f_date').value = iso(today);
-  if(!$('f_num').value) $('f_num').value = nextNumber();
+  // nomor baru tiap klien — kecuali sedang membuka invoice lama dari riwayat
+  if(!window.OPENING_HISTORY){
+    $('f_num').value = nextNumber();
+  }
 
   // Jatuh tempo pelunasan = H-1 dari tanggal sesi foto (tetap bisa diedit manual)
   if(b.tanggal){
@@ -1607,13 +1628,16 @@ function renderPayments(total){
 }
 
 /* ---------- SIMPAN PEMBAYARAN KE SHEET ---------- */
+let _savingPayments = false;
 async function savePaymentsToSheet(){
+  if(_savingPayments){ return; }
+  _savingPayments = true;
   const nomor = $('f_num').value.trim();
-  if(!nomor){ toast('Nomor invoice kosong'); return; }
+  if(!nomor){ toast('Nomor invoice kosong'); _savingPayments = false; return; }
   const pays = readPayments();
   if(!pays.length){ toast('Belum ada pembayaran'); return; }
 
-  let ok = 0, fail = 0;
+  let ok = 0, dup = 0, fail = 0;
   for(const p of pays){
     try {
       const res = await fetch(SCRIPT_URL, {
@@ -1626,10 +1650,18 @@ async function savePaymentsToSheet(){
         })
       });
       const out = await res.json();
-      out.success ? ok++ : fail++;
+      if(!out.success) fail++;
+      else if(out.duplicate) dup++;
+      else ok++;
     } catch(e){ fail++; }
   }
-  toast(ok + ' pembayaran tersimpan' + (fail ? ', ' + fail + ' gagal' : ''));
+  _savingPayments = false;
+
+  const parts = [];
+  if(ok)  parts.push(ok + ' baru tersimpan');
+  if(dup) parts.push(dup + ' sudah ada (dilewati)');
+  if(fail) parts.push(fail + ' gagal');
+  toast(parts.length ? parts.join(' · ') : 'Tidak ada pembayaran');
 }
 
 /* ---------- persist ---------- */
@@ -1799,6 +1831,7 @@ async function openHistory(){
 }
 
 async function bukaInvoice(nomor){
+  window.OPENING_HISTORY = true;
   try {
     const det = await fetch(`${SCRIPT_URL}?action=invoiceDetail&nomor=${encodeURIComponent(nomor)}`, {cache:'no-store'}).then(r=>r.json());
     if(!det.success){ toast('Gagal memuat: ' + (det.error||'')); return; }
@@ -1823,6 +1856,7 @@ async function bukaInvoice(nomor){
     render();
     toast('Dibuka: ' + inv.nomor);
   } catch(e){ toast('Error: ' + e.message); }
+  window.OPENING_HISTORY = false;
 }
 
 
@@ -1926,6 +1960,14 @@ function newInvoice(){
   document.addEventListener('keydown', e => {
     if((e.ctrlKey || e.metaKey) && e.key === 'p'){ return; } // biarkan browser
     if((e.ctrlKey || e.metaKey) && e.key === 's'){ e.preventDefault(); saveInvoice(); }
+  });
+
+  // sinkronkan nomor invoice dengan Sheet supaya tidak bentrok antar klien
+  syncNumberPool().then(nums => {
+    if(nums && nums.length && !$('f_num').value){
+      $('f_num').value = nextNumber();
+      render();
+    }
   });
 })();
 </script>
