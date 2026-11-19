@@ -176,8 +176,8 @@ body{padding-bottom:90px}
 
   <div class="band">
     <h2>Udah bayar? Kirim buktinya.</h2>
-    <p>Buka WhatsApp admin dan lampirkan screenshot bukti pembayaran beserta kode fotonya.</p>
-    <a class="btn" id="waBukti" href="https://wa.me/6289623290398?text=Halo%20RPXLABS.%20Aku%20udah%20bayar%2C%20ini%20bukti%20pembayarannya%20yaa%0A%0AKode%20Foto%20%3A%20" target="_blank" rel="noopener"><i class="ph-fill ph-whatsapp-logo"></i>Kirim Bukti Bayar</a>
+    <p>Buka WhatsApp admin dan lampirkan screenshot bukti pembayaran. Nominal dan kode foto otomatis terbaca admin dari chat sebelumnya.</p>
+    <a class="btn" id="waBukti" href="https://wa.me/6289623290398?text=Halo%20RPXLABS.%20Aku%20udah%20bayar%2C%20ini%20bukti%20pembayarannya%20yaa" target="_blank" rel="noopener"><i class="ph-fill ph-whatsapp-logo"></i>Kirim Bukti Bayar</a>
   </div>
 
   <div class="foot">
@@ -186,7 +186,7 @@ body{padding-bottom:90px}
   </div>
 
 </div>
-<a class="fab" href="https://wa.me/6289623290398?text=Halo%20RPXLABS.%20Aku%20udah%20bayar%2C%20ini%20bukti%20pembayarannya%20yaa%0A%0AKode%20Foto%20%3A%20" target="_blank" rel="noopener" aria-label="Kirim bukti bayar via WhatsApp"><i class="ph-fill ph-whatsapp-logo"></i></a>
+<a class="fab" href="https://wa.me/6289623290398?text=Halo%20RPXLABS.%20Aku%20udah%20bayar%2C%20ini%20bukti%20pembayarannya%20yaa" target="_blank" rel="noopener" aria-label="Kirim bukti bayar via WhatsApp"><i class="ph-fill ph-whatsapp-logo"></i></a>
 <div class="toast" id="toast">Nomor rekening disalin</div>
 <script>
 document.getElementById('yr').textContent = new Date().getFullYear();
@@ -225,22 +225,6 @@ btn.addEventListener('click', function(){
     showToast('Gagal menyalin, salin manual ya');
   });
 });
-
-/* --- bawa kode foto dari link album bila ada (?kode=1,2,3 atau ?k=1,2,3) --- */
-(function(){
-  var P = new URLSearchParams(location.search);
-  var raw = (P.get('kode') || P.get('k') || '').trim();
-  if (!raw) return;
-  var list = raw.split(/[,\s]+/).filter(Boolean);
-  if (!list.length) return;
-  var baris = list.map(function(k, i){ return (i + 1) + '. ' + k; }).join('\n');
-  var pesan = 'Halo RPXLABS. Aku udah bayar, ini bukti pembayarannya yaa\n\n' +
-              'Kode Foto :\n' + baris + '\n\n' +
-              'Aku kirim bukti pembayarannya yaa';
-  var url = 'https://wa.me/6289623290398?text=' + encodeURIComponent(pesan);
-  document.getElementById('waBukti').href = url;
-  document.querySelector('.fab').href = url;
-})();
 </script>
 </body>
 </html>
