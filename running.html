@@ -376,11 +376,9 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
 
   <div class="fotoyu">
     <div class="fy-head">
-      <i class="ph-fill ph-images"></i>
-      <div>
-        <h3>Fotoyu</h3>
-        <p>Cape ngescroll nyari foto? Cek melalui Fotoyu.</p>
-      </div>
+      <span class="fy-badge"><i class="ph-fill ph-images"></i> Fotoyu</span>
+      <b>Cek Foto Lari Kamu</b>
+      <span class="fy-hsub">Cape ngescroll nyari foto? Cek melalui Fotoyu.</span>
     </div>
     <div class="fy-grid">
       <a class="fy-card" href="https://fotoyu.com/link/fvSUgExuyWs4VtACT" target="_blank" rel="noopener">
@@ -444,11 +442,12 @@ document.getElementById('filters').addEventListener('click', e => {
 
 <style>
 
-  .fotoyu{margin:0 0 34px;border-radius:20px;padding:26px 24px;background:linear-gradient(150deg,rgba(255,255,255,0.06),rgba(255,255,255,0.018) 50%,rgba(255,255,255,0.006));border:1px solid rgba(255,255,255,0.18);color:var(--text);box-shadow:none}
-  .fy-head{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:9px;margin-bottom:20px}
-  .fy-head>i{font-size:1.45rem;color:rgba(255,255,255,0.82);margin-top:0}
-  .fy-head h3{font-family:'Poppins',sans-serif;font-size:1rem;font-weight:700;margin-bottom:5px;color:#fff}
-  .fy-head p{font-size:0.76rem;color:rgba(255,255,255,0.72);line-height:1.6;max-width:44ch}
+  .fotoyu{position:relative;text-align:center;margin:0 0 34px;border-radius:24px;padding:32px 24px 30px;background:linear-gradient(160deg,rgba(255,255,255,0.11) 0%,rgba(255,255,255,0.035) 52%,rgba(255,255,255,0.015) 100%);border:1px solid rgba(255,255,255,0.34);color:var(--text);box-shadow:0 0 70px rgba(255,255,255,0.11),0 18px 46px rgba(0,0,0,0.52);backdrop-filter:blur(16px)}
+  .fy-head{display:flex;flex-direction:column;align-items:center;gap:11px;margin-bottom:24px}
+  .fy-badge{display:inline-flex;align-items:center;gap:7px;font-family:'Nunito',sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.2em;text-transform:uppercase;color:#0a0a0a;background:#fff;border-radius:99px;padding:7px 15px;box-shadow:0 0 24px rgba(255,255,255,0.38)}
+  .fy-badge i{font-size:0.85rem}
+  .fy-head b{display:block;font-family:'Poppins',sans-serif;font-weight:800;font-size:clamp(1.5rem,3.4vw,2.05rem);line-height:1.12;color:#fff;letter-spacing:-.02em;text-shadow:0 0 34px rgba(255,255,255,0.28)}
+  .fy-hsub{font-size:0.84rem;color:rgba(255,255,255,0.72);line-height:1.6;max-width:400px;margin:0 auto}
   .fy-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .fy-card{display:flex;align-items:center;gap:13px;text-decoration:none;color:#0a0a0a;background:linear-gradient(158deg,#ffffff 0%,#f7f7f7 45%,#ebebeb 100%);border:1px solid rgba(255,255,255,0.90);border-radius:14px;padding:15px 16px;box-shadow:0 1px 0 rgba(255,255,255,0.92) inset,0 0 34px rgba(255,255,255,0.38),0 14px 32px rgba(0,0,0,0.46);transition:all .22s}
   .fy-card:hover{background:linear-gradient(158deg,#ffffff 0%,#fcfcfc 45%,#f3f3f3 100%);border-color:#fff;transform:translateY(-2px);box-shadow:0 1px 0 rgba(255,255,255,1) inset,0 0 50px rgba(255,255,255,0.60),0 20px 40px rgba(0,0,0,0.50)}
@@ -458,7 +457,7 @@ document.getElementById('filters').addEventListener('click', e => {
   .fy-sub{font-size:0.66rem;color:rgba(10,10,10,0.82);line-height:1.45}
   .fy-arrow{margin-left:auto;flex-shrink:0;font-size:0.95rem;color:rgba(10,10,10,0.72);transition:all .22s}
   .fy-card:hover .fy-arrow{color:#000;transform:translate(2px,-2px)}
-  @media(max-width:640px){.fy-grid{grid-template-columns:1fr}}
+  @media(max-width:640px){.fy-grid{grid-template-columns:1fr}.fotoyu{padding:26px 18px 24px;border-radius:20px;margin-bottom:24px}.fy-head{gap:9px;margin-bottom:18px}.fy-badge{font-size:0.54rem;padding:6px 12px;letter-spacing:0.16em}.fy-head b{font-size:clamp(1.3rem,6.2vw,1.75rem)}.fy-hsub{font-size:0.76rem}}
   .pay{margin-top:44px;background:var(--glass);border:1px solid var(--line-soft);border-radius:20px;padding:30px 24px;backdrop-filter:blur(16px)}
   .pay h2{display:flex;align-items:center;justify-content:center;gap:9px;font-family:'Poppins',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:9px;letter-spacing:0.01em}
   .pay h2 i{color:rgba(255,255,255,0.85);font-size:1.05em}
