@@ -1086,6 +1086,10 @@
             try {
                 // Get selected paket & calculate duration
                 const selectedPaket = paketSelect.options[paketSelect.selectedIndex].text;
+                // Jeda antar sesi (menit) — WAJIB sama dengan SESI_JEDA_MENIT di server.
+                // Sesi booked memblokir slot selama durasi + jeda, jadi sesi baru tidak
+                // boleh mulai di menit terakhir sesi lama (tanpa jeda = langsung ngegas).
+                const SESI_JEDA_MENIT = 60;
                 let durationMinutes = 60; // default Silver
                 if (selectedPaket.includes('Gold')) durationMinutes = 90;
                 if (selectedPaket.includes('Platinum')) durationMinutes = 120;
@@ -1101,6 +1105,11 @@
                 jamSelect.innerHTML = '<option value="">-- Pilih slot waktu --</option>';
                 
                 TIME_SLOTS.forEach(slot => {
+                    // Skip jam yang sesinya lewat 17:00 (fallback tetap hormati jam kerja)
+                    if (slot.value !== 'custom') {
+                        const [fh, fm] = slot.value.split(':').map(Number);
+                        if ((fh * 60 + fm) + durationMinutes + SESI_JEDA_MENIT > 17 * 60) return;
+                    }
                     const option = document.createElement('option');
                     option.value = slot.value;
                     
@@ -1116,19 +1125,16 @@
                         option.textContent = `${slot.value} - ${endStr}`;
                     }
                     
-                    // Blokir jam yang sesinya melewati jam kerja (05:00-17:00)
+                    // Jam yang sesinya (durasi + jeda) tidak selesai sebelum 17:00 tidak ditawarkan
                     const _overWork = (() => {
+                        if (slot.value === 'custom') return false;
                         const [h, m] = slot.value.split(':').map(Number);
-                        return (h * 60 + m) + durationMinutes > 17 * 60;
+                        return (h * 60 + m) + durationMinutes + SESI_JEDA_MENIT > 17 * 60;
                     })();
-                    if (slot.value !== 'custom' && _overWork) {
-                        option.disabled = true;
-                        option.textContent += ' (Lewat jam kerja)';
-                        option.style.color = '#999';
-                    }
+                    if (_overWork) return; // skip, jangan tampilkan
 
                     // Check if slot is available (except "custom")
-                    if (slot.value !== 'custom' && !_overWork) {
+                    if (slot.value !== 'custom') {
                         const [slotHours, slotMins] = slot.value.split(':').map(Number);
                         const slotStart = new Date(2000, 0, 1, slotHours, slotMins);
                         const slotEnd = new Date(slotStart.getTime() + durationMinutes * 60000);
@@ -1173,13 +1179,7 @@
                     if (slot.value === 'custom') {
                         option.textContent = slot.label;
                     } else {
-                        // Blokir jam yang sesinya melewati jam kerja 17:00
-                        const [fh, fm] = slot.value.split(':').map(Number);
-                        if ((fh * 60 + fm) + durationMinutes > 17 * 60) {
-                            option.disabled = true;
-                            option.textContent += ' (Lewat jam kerja)';
-                            option.style.color = '#999';
-                        }
+
                         // Tampilkan start - end time
                         const [slotHours, slotMins] = slot.value.split(':').map(Number);
                         const slotStart = new Date(2000, 0, 1, slotHours, slotMins);
