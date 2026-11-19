@@ -78,10 +78,13 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
 .pr .val{font-size:1.02rem}
 .pr .unit{font-size:0.6rem}
 .grid{grid-template-columns:1fr;gap:10px}
-.steps{grid-template-columns:1fr;gap:16px}
-.step{gap:8px;align-items:center;text-align:center}
+.steps{grid-template-columns:repeat(2,1fr);gap:12px}
+.step{gap:7px;align-items:center;text-align:center}
 .step .n{flex-shrink:0}
-.howto{padding:26px 20px}
+.howto{padding:22px 14px}
+.step .n{width:23px;height:23px;font-size:0.62rem;margin-bottom:8px}
+.step h4{font-size:0.68rem}
+.step p{font-size:0.62rem;max-width:16ch}
 .head{padding:10px 0 30px}
 }
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
@@ -457,7 +460,7 @@ document.getElementById('filters').addEventListener('click', e => {
   .fy-sub{font-size:0.66rem;color:rgba(10,10,10,0.82);line-height:1.45}
   .fy-arrow{margin-left:auto;flex-shrink:0;font-size:0.95rem;color:rgba(10,10,10,0.72);transition:all .22s}
   .fy-card:hover .fy-arrow{color:#000;transform:translate(2px,-2px)}
-  @media(max-width:640px){.fy-grid{grid-template-columns:1fr}.fotoyu{padding:26px 18px 24px;border-radius:20px;margin-bottom:24px}.fy-head{gap:9px;margin-bottom:18px}.fy-badge{font-size:0.54rem;padding:6px 12px;letter-spacing:0.16em}.fy-head b{font-size:clamp(1.3rem,6.2vw,1.75rem)}.fy-hsub{font-size:0.76rem}}
+  @media(max-width:640px){.fy-grid{grid-template-columns:1fr 1fr;gap:9px}.fotoyu{padding:26px 18px 24px;border-radius:20px;margin-bottom:24px}.fy-head{gap:9px;margin-bottom:18px}.fy-badge{font-size:0.54rem;padding:6px 12px;letter-spacing:0.16em}.fy-head b{font-size:clamp(1.3rem,6.2vw,1.75rem)}.fy-hsub{font-size:0.76rem}.fy-card{flex-direction:column;align-items:center;text-align:center;padding:14px 10px;gap:8px}.fy-arrow{margin-left:0}.fy-txt{flex:none;align-items:center;text-align:center}.fy-ico{width:34px;height:34px;font-size:0.95rem;border-radius:10px}.fy-lbl{font-size:0.68rem}.fy-sub{font-size:0.58rem}}
   .pay{margin-top:44px;background:var(--glass);border:1px solid var(--line-soft);border-radius:20px;padding:30px 24px;backdrop-filter:blur(16px)}
   .pay h2{display:flex;align-items:center;justify-content:center;gap:9px;font-family:'Poppins',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:9px;letter-spacing:0.01em}
   .pay h2 i{color:rgba(255,255,255,0.85);font-size:1.05em}
