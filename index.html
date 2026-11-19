@@ -158,6 +158,30 @@ nav .navlogo:hover{opacity:0.82;transform:translateY(-1px)}
 }
 .work a:hover span{opacity:1;transform:none}
 
+/* ---------- LIGHTBOX ---------- */
+.lb{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;
+  background:rgba(0,0,0,0.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);opacity:0;transition:opacity .24s}
+.lb.on{display:flex;opacity:1}
+.lb img{max-width:min(94vw,1000px);max-height:88vh;width:auto;height:auto;object-fit:contain;border-radius:10px;
+  box-shadow:0 0 60px rgba(0,0,0,0.9);border:1px solid rgba(255,255,255,0.14)}
+.lb .cap{position:fixed;left:0;right:0;bottom:22px;text-align:center;font-size:0.64rem;font-weight:900;
+  letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.5)}
+.lb .x,.lb .pv,.lb .nx{position:fixed;z-index:2;display:grid;place-items:center;background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.2);color:#fff;cursor:pointer;border-radius:50%;font-size:1.15rem;
+  transition:all .2s;backdrop-filter:blur(8px)}
+.lb .x:hover,.lb .pv:hover,.lb .nx:hover{background:rgba(255,255,255,0.18);border-color:rgba(255,255,255,0.55)}
+.lb .x{top:20px;right:20px;width:44px;height:44px}
+.lb .pv,.lb .nx{top:50%;transform:translateY(-50%);width:48px;height:48px}
+.lb .pv{left:16px}
+.lb .nx{right:16px}
+.lb .hint{position:fixed;top:24px;left:20px;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(255,255,255,0.34);font-weight:800}
+@media(max-width:640px){
+  .lb .pv,.lb .nx{width:40px;height:40px;font-size:1rem}
+  .lb .x{width:38px;height:38px;top:12px;right:12px}
+  .lb .hint{display:none}
+}
+
 /* ---------- CTA BAND ---------- */
 .band{text-align:center;padding:64px 30px;border-radius:24px;background:linear-gradient(152deg,rgba(220,220,220,0.86) 0%,rgba(200,200,200,0.83) 50%,rgba(180,180,180,0.80) 100%);border:1px solid rgba(255,255,255,0.24);color:#0a0a0a;box-shadow:0 1px 0 rgba(255,255,255,0.26) inset,0 14px 34px rgba(0,0,0,0.45);margin-bottom:70px}
 .band h2{font-family:'Poppins',sans-serif;font-size:clamp(1.15rem,2.9vw,1.62rem);font-weight:700;margin-bottom:12px}
@@ -398,12 +422,12 @@ footer .fnote{font-size:0.66rem;color:rgba(255,255,255,0.32);letter-spacing:0.1e
       <p>Dikerjakan sendiri — tanpa tim besar.</p>
     </div>
     <div class="work rv" id="workGrid">
-      <a href="https://www.instagram.com/rpxlabs/" target="_blank" rel="noopener"><img loading="eager" decoding="async" width="800" height="1000" src="thumb/wisuda-01.jpg" alt="Wisuda RPXLABS Palangka Raya"><span>Graduation</span></a>
-      <a href="https://www.instagram.com/rpxlabs/" target="_blank" rel="noopener"><img loading="eager" decoding="async" width="800" height="1000" src="thumb/padel-02.jpg" alt="Sesi padel RPXLABS"><span>Padel</span></a>
-      <a href="https://www.instagram.com/rpxlabs/" target="_blank" rel="noopener"><img loading="eager" decoding="async" width="800" height="1000" src="thumb/running-01.jpg" alt="Event running RPXLABS"><span>Running</span></a>
-      <a href="https://www.instagram.com/rpxlabs/" target="_blank" rel="noopener"><img loading="lazy" decoding="async" width="800" height="1000" src="thumb/event-02.jpg" alt="Dokumentasi event RPXLABS"><span>Event</span></a>
-      <a href="https://www.instagram.com/rpxlabs/" target="_blank" rel="noopener"><img loading="lazy" decoding="async" width="800" height="1000" src="thumb/portrait-01.jpg" alt="Portrait RPXLABS"><span>Portrait</span></a>
-      <a href="https://www.instagram.com/rpxlabs/" target="_blank" rel="noopener"><img loading="lazy" decoding="async" width="800" height="1000" src="thumb/wisuda-04.jpg" alt="Wisuda hijab RPXLABS"><span>Graduation</span></a>
+      <a href="full/wisuda-01.jpg" class="shot" data-full="full/wisuda-01.jpg" data-cap="Graduation"><img loading="eager" decoding="async" width="800" height="1000" src="thumb/wisuda-01.jpg" alt="Wisuda RPXLABS Palangka Raya"><span>Graduation</span></a>
+      <a href="full/padel-02.jpg" class="shot" data-full="full/padel-02.jpg" data-cap="Padel"><img loading="eager" decoding="async" width="800" height="1000" src="thumb/padel-02.jpg" alt="Sesi padel RPXLABS"><span>Padel</span></a>
+      <a href="full/running-01.jpg" class="shot" data-full="full/running-01.jpg" data-cap="Running"><img loading="eager" decoding="async" width="800" height="1000" src="thumb/running-01.jpg" alt="Event running RPXLABS"><span>Running</span></a>
+      <a href="full/event-02.jpg" class="shot" data-full="full/event-02.jpg" data-cap="Event"><img loading="lazy" decoding="async" width="800" height="1000" src="thumb/event-02.jpg" alt="Dokumentasi event RPXLABS"><span>Event</span></a>
+      <a href="full/portrait-01.jpg" class="shot" data-full="full/portrait-01.jpg" data-cap="Portrait"><img loading="lazy" decoding="async" width="800" height="1000" src="thumb/portrait-01.jpg" alt="Portrait RPXLABS"><span>Portrait</span></a>
+      <a href="full/wisuda-04.jpg" class="shot" data-full="full/wisuda-04.jpg" data-cap="Graduation"><img loading="lazy" decoding="async" width="800" height="1000" src="thumb/wisuda-04.jpg" alt="Wisuda hijab RPXLABS"><span>Graduation</span></a>
     </div>
   </section>
 
@@ -428,6 +452,48 @@ footer .fnote{font-size:0.66rem;color:rgba(255,255,255,0.32);letter-spacing:0.1e
 </div>
 
 <a class="fab" href="https://wa.me/6289623290398?text=Halo%20RPXLABS%2C%20saya%20mau%20tanya%20soal%20booking%20foto." target="_blank" rel="noopener" aria-label="WhatsApp"><i class="ph-fill ph-whatsapp-logo"></i></a>
+
+<div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Pratinjau foto">
+  <div class="hint">Klik luar / Esc untuk tutup</div>
+  <button class="x" id="lbClose" aria-label="Tutup"><i class="ph ph-x"></i></button>
+  <button class="pv" id="lbPrev" aria-label="Sebelumnya"><i class="ph ph-caret-left"></i></button>
+  <button class="nx" id="lbNext" aria-label="Berikutnya"><i class="ph ph-caret-right"></i></button>
+  <img id="lbImg" src="" alt="">
+  <div class="cap" id="lbCap"></div>
+</div>
+
+<script>
+/* lightbox galeri karya */
+(() => {
+  const shots = [...document.querySelectorAll('#workGrid .shot')];
+  const lb = document.getElementById('lightbox');
+  const img = document.getElementById('lbImg');
+  const cap = document.getElementById('lbCap');
+  let i = 0;
+
+  const show = n => {
+    i = (n + shots.length) % shots.length;
+    const a = shots[i];
+    img.src = a.dataset.full;
+    img.alt = a.querySelector('img').alt;
+    cap.textContent = a.dataset.cap;
+  };
+  const open = n => { show(n); lb.classList.add('on'); document.body.style.overflow = 'hidden'; };
+  const close = () => { lb.classList.remove('on'); document.body.style.overflow = ''; img.src = ''; };
+
+  shots.forEach((a, n) => a.addEventListener('click', e => { e.preventDefault(); open(n); }));
+  document.getElementById('lbClose').addEventListener('click', close);
+  document.getElementById('lbPrev').addEventListener('click', e => { e.stopPropagation(); show(i - 1); });
+  document.getElementById('lbNext').addEventListener('click', e => { e.stopPropagation(); show(i + 1); });
+  lb.addEventListener('click', e => { if (e.target === lb) close(); });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('on')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') show(i - 1);
+    if (e.key === 'ArrowRight') show(i + 1);
+  });
+})();
+</script>
 
 <script>
 /* reveal on scroll */
