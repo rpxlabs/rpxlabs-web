@@ -46,6 +46,9 @@ color:rgba(255,255,255,0.72);backdrop-filter:blur(8px);opacity:0;transform:trans
 .tile:hover .igb{opacity:1;transform:none}
 .tile .ph{position:absolute;inset:0;display:grid;place-items:center;font-size:2.1rem;color:rgba(255,255,255,0.14);z-index:2;transition:all .35s}
 .tile:hover .ph{color:rgba(255,255,255,0.3)}
+.tile .im{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;
+transition:transform .5s cubic-bezier(.4,0,.2,1),filter .4s;filter:grayscale(0.22) contrast(1.03)}
+.tile:hover .im{transform:scale(1.05);filter:grayscale(0) contrast(1.07)}
 .ov{position:absolute;left:0;right:0;bottom:0;padding:34px 13px 12px;z-index:2;
 background:linear-gradient(to top,rgba(0,0,0,0.82),transparent);
 opacity:0;transform:translateY(6px);transition:all .3s}
@@ -65,6 +68,30 @@ opacity:0;transform:translateY(6px);transition:all .3s}
 .head{padding:10px 0 26px}
 }
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
+
+/* ---------- LIGHTBOX ---------- */
+.lb{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;
+background:rgba(0,0,0,0.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);opacity:0;transition:opacity .24s}
+.lb.on{display:flex;opacity:1}
+.lb img{max-width:min(94vw,1000px);max-height:88vh;width:auto;height:auto;object-fit:contain;border-radius:10px;
+box-shadow:0 0 60px rgba(0,0,0,0.9);border:1px solid rgba(255,255,255,0.14)}
+.lb .cap{position:fixed;left:0;right:0;bottom:22px;text-align:center;font-size:0.64rem;font-weight:900;
+letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.5);padding:0 20px}
+.lb .x,.lb .pv,.lb .nx{position:fixed;z-index:2;display:grid;place-items:center;background:rgba(255,255,255,0.06);
+border:1px solid rgba(255,255,255,0.2);color:#fff;cursor:pointer;border-radius:50%;font-size:1.15rem;
+transition:all .2s;backdrop-filter:blur(8px)}
+.lb .x:hover,.lb .pv:hover,.lb .nx:hover{background:rgba(255,255,255,0.18);border-color:rgba(255,255,255,0.55)}
+.lb .x{top:20px;right:20px;width:44px;height:44px}
+.lb .pv,.lb .nx{top:50%;transform:translateY(-50%);width:48px;height:48px}
+.lb .pv{left:16px}
+.lb .nx{right:16px}
+.lb .hint{position:fixed;top:24px;left:20px;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;
+color:rgba(255,255,255,0.34);font-weight:800}
+@media(max-width:640px){
+.lb .pv,.lb .nx{width:40px;height:40px;font-size:1rem}
+.lb .x{width:38px;height:38px;top:12px;right:12px}
+.lb .hint{display:none}
+}
 </style>
 
     <!-- SEO -->
@@ -163,7 +190,7 @@ opacity:0;transform:translateY(6px);transition:all .3s}
   <div class="head">
     <div class="kick"><i class="ph-fill ph-images"></i>Portfolio</div>
     <h1>Kumpulan karya.</h1>
-    <p>Klik untuk melihat versi lengkap di Instagram.</p>
+    <p>Klik foto untuk melihat versi besarnya.</p>
   </div>
 
   <div class="filters" id="filters">
@@ -176,59 +203,280 @@ opacity:0;transform:translateY(6px);transition:all .3s}
   </div>
 
   <div class="grid" id="grid">
-    <a class="tile cat-graduation" href="https://www.instagram.com/p/DfK5j5qk0r-/" target="_blank" rel="noopener" data-cat="Graduation">
-      <div class="tex"></div>
-      <div class="ph"><i class="ph-fill ph-graduation-cap"></i></div>
-      <div class="ov"><span class="ct">Graduation</span><span class="cs">Wisuda Session</span></div>
-      <span class="igb"><i class="ph-fill ph-instagram-logo"></i>Lihat di IG</span>
+    <a class="tile cat-graduation shot" href="full/wisuda-16.jpg" data-full="full/wisuda-16.jpg" data-cat="Graduation" data-cap="Graduation &middot; Toga dan ijazah">
+      <img class="im" src="thumb/wisuda-16.jpg" alt="Karya fotografi RPXLABS toga dan ijazah, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Graduation</span><span class="cs">Toga dan ijazah</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
     </a>
-    <a class="tile cat-sport" href="https://www.instagram.com/p/DetCjcjgd9m/" target="_blank" rel="noopener" data-cat="Sport">
-      <div class="tex"></div>
-      <div class="ph"><i class="ph-fill ph-trophy"></i></div>
-      <div class="ov"><span class="ct">Sport</span><span class="cs">Padel Session</span></div>
-      <span class="igb"><i class="ph-fill ph-instagram-logo"></i>Lihat di IG</span>
+    <a class="tile cat-graduation shot" href="full/wisuda-12.jpg" data-full="full/wisuda-12.jpg" data-cat="Graduation" data-cap="Graduation &middot; Wisuda ijazah">
+      <img class="im" src="thumb/wisuda-12.jpg" alt="Karya fotografi RPXLABS wisuda ijazah, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Graduation</span><span class="cs">Wisuda ijazah</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
     </a>
-    <a class="tile cat-sport" href="https://www.instagram.com/p/DesZHNAkz_O/" target="_blank" rel="noopener" data-cat="Sport">
-      <div class="tex"></div>
-      <div class="ph"><i class="ph-fill ph-trophy"></i></div>
-      <div class="ov"><span class="ct">Sport</span><span class="cs">Padel Session</span></div>
-      <span class="igb"><i class="ph-fill ph-instagram-logo"></i>Lihat di IG</span>
+    <a class="tile cat-graduation shot" href="full/wisuda-13.jpg" data-full="full/wisuda-13.jpg" data-cat="Graduation" data-cap="Graduation &middot; Wisuda payung">
+      <img class="im" src="thumb/wisuda-13.jpg" alt="Karya fotografi RPXLABS wisuda payung, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Graduation</span><span class="cs">Wisuda payung</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
     </a>
-    <a class="tile cat-running" href="https://www.instagram.com/rpxlabs/" target="_blank" rel="noopener" data-cat="Running">
-      <div class="tex"></div>
-      <div class="ph"><i class="ph-fill ph-person-simple-run"></i></div>
-      <div class="ov"><span class="ct">Running</span><span class="cs">Event Running</span></div>
-      <span class="igb"><i class="ph-fill ph-instagram-logo"></i>Lihat di IG</span>
+    <a class="tile cat-graduation shot" href="full/wisuda-14.jpg" data-full="full/wisuda-14.jpg" data-cat="Graduation" data-cap="Graduation &middot; Wisuda kain">
+      <img class="im" src="thumb/wisuda-14.jpg" alt="Karya fotografi RPXLABS wisuda kain, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Graduation</span><span class="cs">Wisuda kain</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
     </a>
-    <a class="tile cat-event" href="https://www.instagram.com/rpxlabs/" target="_blank" rel="noopener" data-cat="Event">
-      <div class="tex"></div>
-      <div class="ph"><i class="ph-fill ph-confetti"></i></div>
-      <div class="ov"><span class="ct">Event</span><span class="cs">Dokumentasi</span></div>
-      <span class="igb"><i class="ph-fill ph-instagram-logo"></i>Lihat di IG</span>
+    <a class="tile cat-graduation shot" href="full/wisuda-10.jpg" data-full="full/wisuda-10.jpg" data-cat="Graduation" data-cap="Graduation &middot; Wisuda patung merah">
+      <img class="im" src="thumb/wisuda-10.jpg" alt="Karya fotografi RPXLABS wisuda patung merah, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Graduation</span><span class="cs">Wisuda patung merah</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
     </a>
-    <a class="tile cat-graduation" href="https://www.instagram.com/rpxlabs/" target="_blank" rel="noopener" data-cat="Graduation">
-      <div class="tex"></div>
-      <div class="ph"><i class="ph-fill ph-graduation-cap"></i></div>
-      <div class="ov"><span class="ct">Graduation</span><span class="cs">Wisuda Keluarga</span></div>
-      <span class="igb"><i class="ph-fill ph-instagram-logo"></i>Lihat di IG</span>
+    <a class="tile cat-graduation shot" href="full/wisuda-11.jpg" data-full="full/wisuda-11.jpg" data-cat="Graduation" data-cap="Graduation &middot; Wisuda dinding merah">
+      <img class="im" src="thumb/wisuda-11.jpg" alt="Karya fotografi RPXLABS wisuda dinding merah, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Graduation</span><span class="cs">Wisuda dinding merah</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
     </a>
-    <a class="tile cat-portrait" href="https://www.instagram.com/rpxlabs/" target="_blank" rel="noopener" data-cat="Portrait">
-      <div class="tex"></div>
-      <div class="ph"><i class="ph-fill ph-user-focus"></i></div>
-      <div class="ov"><span class="ct">Portrait</span><span class="cs">Portrait</span></div>
-      <span class="igb"><i class="ph-fill ph-instagram-logo"></i>Lihat di IG</span>
+    <a class="tile cat-graduation shot" href="full/wisuda-07.jpg" data-full="full/wisuda-07.jpg" data-cat="Graduation" data-cap="Graduation &middot; Wisuda batik">
+      <img class="im" src="thumb/wisuda-07.jpg" alt="Karya fotografi RPXLABS wisuda batik, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Graduation</span><span class="cs">Wisuda batik</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
     </a>
-    <a class="tile cat-running" href="https://www.instagram.com/rpxlabs/" target="_blank" rel="noopener" data-cat="Running">
-      <div class="tex"></div>
-      <div class="ph"><i class="ph-fill ph-person-simple-run"></i></div>
-      <div class="ov"><span class="ct">Running</span><span class="cs">Daily Run</span></div>
-      <span class="igb"><i class="ph-fill ph-instagram-logo"></i>Lihat di IG</span>
+    <a class="tile cat-graduation shot" href="full/wisuda-19.jpg" data-full="full/wisuda-19.jpg" data-cat="Graduation" data-cap="Graduation &middot; Wisuda tangan terbuka">
+      <img class="im" src="thumb/wisuda-19.jpg" alt="Karya fotografi RPXLABS wisuda tangan terbuka, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Graduation</span><span class="cs">Wisuda tangan terbuka</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
     </a>
-    <a class="tile cat-event" href="https://www.instagram.com/rpxlabs/" target="_blank" rel="noopener" data-cat="Event">
-      <div class="tex"></div>
-      <div class="ph"><i class="ph-fill ph-confetti"></i></div>
-      <div class="ov"><span class="ct">Event</span><span class="cs">Gathering</span></div>
-      <span class="igb"><i class="ph-fill ph-instagram-logo"></i>Lihat di IG</span>
+    <a class="tile cat-graduation shot" href="full/wisuda-03.jpg" data-full="full/wisuda-03.jpg" data-cat="Graduation" data-cap="Graduation &middot; Toga di tangan">
+      <img class="im" src="thumb/wisuda-03.jpg" alt="Karya fotografi RPXLABS toga di tangan, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Graduation</span><span class="cs">Toga di tangan</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-graduation shot" href="full/wisuda-09.jpg" data-full="full/wisuda-09.jpg" data-cat="Graduation" data-cap="Graduation &middot; Empat wisudawan">
+      <img class="im" src="thumb/wisuda-09.jpg" alt="Karya fotografi RPXLABS empat wisudawan, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Graduation</span><span class="cs">Empat wisudawan</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-graduation shot" href="full/wisuda-01.jpg" data-full="full/wisuda-01.jpg" data-cat="Graduation" data-cap="Graduation &middot; Wisuda kebaya">
+      <img class="im" src="thumb/wisuda-01.jpg" alt="Karya fotografi RPXLABS wisuda kebaya, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Graduation</span><span class="cs">Wisuda kebaya</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-graduation shot" href="full/wisuda-18.jpg" data-full="full/wisuda-18.jpg" data-cat="Graduation" data-cap="Graduation &middot; Wisuda tiang">
+      <img class="im" src="thumb/wisuda-18.jpg" alt="Karya fotografi RPXLABS wisuda tiang, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Graduation</span><span class="cs">Wisuda tiang</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-graduation shot" href="full/wisuda-15.jpg" data-full="full/wisuda-15.jpg" data-cat="Graduation" data-cap="Graduation &middot; Wisuda duduk">
+      <img class="im" src="thumb/wisuda-15.jpg" alt="Karya fotografi RPXLABS wisuda duduk, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Graduation</span><span class="cs">Wisuda duduk</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-graduation shot" href="full/wisuda-04.jpg" data-full="full/wisuda-04.jpg" data-cat="Graduation" data-cap="Graduation &middot; Toga dramatis">
+      <img class="im" src="thumb/wisuda-04.jpg" alt="Karya fotografi RPXLABS toga dramatis, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Graduation</span><span class="cs">Toga dramatis</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-graduation shot" href="full/wisuda-17.jpg" data-full="full/wisuda-17.jpg" data-cat="Graduation" data-cap="Graduation &middot; Detail medali">
+      <img class="im" src="thumb/wisuda-17.jpg" alt="Karya fotografi RPXLABS detail medali, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Graduation</span><span class="cs">Detail medali</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-graduation shot" href="full/wisuda-05.jpg" data-full="full/wisuda-05.jpg" data-cat="Graduation" data-cap="Graduation &middot; Rombongan wisuda">
+      <img class="im" src="thumb/wisuda-05.jpg" alt="Karya fotografi RPXLABS rombongan wisuda, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Graduation</span><span class="cs">Rombongan wisuda</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-graduation shot" href="full/wisuda-08.jpg" data-full="full/wisuda-08.jpg" data-cat="Graduation" data-cap="Graduation &middot; Wisuda gelap">
+      <img class="im" src="thumb/wisuda-08.jpg" alt="Karya fotografi RPXLABS wisuda gelap, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Graduation</span><span class="cs">Wisuda gelap</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-graduation shot" href="full/wisuda-02.jpg" data-full="full/wisuda-02.jpg" data-cat="Graduation" data-cap="Graduation &middot; Siluet wisuda">
+      <img class="im" src="thumb/wisuda-02.jpg" alt="Karya fotografi RPXLABS siluet wisuda, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Graduation</span><span class="cs">Siluet wisuda</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-graduation shot" href="full/wisuda-06.jpg" data-full="full/wisuda-06.jpg" data-cat="Graduation" data-cap="Graduation &middot; Wisuda malam">
+      <img class="im" src="thumb/wisuda-06.jpg" alt="Karya fotografi RPXLABS wisuda malam, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Graduation</span><span class="cs">Wisuda malam</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-sport shot" href="full/padel-08.jpg" data-full="full/padel-08.jpg" data-cat="Sport" data-cap="Sport &middot; Padel siap stance">
+      <img class="im" src="thumb/padel-08.jpg" alt="Karya fotografi RPXLABS padel siap stance, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Sport</span><span class="cs">Padel siap stance</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-sport shot" href="full/padel-07.jpg" data-full="full/padel-07.jpg" data-cat="Sport" data-cap="Sport &middot; Padel pria">
+      <img class="im" src="thumb/padel-07.jpg" alt="Karya fotografi RPXLABS padel pria, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Sport</span><span class="cs">Padel pria</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-sport shot" href="full/padel-01.jpg" data-full="full/padel-01.jpg" data-cat="Sport" data-cap="Sport &middot; Sesi padel">
+      <img class="im" src="thumb/padel-01.jpg" alt="Karya fotografi RPXLABS sesi padel, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Sport</span><span class="cs">Sesi padel</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-sport shot" href="full/padel-10.jpg" data-full="full/padel-10.jpg" data-cat="Sport" data-cap="Sport &middot; Padel wanita">
+      <img class="im" src="thumb/padel-10.jpg" alt="Karya fotografi RPXLABS padel wanita, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Sport</span><span class="cs">Padel wanita</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-sport shot" href="full/padel-14.jpg" data-full="full/padel-14.jpg" data-cat="Sport" data-cap="Sport &middot; Padel malam">
+      <img class="im" src="thumb/padel-14.jpg" alt="Karya fotografi RPXLABS padel malam, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Sport</span><span class="cs">Padel malam</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-sport shot" href="full/padel-15.jpg" data-full="full/padel-15.jpg" data-cat="Sport" data-cap="Sport &middot; Padel night court">
+      <img class="im" src="thumb/padel-15.jpg" alt="Karya fotografi RPXLABS padel night court, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Sport</span><span class="cs">Padel night court</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-sport shot" href="full/padel-03.jpg" data-full="full/padel-03.jpg" data-cat="Sport" data-cap="Sport &middot; Gowes rombongan">
+      <img class="im" src="thumb/padel-03.jpg" alt="Karya fotografi RPXLABS gowes rombongan, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Sport</span><span class="cs">Gowes rombongan</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-sport shot" href="full/padel-04.jpg" data-full="full/padel-04.jpg" data-cat="Sport" data-cap="Sport &middot; Gowes peloton">
+      <img class="im" src="thumb/padel-04.jpg" alt="Karya fotografi RPXLABS gowes peloton, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Sport</span><span class="cs">Gowes peloton</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-sport shot" href="full/padel-05.jpg" data-full="full/padel-05.jpg" data-cat="Sport" data-cap="Sport &middot; Gowes tikungan">
+      <img class="im" src="thumb/padel-05.jpg" alt="Karya fotografi RPXLABS gowes tikungan, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Sport</span><span class="cs">Gowes tikungan</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-sport shot" href="full/padel-06.jpg" data-full="full/padel-06.jpg" data-cat="Sport" data-cap="Sport &middot; Gowes depan kamera">
+      <img class="im" src="thumb/padel-06.jpg" alt="Karya fotografi RPXLABS gowes depan kamera, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Sport</span><span class="cs">Gowes depan kamera</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-sport shot" href="full/padel-16.jpg" data-full="full/padel-16.jpg" data-cat="Sport" data-cap="Sport &middot; Padel tiga frame">
+      <img class="im" src="thumb/padel-16.jpg" alt="Karya fotografi RPXLABS padel tiga frame, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Sport</span><span class="cs">Padel tiga frame</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-sport shot" href="full/padel-09.jpg" data-full="full/padel-09.jpg" data-cat="Sport" data-cap="Sport &middot; Padel istirahat">
+      <img class="im" src="thumb/padel-09.jpg" alt="Karya fotografi RPXLABS padel istirahat, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Sport</span><span class="cs">Padel istirahat</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-sport shot" href="full/padel-12.jpg" data-full="full/padel-12.jpg" data-cat="Sport" data-cap="Sport &middot; Padel pink">
+      <img class="im" src="thumb/padel-12.jpg" alt="Karya fotografi RPXLABS padel pink, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Sport</span><span class="cs">Padel pink</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-sport shot" href="full/padel-11.jpg" data-full="full/padel-11.jpg" data-cat="Sport" data-cap="Sport &middot; Padel tipografi">
+      <img class="im" src="thumb/padel-11.jpg" alt="Karya fotografi RPXLABS padel tipografi, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Sport</span><span class="cs">Padel tipografi</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-sport shot" href="full/padel-02.jpg" data-full="full/padel-02.jpg" data-cat="Sport" data-cap="Sport &middot; Motion padel">
+      <img class="im" src="thumb/padel-02.jpg" alt="Karya fotografi RPXLABS motion padel, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Sport</span><span class="cs">Motion padel</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-sport shot" href="full/padel-13.jpg" data-full="full/padel-13.jpg" data-cat="Sport" data-cap="Sport &middot; Padel blur">
+      <img class="im" src="thumb/padel-13.jpg" alt="Karya fotografi RPXLABS padel blur, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Sport</span><span class="cs">Padel blur</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-running shot" href="full/running-04.jpg" data-full="full/running-04.jpg" data-cat="Running" data-cap="Running &middot; Pelari hijab">
+      <img class="im" src="thumb/running-04.jpg" alt="Karya fotografi RPXLABS pelari hijab, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Running</span><span class="cs">Pelari hijab</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-running shot" href="full/running-02.jpg" data-full="full/running-02.jpg" data-cat="Running" data-cap="Running &middot; Pelari wanita">
+      <img class="im" src="thumb/running-02.jpg" alt="Karya fotografi RPXLABS pelari wanita, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Running</span><span class="cs">Pelari wanita</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-running shot" href="full/running-05.jpg" data-full="full/running-05.jpg" data-cat="Running" data-cap="Running &middot; Pelari ungu">
+      <img class="im" src="thumb/running-05.jpg" alt="Karya fotografi RPXLABS pelari ungu, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Running</span><span class="cs">Pelari ungu</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-running shot" href="full/running-01.jpg" data-full="full/running-01.jpg" data-cat="Running" data-cap="Running &middot; Pelari pria">
+      <img class="im" src="thumb/running-01.jpg" alt="Karya fotografi RPXLABS pelari pria, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Running</span><span class="cs">Pelari pria</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-running shot" href="full/running-03.jpg" data-full="full/running-03.jpg" data-cat="Running" data-cap="Running &middot; Rombongan pelari">
+      <img class="im" src="thumb/running-03.jpg" alt="Karya fotografi RPXLABS rombongan pelari, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Running</span><span class="cs">Rombongan pelari</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-running shot" href="full/running-06.jpg" data-full="full/running-06.jpg" data-cat="Running" data-cap="Running &middot; Jalan kaki">
+      <img class="im" src="thumb/running-06.jpg" alt="Karya fotografi RPXLABS jalan kaki, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Running</span><span class="cs">Jalan kaki</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-event shot" href="full/event-02.jpg" data-full="full/event-02.jpg" data-cat="Event" data-cap="Event &middot; Tamu event">
+      <img class="im" src="thumb/event-02.jpg" alt="Karya fotografi RPXLABS tamu event, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Event</span><span class="cs">Tamu event</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-event shot" href="full/event-01.jpg" data-full="full/event-01.jpg" data-cat="Event" data-cap="Event &middot; DJ booth">
+      <img class="im" src="thumb/event-01.jpg" alt="Karya fotografi RPXLABS dj booth, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Event</span><span class="cs">DJ booth</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-event shot" href="full/event-03.jpg" data-full="full/event-03.jpg" data-cat="Event" data-cap="Event &middot; Pose event">
+      <img class="im" src="thumb/event-03.jpg" alt="Karya fotografi RPXLABS pose event, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Event</span><span class="cs">Pose event</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-event shot" href="full/event-04.jpg" data-full="full/event-04.jpg" data-cat="Event" data-cap="Event &middot; Motion event">
+      <img class="im" src="thumb/event-04.jpg" alt="Karya fotografi RPXLABS motion event, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Event</span><span class="cs">Motion event</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-portrait shot" href="full/portrait-10.jpg" data-full="full/portrait-10.jpg" data-cat="Portrait" data-cap="Portrait &middot; Sweater pink">
+      <img class="im" src="thumb/portrait-10.jpg" alt="Karya fotografi RPXLABS sweater pink, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Portrait</span><span class="cs">Sweater pink</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-portrait shot" href="full/portrait-03.jpg" data-full="full/portrait-03.jpg" data-cat="Portrait" data-cap="Portrait &middot; Close up">
+      <img class="im" src="thumb/portrait-03.jpg" alt="Karya fotografi RPXLABS close up, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Portrait</span><span class="cs">Close up</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-portrait shot" href="full/portrait-02.jpg" data-full="full/portrait-02.jpg" data-cat="Portrait" data-cap="Portrait &middot; Portrait hitam">
+      <img class="im" src="thumb/portrait-02.jpg" alt="Karya fotografi RPXLABS portrait hitam, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Portrait</span><span class="cs">Portrait hitam</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-portrait shot" href="full/portrait-05.jpg" data-full="full/portrait-05.jpg" data-cat="Portrait" data-cap="Portrait &middot; Cap merah">
+      <img class="im" src="thumb/portrait-05.jpg" alt="Karya fotografi RPXLABS cap merah, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Portrait</span><span class="cs">Cap merah</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-portrait shot" href="full/portrait-07.jpg" data-full="full/portrait-07.jpg" data-cat="Portrait" data-cap="Portrait &middot; Crouch dusk">
+      <img class="im" src="thumb/portrait-07.jpg" alt="Karya fotografi RPXLABS crouch dusk, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Portrait</span><span class="cs">Crouch dusk</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-portrait shot" href="full/portrait-01.jpg" data-full="full/portrait-01.jpg" data-cat="Portrait" data-cap="Portrait &middot; Street portrait">
+      <img class="im" src="thumb/portrait-01.jpg" alt="Karya fotografi RPXLABS street portrait, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Portrait</span><span class="cs">Street portrait</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-portrait shot" href="full/portrait-04.jpg" data-full="full/portrait-04.jpg" data-cat="Portrait" data-cap="Portrait &middot; Portrait duduk">
+      <img class="im" src="thumb/portrait-04.jpg" alt="Karya fotografi RPXLABS portrait duduk, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Portrait</span><span class="cs">Portrait duduk</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-portrait shot" href="full/portrait-06.jpg" data-full="full/portrait-06.jpg" data-cat="Portrait" data-cap="Portrait &middot; Cap melayang">
+      <img class="im" src="thumb/portrait-06.jpg" alt="Karya fotografi RPXLABS cap melayang, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Portrait</span><span class="cs">Cap melayang</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-portrait shot" href="full/portrait-08.jpg" data-full="full/portrait-08.jpg" data-cat="Portrait" data-cap="Portrait &middot; Low key">
+      <img class="im" src="thumb/portrait-08.jpg" alt="Karya fotografi RPXLABS low key, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Portrait</span><span class="cs">Low key</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
+    </a>
+    <a class="tile cat-portrait shot" href="full/portrait-09.jpg" data-full="full/portrait-09.jpg" data-cat="Portrait" data-cap="Portrait &middot; Sneaker">
+      <img class="im" src="thumb/portrait-09.jpg" alt="Karya fotografi RPXLABS sneaker, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async">
+      <div class="ov"><span class="ct">Portrait</span><span class="cs">Sneaker</span></div>
+      <span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span>
     </a>
   </div>
 
@@ -239,7 +487,19 @@ opacity:0;transform:translateY(6px);transition:all .3s}
   </div>
 </div>
 <a class="fab" href="https://wa.me/6289623290398?text=Halo%20RPXLABS%2C%20saya%20lihat%20portfolio%20dan%20mau%20tanya%20soal%20sesi%20foto." target="_blank" rel="noopener" aria-label="WhatsApp"><i class="ph-fill ph-whatsapp-logo"></i></a>
+
+<div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Pratinjau foto">
+  <div class="hint">Klik luar / Esc untuk tutup</div>
+  <button class="x" id="lbClose" aria-label="Tutup"><i class="ph ph-x"></i></button>
+  <button class="pv" id="lbPrev" aria-label="Sebelumnya"><i class="ph ph-caret-left"></i></button>
+  <button class="nx" id="lbNext" aria-label="Berikutnya"><i class="ph ph-caret-right"></i></button>
+  <img id="lbImg" src="" alt="">
+  <div class="cap" id="lbCap"></div>
+</div>
+
 <script>
+/* filter kategori */
+const grid = document.getElementById('grid');
 document.getElementById('filters').addEventListener('click', e => {
   const b = e.target.closest('.f'); if (!b) return;
   document.querySelectorAll('.f').forEach(x => x.classList.remove('on'));
@@ -249,6 +509,62 @@ document.getElementById('filters').addEventListener('click', e => {
     t.style.display = (c === 'Semua' || t.dataset.cat === c) ? '' : 'none';
   });
 });
+
+/* lightbox: hanya foto yang sedang tampil ikut navigasi */
+(() => {
+  const lb = document.getElementById('lightbox');
+  const img = document.getElementById('lbImg');
+  const cap = document.getElementById('lbCap');
+  let vis = [], i = 0;
+
+  const visible = () => [...document.querySelectorAll('.tile')].filter(t => t.style.display !== 'none');
+
+  const show = n => {
+    if (!vis.length) return;
+    i = (n + vis.length) % vis.length;
+    const a = vis[i];
+    img.src = a.dataset.full;
+    img.alt = a.querySelector('img').alt;
+    cap.textContent = a.dataset.cap;
+  };
+  const open = a => {
+    vis = visible();
+    show(vis.indexOf(a));
+    lb.classList.add('on');
+    document.body.style.overflow = 'hidden';
+  };
+  const close = () => {
+    lb.classList.remove('on');
+    document.body.style.overflow = '';
+    img.src = '';
+  };
+
+  grid.addEventListener('click', e => {
+    const a = e.target.closest('.tile'); if (!a) return;
+    e.preventDefault();
+    open(a);
+  });
+  document.getElementById('lbClose').onclick = close;
+  document.getElementById('lbPrev').onclick = () => show(i - 1);
+  document.getElementById('lbNext').onclick = () => show(i + 1);
+  lb.addEventListener('click', e => { if (e.target === lb) close(); });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('on')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') show(i - 1);
+    if (e.key === 'ArrowRight') show(i + 1);
+  });
+
+  /* swipe di HP */
+  let x0 = null;
+  lb.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', e => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 50) show(i + (dx < 0 ? 1 : -1));
+    x0 = null;
+  });
+})();
 </script>
 </body>
 </html>
