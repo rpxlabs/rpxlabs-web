@@ -86,6 +86,59 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
   .dgh{display:flex;align-items:center;gap:9px;font-family:'Poppins',sans-serif;font-size:0.78rem;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.72);margin-bottom:16px;padding-bottom:11px;border-bottom:1px solid rgba(255,255,255,0.08)}
   .dgh i{font-size:1rem;color:rgba(255,255,255,0.5)}
   .dgc{margin-left:auto;font-size:0.66rem;color:rgba(255,255,255,0.34);letter-spacing:0.08em}
+
+  /* ---------- Pemilih kategori bertahap ---------- */
+  .hide{display:none!important}
+  .pick{background:var(--glass);border:1px solid var(--line-soft);border-radius:20px;padding:22px 20px;margin-bottom:26px;backdrop-filter:blur(16px)}
+  .pick-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px}
+  .pick-head>i{font-size:1.15rem;color:rgba(255,255,255,0.72);margin-top:2px}
+  .pick-head b{display:block;font-family:'Poppins',sans-serif;font-size:0.95rem;font-weight:700;color:#fff;margin-bottom:4px}
+  .pick-head span{font-size:0.76rem;color:var(--dim);line-height:1.5}
+  .kat{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .kcard{display:flex;align-items:center;gap:11px;text-align:left;cursor:pointer;font-family:'Nunito',sans-serif;
+    background:rgba(255,255,255,0.035);border:1px solid var(--line-soft);border-radius:14px;padding:14px 13px;
+    color:var(--text);transition:all .22s cubic-bezier(.4,0,.2,1)}
+  .kcard:hover{border-color:rgba(255,255,255,0.34);background:rgba(255,255,255,0.07);transform:translateY(-2px)}
+  .kcard:active{transform:translateY(0)}
+  .kcard.on{background:#fff;border-color:#fff;color:#0a0a0a;box-shadow:0 0 22px rgba(255,255,255,0.16)}
+  .kcard .ki{flex-shrink:0;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;
+    background:rgba(255,255,255,0.08);border:1px solid var(--line-soft);font-size:1rem;color:rgba(255,255,255,0.86)}
+  .kcard.on .ki{background:#0a0a0a;border-color:#0a0a0a;color:#fff}
+  .kcard .ktxt{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .kcard .ktxt b{font-family:'Poppins',sans-serif;font-size:0.82rem;font-weight:700;line-height:1.2}
+  .kcard .ktxt small{font-size:0.63rem;color:rgba(255,255,255,0.44);line-height:1.3}
+  .kcard.on .ktxt small{color:rgba(10,10,10,0.62)}
+  .kcard .kc{margin-left:auto;flex-shrink:0;font-size:0.64rem;font-weight:900;letter-spacing:0.06em;
+    color:rgba(255,255,255,0.42);background:rgba(255,255,255,0.06);border-radius:100px;padding:3px 8px}
+  .kcard.on .kc{color:#0a0a0a;background:rgba(10,10,10,0.09)}
+
+  .sesi{border-top:1px solid var(--line-soft);padding-top:16px;margin-top:16px;animation:sesiIn .22s ease}
+  @keyframes sesiIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
+  .sesi-h{font-size:0.64rem;font-weight:900;letter-spacing:0.16em;text-transform:uppercase;
+    color:rgba(255,255,255,0.48);margin-bottom:11px}
+  .sesi-b{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .sbtn{display:flex;align-items:center;gap:10px;cursor:pointer;font-family:'Nunito',sans-serif;
+    background:rgba(255,255,255,0.035);border:1px solid var(--line-soft);border-radius:13px;
+    padding:14px 15px;color:var(--text);transition:all .22s}
+  .sbtn:hover{border-color:rgba(255,255,255,0.34);background:rgba(255,255,255,0.07)}
+  .sbtn.on{background:#fff;border-color:#fff;color:#0a0a0a}
+  .sbtn i{font-size:1.15rem;color:rgba(255,255,255,0.8);flex-shrink:0}
+  .sbtn.on i{color:#0a0a0a}
+  .sbtn b{font-family:'Poppins',sans-serif;font-size:0.86rem;font-weight:700}
+  .sbtn span{margin-left:auto;font-size:0.64rem;font-weight:900;color:rgba(255,255,255,0.42)}
+  .sbtn.on span{color:rgba(10,10,10,0.6)}
+
+  .kback{display:inline-flex;align-items:center;gap:7px;cursor:pointer;font-family:'Nunito',sans-serif;
+    background:transparent;border:1px solid var(--line-soft);border-radius:100px;
+    padding:8px 15px;margin-top:16px;color:rgba(255,255,255,0.62);
+    font-size:0.66rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;transition:all .2s}
+  .kback:hover{color:#fff;border-color:rgba(255,255,255,0.4)}
+
+  @media(max-width:640px){
+    .kat{grid-template-columns:1fr;gap:9px}
+    .kcard{padding:15px 14px}
+    .pick{padding:18px 16px;margin-bottom:20px}
+  }
 </style>
 
     <!-- SEO -->
@@ -196,23 +249,51 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
 
 
 
-  <div class="sec">
-    <h2>Event Running</h2>
-    <p>Album event lari resmi.</p>
-  </div>
-  <div class="grid" id="gridEvent"><div class="loading">Memuat album…</div></div>
+  <div class="pick" id="pick">
+    <div class="pick-head">
+      <i class="ph-fill ph-funnel"></i>
+      <div>
+        <b id="pickJudul">Pilih kategori album</b>
+        <span id="pickSub">Tap salah satu, albumnya langsung muncul.</span>
+      </div>
+    </div>
 
-  <div class="sec">
-    <h2>CFD</h2>
-    <p>Album sesi Car Free Day.</p>
-  </div>
-  <div class="grid" id="gridCfd"><div class="loading">Memuat album…</div></div>
+    <div class="kat" id="katRow">
+      <button class="kcard" type="button" data-kat="Event">
+        <span class="ki"><i class="ph-fill ph-flag-checkered"></i></span>
+        <span class="ktxt"><b>Event</b><small>Lari resmi &amp; race</small></span>
+        <span class="kc" data-cnt="Event">0</span>
+      </button>
+      <button class="kcard" type="button" data-kat="CFD">
+        <span class="ki"><i class="ph-fill ph-flag-banner"></i></span>
+        <span class="ktxt"><b>CFD</b><small>Car Free Day</small></span>
+        <span class="kc" data-cnt="CFD">0</span>
+      </button>
+      <button class="kcard" type="button" data-kat="Harian">
+        <span class="ki"><i class="ph-fill ph-sneaker-move"></i></span>
+        <span class="ktxt"><b>Harian</b><small>Sesi pagi &amp; sore</small></span>
+        <span class="kc" data-cnt="Harian">0</span>
+      </button>
+    </div>
 
-  <div class="sec">
-    <h2>Lari Harian</h2>
-    <p>Sesi pagi dan sore, dipisah biar gampang dicari.</p>
+    <div class="sesi hide" id="sesiRow">
+      <div class="sesi-h">Lari Harian — pilih sesi</div>
+      <div class="sesi-b">
+        <button class="sbtn" type="button" data-sesi="Pagi">
+          <i class="ph-fill ph-sun-horizon"></i><b>Pagi</b><span data-cnts="Pagi">0</span>
+        </button>
+        <button class="sbtn" type="button" data-sesi="Sore">
+          <i class="ph-fill ph-sun"></i><b>Sore</b><span data-cnts="Sore">0</span>
+        </button>
+      </div>
+    </div>
+
+    <button class="kback hide" type="button" id="btnKembali">
+      <i class="ph ph-arrow-left"></i> Ganti kategori
+    </button>
   </div>
-  <div id="dailyWrap"><div class="loading">Memuat album…</div></div>
+
+  <div id="albumWrap"><div class="loading">Memuat album…</div></div>
 
   <div class="fotoyu">
     <div class="fy-head">
@@ -407,84 +488,158 @@ document.getElementById('filters').addEventListener('click', e => {
     });
   }
 
-  /* ---------- Event Running: grid biasa ---------- */
-  function renderEvent(list){
-    const el = document.getElementById('gridEvent');
-    if(!el) return;
-    if(!list || !list.length){ el.innerHTML = '<div class="empty">Belum ada album event.</div>'; return; }
-    el.innerHTML = sortNewest(list).map(card).join("");
+  /* ---------- Klasifikasi album ---------- */
+  function normKat(a){ return String(a.kategori || '').trim().toLowerCase(); }
+  function normWkt(a){ return String(a.waktu || '').trim().toLowerCase(); }
+
+  function kategoriDari(a){
+    const k = normKat(a), w = normWkt(a);
+    if(k.indexOf('event') === 0) return 'Event';
+    if(w.indexOf('cfd') === 0 || k.indexOf('cfd') === 0) return 'CFD';
+    return 'Harian';
   }
 
-  /* ---------- CFD: grid sendiri ---------- */
-  function renderCfd(list){
-    const el = document.getElementById('gridCfd');
-    if(!el) return;
-    if(!list || !list.length){ el.innerHTML = '<div class="empty">Belum ada album CFD.</div>'; return; }
-    el.innerHTML = sortNewest(list).map(card).join("");
+  function sesiDari(a){
+    const w = normWkt(a);
+    if(w.indexOf('sore') === 0 || w.indexOf('senja') === 0 || w === 'evening') return 'Sore';
+    return 'Pagi';
   }
 
-  /* ---------- Lari Harian: dikelompokkan pagi / sore ---------- */
-  const GROUPS = [
-    {key:"pagi", label:"Pagi", icon:"ph-sun-horizon"},
-    {key:"sore", label:"Sore", icon:"ph-sun"}
-  ];
+  /* ---------- State pemilih ---------- */
+  const SEMUA = [];
+  const state = { kat: '', sesi: '' };
 
-  function renderDaily(list){
-    const wrap = document.getElementById('dailyWrap');
-    if(!wrap) return;
-    if(!list || !list.length){ wrap.innerHTML = '<div class="empty">Belum ada album lari harian.</div>'; return; }
+  function $(id){ return document.getElementById(id); }
 
-    // Normalisasi ke grup; yang tak dikenali masuk "lain"
-    const buckets = {pagi:[], sore:[], lain:[]};
-    list.forEach(function(a){
-      const w = String(a.waktu||"").trim().toLowerCase();
-      if(w.indexOf("pagi") === 0 || w === "morning") buckets.pagi.push(a);
-      else if(w.indexOf("sore") === 0 || w.indexOf("senja") === 0 || w === "evening") buckets.sore.push(a);
-      else buckets.lain.push(a);
+  function isiHitung(){
+    const n = { Event: 0, CFD: 0, Harian: 0 };
+    const s = { Pagi: 0, Sore: 0 };
+    SEMUA.forEach(function(a){
+      const k = kategoriDari(a);
+      n[k] = (n[k] || 0) + 1;
+      if(k === 'Harian') s[sesiDari(a)]++;
+    });
+    document.querySelectorAll('[data-cnt]').forEach(function(el){
+      el.textContent = n[el.dataset.cnt] || 0;
+    });
+    document.querySelectorAll('[data-cnts]').forEach(function(el){
+      el.textContent = s[el.dataset.cnts] || 0;
+    });
+    return { n: n, s: s };
+  }
+
+  /* ---------- Tahap 1: pilih kategori ---------- */
+  function tampilkanKategori(){
+    state.kat = ''; state.sesi = '';
+    $('pick').classList.remove('picked');
+    $('katRow').classList.remove('hide');
+    $('sesiRow').classList.add('hide');
+    $('btnKembali').classList.add('hide');
+    $('pickJudul').textContent = 'Pilih kategori album';
+    $('pickSub').textContent = 'Tap salah satu, albumnya langsung muncul.';
+    $('albumWrap').innerHTML = '';
+    document.querySelectorAll('.kcard, .sbtn').forEach(function(b){ b.classList.remove('on'); });
+  }
+
+  /* ---------- Tahap 2: kategori bukan harian -> langsung daftar ---------- */
+  function pilihKategori(kat){
+    state.kat = kat;
+    state.sesi = '';
+    $('pick').classList.add('picked');
+    $('katRow').classList.add('hide');
+    document.querySelectorAll('.kcard').forEach(function(b){
+      b.classList.toggle('on', b.dataset.kat === kat);
     });
 
-    let html = "";
-    GROUPS.forEach(function(g){
-      const items = buckets[g.key];
-      if(!items.length) return;
-      html += '<div class="dgrp"><div class="dgh"><i class="ph ' + g.icon + '"></i>' + g.label +
-              '<span class="dgc">' + items.length + '</span></div>' +
-              '<div class="grid">' + sortNewest(items).map(card).join("") + '</div></div>';
-    });
-    if(buckets.lain.length){
-      html += '<div class="dgrp"><div class="dgh"><i class="ph ph-sneaker-move"></i>Harian' +
-              '<span class="dgc">' + buckets.lain.length + '</span></div>' +
-              '<div class="grid">' + sortNewest(buckets.lain).map(card).join("") + '</div></div>';
+    if(kat === 'Harian'){
+      $('sesiRow').classList.remove('hide');
+      $('btnKembali').classList.add('hide');
+      $('pickJudul').textContent = 'Lari Harian';
+      $('pickSub').textContent = 'Pilih sesi pagi atau sore dulu.';
+      $('albumWrap').innerHTML = '';
+      return;
     }
-    wrap.innerHTML = html || '<div class="empty">Belum ada album lari harian.</div>';
+
+    $('sesiRow').classList.add('hide');
+    $('btnKembali').classList.remove('hide');
+    $('pickJudul').textContent = kat === 'CFD' ? 'CFD' : 'Event Running';
+    $('pickSub').textContent = 'Album yang tersedia:';
+    renderDaftar();
   }
 
-  /* ---------- Fetch ---------- */
-  function load(type, render, fallback){
-    fetch(EP + "?action=getAlbums&type=" + type)
-      .then(function(r){ return r.json(); })
-      .then(function(j){
-        if(j && j.success && j.albums && j.albums.length) render(j.albums);
-        else render(fallback);
-      })
-      .catch(function(){ render(fallback); });
-  }
-
-  // Satu fetch untuk non-event, lalu dipisah: CFD vs harian (Pagi/Sore)
-  load("running", function(all){
-    const cfd = [];
-    const daily = [];
-    (all || []).forEach(function(a){
-      const w = String(a.waktu || "").trim().toLowerCase();
-      if(w.indexOf("cfd") === 0) cfd.push(a);
-      else daily.push(a);
+  /* ---------- Tahap 3: sesi harian ---------- */
+  function pilihSesi(sesi){
+    state.sesi = sesi;
+    $('sesiRow').classList.add('hide');
+    $('btnKembali').classList.remove('hide');
+    $('pickJudul').textContent = 'Lari Harian · ' + sesi;
+    $('pickSub').textContent = 'Album yang tersedia:';
+    document.querySelectorAll('.sbtn').forEach(function(b){
+      b.classList.toggle('on', b.dataset.sesi === sesi);
     });
-    renderCfd(cfd);
-    renderDaily(daily);
-  }, []);
+    renderDaftar();
+  }
 
-  load("event", renderEvent, FALLBACK_EVENT);
+  /* ---------- Render daftar kartu sesuai pilihan ---------- */
+  function renderDaftar(){
+    const wrap = $('albumWrap');
+    if(!wrap) return;
+
+    const list = sortNewest(SEMUA.filter(function(a){
+      if(kategoriDari(a) !== state.kat) return false;
+      if(state.kat === 'Harian' && sesiDari(a) !== state.sesi) return false;
+      return true;
+    }));
+
+    if(!list.length){
+      const apa = state.kat === 'Harian' ? ('Harian sesi ' + state.sesi) : state.kat;
+      wrap.innerHTML = '<div class="empty">Belum ada album ' + apa + '.</div>';
+      return;
+    }
+    wrap.innerHTML = '<div class="grid">' + list.map(card).join('') + '</div>';
+  }
+
+  /* ---------- Muat sekali, lalu tampilkan pemilih ---------- */
+  function muatSemua(){
+    fetch(EP + "?action=getAlbums&type=running")
+      .then(function(r){ return r.json(); })
+      .then(function(j){ return (j && j.success && j.albums) ? j.albums : []; })
+      .catch(function(){ return []; })
+      .then(function(run){
+        return fetch(EP + "?action=getAlbums&type=event")
+          .then(function(r){ return r.json(); })
+          .then(function(j){ return (j && j.success && j.albums) ? j.albums : []; })
+          .catch(function(){ return []; })
+          .then(function(ev){ return run.concat(ev); });
+      })
+      .then(function(all){
+        SEMUA.length = 0;
+        (all || []).forEach(function(a){ SEMUA.push(a); });
+        isiHitung();
+        tampilkanKategori();
+        $('albumWrap').innerHTML = '';
+      })
+      .catch(function(){
+        isiHitung();
+        tampilkanKategori();
+        $('albumWrap').innerHTML = '<div class="empty">Gagal memuat album. Coba muat ulang halaman.</div>';
+      });
+  }
+
+  /* ---------- Pasang event ---------- */
+  $('katRow').addEventListener('click', function(e){
+    const b = e.target.closest('.kcard'); if(!b) return;
+    pilihKategori(b.dataset.kat);
+  });
+  $('sesiRow').addEventListener('click', function(e){
+    const b = e.target.closest('.sbtn'); if(!b) return;
+    pilihSesi(b.dataset.sesi);
+  });
+  $('btnKembali').addEventListener('click', tampilkanKategori);
+
+  muatSemua();
 })();
+
 </script>
 
 <script>

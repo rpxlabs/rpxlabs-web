@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Album Running — Admin RPXLABS</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<style>
+:root{--bg:#0f0f0f;--card:#161616;--text:#f0f0f0;--dim:#8a8a96;--line:rgba(242,240,234,.16);--acc:#fff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font-family:"Nunito",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;min-height:100vh}
+.wrap{max-width:820px;margin:0 auto;padding:26px 18px 60px}
+.top{display:flex;align-items:center;gap:11px;margin-bottom:22px}
+.top img{height:30px}
+.top span{font-size:10px;letter-spacing:.19em;text-transform:uppercase;color:var(--dim)}
+h1{font-size:21px;font-weight:800;margin:0 0 5px;letter-spacing:-.02em}
+.sub{font-size:13px;color:var(--dim);line-height:1.6;margin-bottom:22px}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:17px;margin-bottom:15px}
+.lbl{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);margin-bottom:7px;display:block;font-weight:700}
+input,select{width:100%;background:#0d0d0d;border:1px solid var(--line);border-radius:8px;
+  color:var(--text);font:inherit;font-size:14px;padding:10px 12px;outline:none}
+input:focus,select:focus{border-color:rgba(255,255,255,.55)}
+select{padding-right:32px}
+::placeholder{color:#5c5c66}
+.f{margin-bottom:13px}
+.f:last-child{margin-bottom:0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.hint{font-size:11.5px;color:var(--dim);margin-top:6px;line-height:1.5}
+.hint b{color:var(--acc);font-weight:700}
+
+.btn{font:inherit;font-size:13.5px;font-weight:800;padding:12px 19px;border-radius:9px;
+  border:1px solid transparent;cursor:pointer;transition:.15s}
+.btn.main{background:var(--acc);color:#0f0f0f}
+.btn.main:active{background:#e6e6e6}
+.btn.gh{background:transparent;border-color:var(--line);color:var(--text)}
+.btn.gh:active{background:rgba(255,255,255,.07)}
+.btn:disabled{opacity:.55;cursor:default}
+.row{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+
+/* pemilih sesi — hanya tampil untuk kategori Harian */
+.sesiPick{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.sbtn{font:inherit;font-size:13px;font-weight:800;padding:11px 13px;border-radius:8px;
+  border:1px solid var(--line);background:#0d0d0d;color:var(--text);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:7px;transition:.15s}
+.sbtn:hover{border-color:rgba(255,255,255,.34)}
+.sbtn.on{background:var(--acc);color:#0f0f0f;border-color:var(--acc)}
+
+/* daftar album */
+.al{display:flex;align-items:center;gap:13px;padding:14px 0;border-bottom:1px solid var(--line)}
+.al:last-child{border-bottom:0}
+.al .av{width:38px;height:38px;border-radius:10px;background:#222;display:flex;
+  align-items:center;justify-content:center;flex-shrink:0;color:var(--acc);font-size:16px}
+.al .mid{flex:1;min-width:0}
+.al .nm{font-size:14px;font-weight:800;letter-spacing:-.01em;word-break:break-word}
+.al .dt{font-size:11.5px;color:var(--dim);margin-top:3px;line-height:1.5}
+.al .dt b{color:var(--text);font-weight:700}
+.al .btns{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.al button{font:inherit;font-size:11.5px;font-weight:800;padding:8px 12px;border-radius:7px;
+  border:1px solid var(--line);background:transparent;color:var(--text);cursor:pointer;
+  white-space:nowrap;transition:.15s}
+.al button:hover{border-color:rgba(255,255,255,.4)}
+.al button.open{background:var(--acc);color:#0f0f0f;border-color:var(--acc)}
+.al button.danger:hover{border-color:rgba(255,120,110,.65);color:#ff8b80}
+.al.off .nm{color:var(--dim)}
+.al.off .av{opacity:.45}
+.badgeOff{display:inline-block;font-size:9.5px;font-weight:900;letter-spacing:.12em;
+  text-transform:uppercase;color:#ff8b80;border:1px solid rgba(255,139,128,.4);
+  border-radius:99px;padding:2px 7px;margin-left:6px;vertical-align:middle}
+.empty{text-align:center;padding:34px 14px;color:var(--dim);font-size:13px}
+
+#toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,18px);
+  background:var(--acc);color:#0f0f0f;font-size:12.5px;font-weight:800;
+  padding:11px 19px;border-radius:22px;opacity:0;transition:.22s;pointer-events:none;z-index:99;
+  max-width:88vw;text-align:center}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+.hide{display:none!important}
+@media(max-width:560px){
+  .two{grid-template-columns:1fr}
+  .al{flex-wrap:wrap}
+  .al .btns{width:100%;justify-content:flex-start;margin-top:4px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <img src="/assets/logo-rpx-sport.png" alt="RPXLABS">
+    <span>admin &middot; album running</span>
+  </div>
+
+  <h1>Album Running</h1>
+  <div class="sub">Isi album lewat sini — kartunya langsung muncul di halaman Running, tanpa buka Google Sheet.</div>
+
+  <!-- PIN cadangan -->
+  <div class="card" id="pinCard">
+    <div class="lbl">Akses</div>
+    <input id="pin" type="password" inputmode="numeric" placeholder="PIN portal" autocomplete="current-password">
+    <div class="row"><button class="btn main" id="btnPin" type="button">Buka</button></div>
+    <div class="hint" id="pinHint">Biasanya kamu sudah otomatis masuk lewat <b>rpxlabs.id/portal.html</b>. PIN ini cadangan kalau halaman dibuka langsung.</div>
+  </div>
+
+  <!-- form -->
+  <div class="card hide" id="formCard">
+    <div class="lbl" id="formJudul">Tambah Album Baru</div>
+
+    <div class="f">
+      <input id="fJudul" placeholder="Judul album (contoh: Sampit Ayani (BI) 8 Nov)" autocomplete="off">
+    </div>
+
+    <div class="two">
+      <div class="f">
+        <select id="fKategori">
+          <option value="">-- Pilih Kategori --</option>
+          <option value="Event">Event</option>
+          <option value="CFD">CFD</option>
+          <option value="Harian">Harian</option>
+        </select>
+      </div>
+      <div class="f">
+        <input id="fTanggal" type="date">
+      </div>
+    </div>
+
+    <div class="f hide" id="sesiWrap">
+      <div class="lbl" style="margin-bottom:8px">Sesi</div>
+      <div class="sesiPick">
+        <button class="sbtn on" type="button" data-sesi="Pagi">
+          <i class="ph-fill ph-sun-horizon"></i>Pagi
+        </button>
+        <button class="sbtn" type="button" data-sesi="Sore">
+          <i class="ph-fill ph-sun"></i>Sore
+        </button>
+      </div>
+    </div>
+
+    <div class="f">
+      <input id="fLink" placeholder="Link folder Drive (https://drive.google.com/drive/folders/…)" autocomplete="off">
+      <div class="hint">Folder harus <b>Anyone with the link</b>, pakai akun <b>rpxlabs@gmail.com</b>, dan upload sudah selesai.</div>
+    </div>
+
+    <div class="f">
+      <label class="lbl" style="margin-bottom:8px">Status</label>
+      <select id="fAktif">
+        <option value="Ya">Ya — tampilkan di web</option>
+        <option value="Tidak">Tidak — sembunyikan</option>
+      </select>
+    </div>
+
+    <div class="row">
+      <button class="btn main" id="btnSimpan" type="button">Simpan album</button>
+      <button class="btn gh" id="btnBatal" type="button">Batal</button>
+    </div>
+  </div>
+
+  <!-- daftar -->
+  <div class="card hide" id="listCard">
+    <div class="lbl">Album Terdaftar</div>
+    <div id="list"><div class="empty">Memuat…</div></div>
+    <div class="row">
+      <button class="btn gh" id="btnMuat" type="button">Muat ulang</button>
+      <button class="btn gh" id="btnTambah" type="button">+ Tambah album</button>
+    </div>
+  </div>
+
+</div>
+<div id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+var PIN_BENAR = '2006';          // cadangan kalau dibuka langsung tanpa portal
+var K_TOKEN = 'rpxlabs_portal_token';
+var K_TIME  = 'rpxlabs_portal_time';
+var TTL     = 12 * 60 * 60 * 1000;
+var EP = 'https://script.google.com/macros/s/AKfycbx1BYB1TACi2OSYFACowp38RVs1A8tq70hPn3dxbvjtLfJuYsS9LfuNEWQbOx5_o5KnLg/exec';
+
+var $ = function(s){ return document.querySelector(s); };
+
+/* baris yang sedang diubah; 0 = tambah baru */
+var barisEdit = 0;
+var sesiPilih = 'Pagi';
+
+function toast(m){
+  var t = $('#toast'); t.textContent = m; t.classList.add('on');
+  clearTimeout(t._t); t._t = setTimeout(function(){ t.classList.remove('on'); }, 2600);
+}
+
+/* ---------- sesi: token portal dulu, PIN cadangan ---------- */
+function tokenPortal(){
+  var t = localStorage.getItem(K_TOKEN) || '';
+  var ts = Number(localStorage.getItem(K_TIME) || 0);
+  if (!t) return '';
+  if (ts && (Date.now() - ts) > TTL) {
+    localStorage.removeItem(K_TOKEN);
+    localStorage.removeItem(K_TIME);
+    return '';
+  }
+  return t;
+}
+
+function bacaHash(){
+  var m = /(?:^|[#&])t=([A-Za-z0-9]+)/.exec(location.hash || '');
+  if (!m) return '';
+  localStorage.setItem(K_TOKEN, m[1]);
+  localStorage.setItem(K_TIME, String(Date.now()));
+  try { history.replaceState(null, '', location.pathname); } catch (e) {}
+  return m[1];
+}
+
+function sesiKirim(){
+  return { token: tokenPortal(), pin: sessionStorage.getItem('rpx_run_pin') || '' };
+}
+
+function masuk(){
+  $('#pinCard').classList.add('hide');
+  $('#formCard').classList.add('hide');
+  $('#listCard').classList.remove('hide');
+  muatDaftar();
+}
+
+function buka(){
+  var p = $('#pin').value.trim();
+  if (p !== PIN_BENAR) { $('#pinHint').textContent = 'PIN salah.'; return; }
+  sessionStorage.setItem('rpx_run_pin', p);
+  masuk();
+}
+$('#btnPin').addEventListener('click', buka);
+$('#pin').addEventListener('keydown', function(e){ if (e.key === 'Enter') buka(); });
+
+/* ---------- kategori menentukan sesi ---------- */
+$('#fKategori').addEventListener('change', function(){
+  var k = this.value;
+  $('#sesiWrap').classList.toggle('hide', k !== 'Harian');
+  // Event & CFD tidak pakai sesi; Harian wajib pagi/sore
+  if (k === 'Event') $('#sesiWrap').classList.add('hide');
+});
+
+function pilihSesi(v){
+  sesiPilih = v;
+  Array.prototype.forEach.call(document.querySelectorAll('.sbtn'), function(b){
+    b.classList.toggle('on', b.dataset.sesi === v);
+  });
+}
+Array.prototype.forEach.call(document.querySelectorAll('.sbtn'), function(b){
+  b.addEventListener('click', function(){ pilihSesi(b.dataset.sesi); });
+});
+
+/* ---------- form ---------- */
+function bukaFormBaru(){
+  barisEdit = 0;
+  kosongForm();
+  $('#formJudul').textContent = 'Tambah Album Baru';
+  $('#btnSimpan').textContent = 'Simpan album';
+  $('#formCard').classList.remove('hide');
+  setTimeout(function(){ $('#fJudul').focus(); }, 80);
+}
+
+function bukaFormUbah(a){
+  barisEdit = a.baris;
+  $('#fJudul').value = a.judul || '';
+  $('#fKategori').value = a.kategori || '';
+  $('#fTanggal').value = isoDari(a.tanggal);
+  $('#fLink').value = a.link || '';
+  $('#fAktif').value = a.aktif ? 'Ya' : 'Tidak';
+  $('#sesiWrap').classList.toggle('hide', (a.kategori || '') !== 'Harian');
+  pilihSesi(a.waktu === 'Sore' ? 'Sore' : 'Pagi');
+  $('#formJudul').textContent = 'Ubah Album — baris ' + a.baris;
+  $('#btnSimpan').textContent = 'Simpan perubahan';
+  $('#formCard').classList.remove('hide');
+  window.scrollTo({top:0, behavior:'smooth'});
+  setTimeout(function(){ $('#fJudul').focus(); }, 80);
+}
+
+/* '8 Nov 2026' -> '2026-11-08' untuk <input type=date> */
+var BLN = {jan:'01',feb:'02',mar:'03',apr:'04',mei:'05',may:'05',jun:'06',
+           jul:'07',agu:'08',aug:'08',sep:'09',okt:'10',oct:'10',nov:'11',des:'12',dec:'12'};
+function isoDari(t){
+  var s = String(t || '').trim();
+  var m = /^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})$/.exec(s);
+  if (m) {
+    var b = BLN[m[2].toLowerCase().slice(0,3)];
+    if (b) return m[3] + '-' + b + ('0' + m[1]).slice(-2);
+  }
+  return /^\d{4}-\d{2}-\d{2}$/.test(s) ? s : '';
+}
+
+function kosongForm(){
+  ['#fJudul','#fLink','#fTanggal'].forEach(function(s){ $(s).value = ''; });
+  $('#fKategori').value = '';
+  $('#fAktif').value = 'Ya';
+  $('#sesiWrap').classList.add('hide');
+  pilihSesi('Pagi');
+}
+
+/* ---------- simpan ---------- */
+function simpan(){
+  var judul = $('#fJudul').value.trim();
+  var kategori = $('#fKategori').value;
+  var link = $('#fLink').value.trim();
+  var tanggal = $('#fTanggal').value;
+  var aktif = $('#fAktif').value;
+
+  if (!judul) return toast('Judul album belum diisi');
+  if (!kategori) return toast('Kategori belum dipilih');
+  if (!link) return toast('Link album belum diisi');
+  if (link.indexOf('http') !== 0) return toast('Link harus diawali http atau https');
+
+  var body = {
+    action: 'saveAlbumRunning',
+    tanggal: tanggal,
+    judul: judul,
+    kategori: kategori,
+    waktu: kategori === 'Harian' ? sesiPilih : kategori,
+    link: link,
+    aktif: aktif
+  };
+  if (barisEdit) body.baris = barisEdit;
+
+  var sb = sesiKirim();
+  body.token = sb.token; body.pin = sb.pin;
+
+  $('#btnSimpan').disabled = true;
+  var teksAsli = $('#btnSimpan').textContent;
+  $('#btnSimpan').textContent = 'Menyimpan…';
+
+  fetch(EP + '?action=saveAlbumRunning', {
+    method: 'POST',
+    headers: {'Content-Type': 'text/plain;charset=utf-8'},   // hindari preflight
+    body: JSON.stringify(body)
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(j){
+    $('#btnSimpan').disabled = false;
+    $('#btnSimpan').textContent = teksAsli;
+    if (!j.success) { toast(j.error || 'Gagal menyimpan'); return; }
+    toast(barisEdit ? 'Album diperbarui.' : 'Album tersimpan — cek halaman Running.');
+    barisEdit = 0;
+    kosongForm();
+    $('#formCard').classList.add('hide');
+    muatDaftar();
+  })
+  .catch(function(){
+    $('#btnSimpan').disabled = false;
+    $('#btnSimpan').textContent = teksAsli;
+    toast('Koneksi gagal — coba lagi');
+  });
+}
+$('#btnSimpan').addEventListener('click', simpan);
+
+$('#btnBatal').addEventListener('click', function(){
+  barisEdit = 0; kosongForm();
+  $('#formCard').classList.add('hide');
+});
+$('#btnTambah').addEventListener('click', bukaFormBaru);
+$('#btnMuat').addEventListener('click', function(){ muatDaftar(); });
+
+/* ---------- aksi daftar ---------- */
+function kirimAksi(action, payload, pesanOk){
+  var sb = sesiKirim();
+  var body = { action: action, token: sb.token, pin: sb.pin };
+  Object.keys(payload || {}).forEach(function(k){ body[k] = payload[k]; });
+
+  return fetch(EP + '?action=' + action, {
+    method: 'POST',
+    headers: {'Content-Type': 'text/plain;charset=utf-8'},
+    body: JSON.stringify(body)
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(j){
+    if (!j.success) { toast(j.error || 'Gagal'); return false; }
+    if (pesanOk) toast(pesanOk);
+    return true;
+  })
+  .catch(function(){ toast('Koneksi gagal'); return false; });
+}
+
+/* ---------- daftar album ---------- */
+function muatDaftar(){
+  $('#list').innerHTML = '<div class="empty">Memuat…</div>';
+  fetch(EP + '?action=getAlbumRunningList')
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      var as = (j.albums || []).filter(function(a){ return a.judul; });
+      if (!as.length) {
+        $('#list').innerHTML = '<div class="empty">Belum ada album. Klik "+ Tambah album".</div>';
+        return;
+      }
+      var h = '';
+      as.forEach(function(a){
+        var ikon = a.kategori === 'Event' ? 'ph-flag-checkered'
+                 : a.kategori === 'CFD' ? 'ph-flag-banner'
+                 : (a.waktu === 'Sore' ? 'ph-sun' : 'ph-sun-horizon');
+        var ket = esc(a.kategori || '—') + (a.waktu ? ' &middot; ' + esc(a.waktu) : '');
+        h += '<div class="al' + (a.aktif ? '' : ' off') + '">' +
+               '<div class="av"><i class="ph-fill ' + ikon + '"></i></div>' +
+               '<div class="mid">' +
+                 '<div class="nm">' + esc(a.judul) +
+                   (a.aktif ? '' : '<span class="badgeOff">nonaktif</span>') + '</div>' +
+                 '<div class="dt">' + ket +
+                   (a.tanggal ? ' &middot; ' + esc(a.tanggal) : '') +
+                   ' &middot; baris ' + a.baris + '</div>' +
+               '</div>' +
+               '<div class="btns">' +
+                 '<button type="button" data-act="open" data-link="' + esc(portalDari(a)) + '">Buka</button>' +
+                 '<button type="button" data-act="edit">Ubah</button>' +
+                 '<button type="button" data-act="toggle" data-baris="' + a.baris + '" data-aktif="' + (a.aktif ? 'Tidak' : 'Ya') + '">' +
+                   (a.aktif ? 'Nonaktifkan' : 'Aktifkan') + '</button>' +
+                 '<button type="button" class="danger" data-act="hapus" data-baris="' + a.baris +
+                   '" data-judul="' + esc(a.judul) + '">Hapus</button>' +
+               '</div>' +
+             '</div>';
+      });
+      $('#list').innerHTML = h;
+
+      /* data album mentah disimpan supaya tombol Ubah tidak perlu fetch lagi */
+      var peta = {};
+      as.forEach(function(a){ peta[a.baris] = a; });
+
+      Array.prototype.forEach.call(document.querySelectorAll('.al button'), function(b){
+        b.addEventListener('click', function(){
+          var act = b.dataset.act;
+          var brs = parseInt(b.dataset.baris, 10) || 0;
+
+          if (act === 'open') {
+            var u = b.dataset.link;
+            if (!u) { toast('Link folder tidak dikenali'); return; }
+            window.open(u, '_blank', 'noopener');
+            return;
+          }
+          if (act === 'edit') {
+            var kartu = b.closest('.al');
+            var idx = Array.prototype.indexOf.call(document.querySelectorAll('.al'), kartu);
+            var urut = as[idx];
+            if (urut) bukaFormUbah(urut);
+            return;
+          }
+          if (act === 'toggle') {
+            b.disabled = true;
+            kirimAksi('setAlbumRunningAktif',
+              { baris: brs, aktif: b.dataset.aktif },
+              b.dataset.aktif === 'Ya' ? 'Album ditampilkan lagi.' : 'Album disembunyikan.'
+            ).then(function(){ muatDaftar(); });
+            return;
+          }
+          if (act === 'hapus') {
+            var nm = b.dataset.judul || 'album ini';
+            if (!confirm('Hapus "' + nm + '" dari daftar?\n\nBarisnya dibuang permanen. Folder Drive-nya TIDAK ikut terhapus.')) return;
+            b.disabled = true;
+            kirimAksi('hapusAlbumRunning', { baris: brs }, 'Album dihapus.')
+              .then(function(){ muatDaftar(); });
+            return;
+          }
+        });
+      });
+    })
+    .catch(function(){
+      $('#list').innerHTML = '<div class="empty">Gagal memuat. Coba "Muat ulang".</div>';
+    });
+}
+
+/* link publik album — sama seperti yang dipakai running.html */
+function portalDari(a){
+  var m = /\/folders\/([a-zA-Z0-9_-]{10,})/.exec(String(a.link || ''));
+  if (!m) m = /[?&]id=([a-zA-Z0-9_-]{10,})/.exec(String(a.link || ''));
+  if (!m) return '';
+  var sesi = [a.tanggal || '', a.kategori || '', a.waktu || ''].filter(Boolean).join(' - ');
+  return 'album.html?f=' + encodeURIComponent(m[1]) +
+         '&j=' + encodeURIComponent(a.judul || 'Album') +
+         '&s=' + encodeURIComponent(sesi);
+}
+
+function esc(s){
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+/* ---------- init ---------- */
+bacaHash();
+pilihSesi('Pagi');
+if (tokenPortal() || sessionStorage.getItem('rpx_run_pin') === PIN_BENAR) {
+  masuk();
+}
+})();
+</script>
+</body>
+</html>

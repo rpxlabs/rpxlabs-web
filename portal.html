@@ -126,12 +126,17 @@ button{font-family:'Nunito',sans-serif;cursor:pointer;border:none;transition:all
       </a>
       <a class="tile" id="t3" href="#">
         <div class="ic"><i class="ph ph-images"></i></div>
-        <div class="txt"><b>Album Running</b><small>Halaman album yang dilihat client.</small></div>
+        <div class="txt"><b>Halaman Running</b><small>Yang dilihat client di web.</small></div>
         <div class="arw"><i class="ph ph-arrow-right"></i></div>
       </a>
       <a class="tile" id="t5" href="#">
         <div class="ic"><i class="ph ph-receipt"></i></div>
         <div class="txt"><b>Invoice &amp; Kwitansi</b><small>Buat tagihan &amp; bukti bayar, tarik data dari booking.</small></div>
+        <div class="arw"><i class="ph ph-arrow-right"></i></div>
+      </a>
+      <a class="tile" id="t7" href="#">
+        <div class="ic"><i class="ph ph-flag-checkered"></i></div>
+        <div class="txt"><b>Input Album</b><small>Input album lari lewat web, tanpa buka Sheet.</small></div>
         <div class="arw"><i class="ph ph-arrow-right"></i></div>
       </a>
       <a class="tile" id="t6" href="#">
@@ -181,6 +186,7 @@ function showDash(){
   document.getElementById('t3').href = '/running.html';
   document.getElementById('t5').href = '/invoice.html';
   document.getElementById('t6').href = '/wisuda-admin.html#t=' + t;
+  document.getElementById('t7').href = '/running-admin.html#t=' + t;
   document.getElementById('t4').href = SHEET;
   document.getElementById('t4').target = '_blank';
 }
