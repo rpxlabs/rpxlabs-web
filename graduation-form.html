@@ -1122,19 +1122,18 @@
                         const slotStart = new Date(2000, 0, 1, slotHours, slotMins);
                         const slotEnd = new Date(slotStart.getTime() + durationMinutes * 60000);
                         
-                        // Check overlap dengan booked slots + 30min jeda SEBELUM & SESUDAH
+                        // Jeda antar sesi sudah dihitung di server: booked.endTime =
+                        // durasi paket + SESI_JEDA_MENIT. Jangan tambah buffer lagi di sini,
+                        // kalau tidak jeda jadi dobel (Silver 05:00 end 07:00 malah ditolak
+                        // sampai 07:30). Cek overlap murni terhadap rentang yang diblokir.
                         let isAvailable = true;
                         for (let booked of bookedSlots) {
                             const [bookedHours, bookedMins] = booked.startTime.split(':').map(Number);
                             const bookedStart = new Date(2000, 0, 1, bookedHours, bookedMins);
                             const bookedEnd = new Date(2000, 0, 1, ...booked.endTime.split(':').map(Number));
-                
-                            // Add 30min buffer sebelum dan sesudah booking
-                            const bufferBefore = new Date(bookedStart.getTime() - 30 * 60000);
-                            const bufferAfter = new Date(bookedEnd.getTime() + 30 * 60000);
-                
-                            // Check collision: slot.start < bufferAfter && slot.end > bufferBefore
-                            if (slotStart < bufferAfter && slotEnd > bufferBefore) {
+
+                            // Check collision: slot.start < bookedEnd && slot.end > bookedStart
+                            if (slotStart < bookedEnd && slotEnd > bookedStart) {
                                 isAvailable = false;
                                 break;
                             }
