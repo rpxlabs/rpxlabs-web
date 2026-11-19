@@ -341,6 +341,33 @@ document.getElementById('filters').addEventListener('click', e => {
   const FALLBACK_CFD = [];
 
   /* ---------- Render satu kartu ---------- */
+  /* ---------- Link album -> portal album.html ---------- */
+  // Ambil folderId dari link Drive, lalu teruskan judul + sesi lewat URL
+  // supaya header album.html tidak perlu menebak.
+  function folderIdDari(link){
+    const s = String(link || '');
+    let m = s.match(/\/folders\/([a-zA-Z0-9_-]{10,})/);
+    if(m) return m[1];
+    m = s.match(/[?&]id=([a-zA-Z0-9_-]{10,})/);
+    if(m) return m[1];
+    return '';
+  }
+
+  function portalAlbum(a){
+    const fid = folderIdDari(a.link);
+    if(!fid) return '';                     // bukan folder Drive -> link asli
+
+    const judul = a.judul || a.nama || 'Album';
+    // Sesi gaya WhatsApp: "8 Nov 2026 - Lari Harian - Pagi"
+    const kat   = String(a.kategori || '').trim();          // Event / Harian
+    const wkt   = String(a.waktu || '').trim();             // Pagi / Sore / CFD
+    const sesi  = [a.tanggalTampil || '', kat, wkt].filter(Boolean).join(' - ');
+
+    return 'album.html?f=' + encodeURIComponent(fid) +
+           '&j=' + encodeURIComponent(judul) +
+           '&s=' + encodeURIComponent(sesi);
+  }
+
   function card(a){
     const judul = a.judul || a.nama || "Album";
     const tgl   = a.tanggalTampil || "";
@@ -356,7 +383,12 @@ document.getElementById('filters').addEventListener('click', e => {
     else if(wkt.indexOf("sore") === 0){ label = "Lari Harian \u00b7 Sore"; ic = "ph-sun"; }
     else { label = "Lari Harian"; ic = "ph-sneaker-move"; }
 
-    return '<a class="ev-card" href="' + a.link + '" target="_blank" rel="noopener">' +
+    // Link Drive -> portal album milik sendiri (album.html)
+    // Folder Drive yang masih format lama tetap dibuka langsung ke Drive.
+    const portal = portalAlbum(a);
+
+    return '<a class="ev-card" href="' + (portal || a.link) + '"' +
+      (portal ? '' : ' target="_blank" rel="noopener"') + '>' +
       '<div class="ev-top">' +
         '<span class="ev-tag"><i class="ph ' + ic + '"></i>' + label + '</span>' +
         '<span class="ev-ext"><i class="ph ph-arrow-up-right"></i></span>' +
