@@ -171,7 +171,21 @@ nav .navlogo:hover{opacity:0.82;transform:translateY(-1px)}
   padding:4px 2px 14px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .steps::-webkit-scrollbar{display:none}
 .steps .step{flex:0 0 23.5%;min-width:0;scroll-snap-align:start}
-.step{border:1px solid var(--line-soft);border-radius:16px;padding:20px 18px;background:rgba(255,255,255,0.02)}
+.step{border:1px solid rgba(255,255,255,0.16);border-radius:16px;padding:20px 18px;background:rgba(255,255,255,0.05);position:relative;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
+/* Kartu cara booking: putih glow supaya kontras di latar hitam */
+.steps .step{
+  border:1px solid rgba(255,255,255,0.85);
+  background:linear-gradient(158deg,#ffffff 0%,#f7f7f7 48%,#ececec 100%);
+  box-shadow:0 1px 0 rgba(255,255,255,0.95) inset,0 0 30px rgba(255,255,255,0.22),0 14px 34px rgba(0,0,0,0.45);
+}
+.steps .step:hover{
+  transform:translateY(-3px);
+  box-shadow:0 1px 0 rgba(255,255,255,0.98) inset,0 0 42px rgba(255,255,255,0.34),0 18px 44px rgba(0,0,0,0.52);
+  border-color:#ffffff;
+}
+.steps .step .n{color:rgba(0,0,0,0.38)}
+.steps .step h3{color:#0a0a0a}
+.steps .step p{color:rgba(0,0,0,0.66)}
 .step .n{font-family:'Poppins',sans-serif;font-size:0.78rem;font-weight:700;color:rgba(255,255,255,0.35);margin-bottom:10px}
 .step h3{font-family:'Poppins',sans-serif;font-size:0.88rem;font-weight:700;margin-bottom:6px}
 .step p{font-size:0.76rem;color:var(--dim);line-height:1.6}
