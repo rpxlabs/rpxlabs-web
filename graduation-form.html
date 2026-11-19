@@ -648,7 +648,7 @@
                     <option value="silver" data-price="450000" data-max-people="1">Silver - Rp 450.000 (Max 1 orang)</option>
                     <option value="gold" data-price="600000" data-max-people="5" selected>Gold - Rp 600.000 (Max 5 orang)</option>
                     <option value="platinum" data-price="750000" data-max-people="9">Platinum - Rp 750.000 (Max 9 orang)</option>
-                    <option value="bestie" data-price="800000" data-max-people="2">Bestie Graduation - Rp 800.000 (Max 2 wisudawan)</option>
+                    <option value="bestie" data-price="800000" data-max-people="2">Bestie/Group - Rp 800.000 (Max 2 wisudawan)</option>
                 </select>
                 <!-- Thumbnail cards untuk visual selection -->
                 <div class="package-grid">
@@ -672,10 +672,10 @@
                         <div class="pkg-includes">50 foto edit, multi spot, 120 menit</div>
                     </div>
                     <div class="pkg-card" data-value="bestie" data-price="800000" data-max-people="2">
-                        <div class="pkg-name">Bestie</div>
+                        <div class="pkg-name">Bestie/Group</div>
                         <div class="pkg-price">Rp 800.000</div>
                         <div class="pkg-people">2 wisudawan</div>
-                        <div class="pkg-includes">35 foto edit, multi spot, 90 menit</div>
+                        <div class="pkg-includes">50 foto edit, multi spot, 120 menit</div>
                     </div>
                 </div>
             </div>
@@ -727,12 +727,12 @@
             </div>
             
             <div id="package-bestie" class="package-card">
-                <h3>Bestie Graduation - Rp 800.000</h3>
+                <h3>Bestie/Group - Rp 800.000</h3>
                 <ul>
                     <li>2 Graduates</li>
-                    <li>35 Edited Photos (Premium Retouch)</li>
+                    <li>50 Edited Photos (Premium Retouch)</li>
                     <li>All Original Photos Included</li>
-                    <li>Session duration up to 90 minutes</li>
+                    <li>Session duration up to 120 minutes</li>
                     <li>Unlimited Shoots & Poses</li>
                     <li>Multiple Spots</li>
                     <li>Google Drive Delivery</li>
@@ -1089,7 +1089,7 @@
                 let durationMinutes = 60; // default Silver
                 if (selectedPaket.includes('Gold')) durationMinutes = 90;
                 if (selectedPaket.includes('Platinum')) durationMinutes = 120;
-                if (selectedPaket.includes('Bestie')) durationMinutes = 90;
+                if (selectedPaket.includes('Bestie')) durationMinutes = 120;
                 
                 // Fetch booked slots from API
                 const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=getSlots&date=${selectedDate}`);

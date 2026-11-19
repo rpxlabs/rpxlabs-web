@@ -19,6 +19,8 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
+section[id]{scroll-margin-top:78px}
+#booking{scroll-margin-top:78px}
 body{
   background:var(--bg);color:var(--text);
   font-family:'Nunito',sans-serif;
@@ -126,7 +128,12 @@ nav .navlogo:hover{opacity:0.82;transform:translateY(-1px)}
 
 /* ---------- PRICELIST ---------- */
 #harga{margin-bottom:78px}
-.plist{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.plist{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;
+  /* padding atas 18px: badge "Rekomendasi" menjorok 10px ke atas kartu, kalau tidak
+     diberi ruang ia terpotong karena overflow-x:auto juga memotong sumbu Y */
+  padding:18px 2px 16px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.plist::-webkit-scrollbar{display:none}
+.plist .pkg{flex:0 0 23.5%;min-width:0;scroll-snap-align:start}
 .pkg{
   position:relative;display:flex;flex-direction:column;
   border-radius:18px;padding:26px 22px 22px;
@@ -160,7 +167,10 @@ nav .navlogo:hover{opacity:0.82;transform:translateY(-1px)}
 
 /* ---------- CARA BOOKING ---------- */
 #cara{margin-bottom:78px}
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.steps{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;
+  padding:4px 2px 14px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.steps::-webkit-scrollbar{display:none}
+.steps .step{flex:0 0 23.5%;min-width:0;scroll-snap-align:start}
 .step{border:1px solid var(--line-soft);border-radius:16px;padding:20px 18px;background:rgba(255,255,255,0.02)}
 .step .n{font-family:'Poppins',sans-serif;font-size:0.78rem;font-weight:700;color:rgba(255,255,255,0.35);margin-bottom:10px}
 .step h3{font-family:'Poppins',sans-serif;font-size:0.88rem;font-weight:700;margin-bottom:6px}
@@ -241,6 +251,7 @@ footer .fnote{font-size:0.66rem;color:rgba(255,255,255,0.32);letter-spacing:0.1e
 /* ---------- RESPONSIVE ---------- */
 @media(max-width:820px){
   nav .links{display:none}
+  .plist .pkg,.steps .step{flex:0 0 76%;max-width:330px}
   .hero{padding:48px 0 40px}
   .grid{grid-template-columns:repeat(2,1fr);gap:8px}
   #karya,#harga,#cara{margin-bottom:58px}
@@ -253,27 +264,13 @@ footer .fnote{font-size:0.66rem;color:rgba(255,255,255,0.32);letter-spacing:0.1e
   .lb .x{width:38px;height:38px;top:12px;right:12px}
   .lb .hint{display:none}
 }
-/* Pricelist di HP: slider horizontal, bukan 4 kartu bertumpuk */
+/* Pricelist + cara booking = slider horizontal di semua ukuran */
+.swipe-note{display:flex;align-items:center;justify-content:center;gap:7px;
+  font-size:0.64rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;
+  color:rgba(255,255,255,0.38);margin-top:2px}
+.swipe-note i{font-size:0.85rem}
 @media(max-width:700px){
-  .plist{
-    display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;
-    padding:6px 4px 16px;margin:0 -4px;
-    -webkit-overflow-scrolling:touch;scrollbar-width:none;
-  }
-  .plist::-webkit-scrollbar{display:none}
-  .pkg{flex:0 0 78%;max-width:320px;scroll-snap-align:center}
-  .plist.swipe-hint::after{content:'';flex:0 0 4px}
-  .swipe-note{display:flex;align-items:center;justify-content:center;gap:7px;
-    font-size:0.66rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;
-    color:rgba(255,255,255,0.38);margin-top:2px}
-  .swipe-note i{font-size:0.85rem}
-}
-@media(min-width:701px){.swipe-note{display:none}}
-@media(max-width:900px){
-  .steps{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:520px){
-  .steps{grid-template-columns:1fr}
+  .swipe-note{font-size:0.6rem;letter-spacing:0.12em}
 }
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
@@ -327,36 +324,8 @@ footer .fnote{font-size:0.66rem;color:rgba(255,255,255,0.32);letter-spacing:0.1e
     <p class="sub">Sesi foto wisuda personal, bareng keluarga, atau bestie. Dikerjakan sendiri, hasil edit premium, semua file original ikut.</p>
     <div class="actions">
       <a href="#booking" class="btn-solid"><i class="ph-fill ph-calendar-check"></i>Cek Slot &amp; Booking</a>
+      <a href="#harga" class="btn-ghost"><i class="ph-fill ph-wallet"></i>Lihat Pricelist</a>
       <a href="#karya" class="btn-ghost"><i class="ph-fill ph-images"></i>Lihat Karya</a>
-    </div>
-  </section>
-
-  <section id="karya">
-    <div class="sec-head rv">
-      <div class="kicker"><i class="ph-fill ph-images"></i>Portofolio</div>
-      <h2>Hasil foto wisuda</h2>
-      <p>Klik foto untuk melihat versi besarnya.</p>
-    </div>
-    <div class="grid rv" id="gradGrid">
-      <a class="tile shot" href="full/wisuda-16.jpg" data-full="full/wisuda-16.jpg" data-cap="Toga dan ijazah"><img class="im" src="thumb/wisuda-16.jpg" alt="Foto wisuda RPXLABS toga dan ijazah, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Toga dan ijazah</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
-      <a class="tile shot" href="full/wisuda-12.jpg" data-full="full/wisuda-12.jpg" data-cap="Wisuda ijazah"><img class="im" src="thumb/wisuda-12.jpg" alt="Foto wisuda RPXLABS ijazah, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda ijazah</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
-      <a class="tile shot" href="full/wisuda-13.jpg" data-full="full/wisuda-13.jpg" data-cap="Wisuda payung"><img class="im" src="thumb/wisuda-13.jpg" alt="Foto wisuda RPXLABS payung, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda payung</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
-      <a class="tile shot" href="full/wisuda-14.jpg" data-full="full/wisuda-14.jpg" data-cap="Wisuda kain"><img class="im" src="thumb/wisuda-14.jpg" alt="Foto wisuda RPXLABS kain, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda kain</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
-      <a class="tile shot" href="full/wisuda-11.jpg" data-full="full/wisuda-11.jpg" data-cap="Wisuda dinding merah"><img class="im" src="thumb/wisuda-11.jpg" alt="Foto wisuda RPXLABS dinding merah, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda dinding merah</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
-      <a class="tile shot" href="full/wisuda-10.jpg" data-full="full/wisuda-10.jpg" data-cap="Wisuda patung merah"><img class="im" src="thumb/wisuda-10.jpg" alt="Foto wisuda RPXLABS patung merah, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda patung merah</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
-      <a class="tile shot" href="full/wisuda-07.jpg" data-full="full/wisuda-07.jpg" data-cap="Wisuda batik"><img class="im" src="thumb/wisuda-07.jpg" alt="Foto wisuda RPXLABS batik, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda batik</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
-      <a class="tile shot" href="full/wisuda-19.jpg" data-full="full/wisuda-19.jpg" data-cap="Wisuda tangan terbuka"><img class="im" src="thumb/wisuda-19.jpg" alt="Foto wisuda RPXLABS tangan terbuka, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda tangan terbuka</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
-      <a class="tile shot" href="full/wisuda-03.jpg" data-full="full/wisuda-03.jpg" data-cap="Toga di tangan"><img class="im" src="thumb/wisuda-03.jpg" alt="Foto wisuda RPXLABS toga di tangan, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Toga di tangan</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
-      <a class="tile shot" href="full/wisuda-09.jpg" data-full="full/wisuda-09.jpg" data-cap="Empat wisudawan"><img class="im" src="thumb/wisuda-09.jpg" alt="Foto wisuda RPXLABS empat wisudawan, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Empat wisudawan</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
-      <a class="tile shot" href="full/wisuda-01.jpg" data-full="full/wisuda-01.jpg" data-cap="Wisuda kebaya"><img class="im" src="thumb/wisuda-01.jpg" alt="Foto wisuda RPXLABS kebaya, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda kebaya</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
-      <a class="tile shot" href="full/wisuda-18.jpg" data-full="full/wisuda-18.jpg" data-cap="Wisuda tiang"><img class="im" src="thumb/wisuda-18.jpg" alt="Foto wisuda RPXLABS tiang, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda tiang</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
-      <a class="tile shot" href="full/wisuda-15.jpg" data-full="full/wisuda-15.jpg" data-cap="Wisuda duduk"><img class="im" src="thumb/wisuda-15.jpg" alt="Foto wisuda RPXLABS duduk, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda duduk</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
-      <a class="tile shot" href="full/wisuda-04.jpg" data-full="full/wisuda-04.jpg" data-cap="Toga dramatis"><img class="im" src="thumb/wisuda-04.jpg" alt="Foto wisuda RPXLABS toga dramatis, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Toga dramatis</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
-      <a class="tile shot" href="full/wisuda-17.jpg" data-full="full/wisuda-17.jpg" data-cap="Detail medali"><img class="im" src="thumb/wisuda-17.jpg" alt="Foto wisuda RPXLABS detail medali, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Detail medali</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
-      <a class="tile shot" href="full/wisuda-05.jpg" data-full="full/wisuda-05.jpg" data-cap="Rombongan wisuda"><img class="im" src="thumb/wisuda-05.jpg" alt="Foto wisuda RPXLABS rombongan, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Rombongan wisuda</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
-      <a class="tile shot" href="full/wisuda-08.jpg" data-full="full/wisuda-08.jpg" data-cap="Wisuda gelap"><img class="im" src="thumb/wisuda-08.jpg" alt="Foto wisuda RPXLABS low light, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda gelap</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
-      <a class="tile shot" href="full/wisuda-02.jpg" data-full="full/wisuda-02.jpg" data-cap="Siluet wisuda"><img class="im" src="thumb/wisuda-02.jpg" alt="Foto wisuda RPXLABS siluet, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Siluet wisuda</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
-      <a class="tile shot" href="full/wisuda-06.jpg" data-full="full/wisuda-06.jpg" data-cap="Wisuda malam"><img class="im" src="thumb/wisuda-06.jpg" alt="Foto wisuda RPXLABS malam, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda malam</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
     </div>
   </section>
 
@@ -413,11 +382,11 @@ footer .fnote{font-size:0.66rem;color:rgba(255,255,255,0.32);letter-spacing:0.1e
       </div>
 
       <div class="pkg">
-        <div class="pname">Bestie</div>
+        <div class="pname">Bestie/Group</div>
         <div class="pprice">Rp 800.000</div>
-        <div class="pmeta">2 wisudawan · 90 menit</div>
+        <div class="pmeta">2 wisudawan · 120 menit</div>
         <ul>
-          <li><i class="ph-fill ph-check-circle"></i>35 foto hasil edit</li>
+          <li><i class="ph-fill ph-check-circle"></i>50 foto hasil edit</li>
           <li><i class="ph-fill ph-check-circle"></i>2 wisudawan sekaligus</li>
           <li><i class="ph-fill ph-check-circle"></i>Semua file original</li>
           <li><i class="ph-fill ph-check-circle"></i>Multi spot lokasi</li>
@@ -450,6 +419,7 @@ footer .fnote{font-size:0.66rem;color:rgba(255,255,255,0.32);letter-spacing:0.1e
       <div class="step"><div class="n">03</div><h3>Isi data &amp; DP</h3><p>DP mulai Rp 150.000 untuk mengunci jadwal. Sisa dibayar setelah sesi.</p></div>
       <div class="step"><div class="n">04</div><h3>Konfirmasi</h3><p>Form terkirim, lanjut kirim bukti DP lewat WhatsApp.</p></div>
     </div>
+    <div class="swipe-note"><i class="ph ph-arrows-horizontal"></i>Geser untuk lihat semua langkah</div>
   </section>
 
   <div class="bcard rv" id="booking">
@@ -459,6 +429,35 @@ footer .fnote{font-size:0.66rem;color:rgba(255,255,255,0.32);letter-spacing:0.1e
     <a class="cta" href="/graduation-form.html">Cek Slot &amp; Booking <i class="ph ph-arrow-right"></i></a>
     <div class="note"><i class="ph ph-info"></i>Kuota 4 sesi per hari · jam 05:00 – 17:00</div>
   </div>
+
+  <section id="karya">
+    <div class="sec-head rv">
+      <div class="kicker"><i class="ph-fill ph-images"></i>Portofolio</div>
+      <h2>Hasil foto wisuda</h2>
+      <p>Klik foto untuk melihat versi besarnya.</p>
+    </div>
+    <div class="grid rv" id="gradGrid">
+      <a class="tile shot" href="full/wisuda-16.jpg" data-full="full/wisuda-16.jpg" data-cap="Toga dan ijazah"><img class="im" src="thumb/wisuda-16.jpg" alt="Foto wisuda RPXLABS toga dan ijazah, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Toga dan ijazah</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
+      <a class="tile shot" href="full/wisuda-12.jpg" data-full="full/wisuda-12.jpg" data-cap="Wisuda ijazah"><img class="im" src="thumb/wisuda-12.jpg" alt="Foto wisuda RPXLABS ijazah, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda ijazah</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
+      <a class="tile shot" href="full/wisuda-13.jpg" data-full="full/wisuda-13.jpg" data-cap="Wisuda payung"><img class="im" src="thumb/wisuda-13.jpg" alt="Foto wisuda RPXLABS payung, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda payung</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
+      <a class="tile shot" href="full/wisuda-14.jpg" data-full="full/wisuda-14.jpg" data-cap="Wisuda kain"><img class="im" src="thumb/wisuda-14.jpg" alt="Foto wisuda RPXLABS kain, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda kain</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
+      <a class="tile shot" href="full/wisuda-11.jpg" data-full="full/wisuda-11.jpg" data-cap="Wisuda dinding merah"><img class="im" src="thumb/wisuda-11.jpg" alt="Foto wisuda RPXLABS dinding merah, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda dinding merah</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
+      <a class="tile shot" href="full/wisuda-10.jpg" data-full="full/wisuda-10.jpg" data-cap="Wisuda patung merah"><img class="im" src="thumb/wisuda-10.jpg" alt="Foto wisuda RPXLABS patung merah, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda patung merah</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
+      <a class="tile shot" href="full/wisuda-07.jpg" data-full="full/wisuda-07.jpg" data-cap="Wisuda batik"><img class="im" src="thumb/wisuda-07.jpg" alt="Foto wisuda RPXLABS batik, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda batik</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
+      <a class="tile shot" href="full/wisuda-19.jpg" data-full="full/wisuda-19.jpg" data-cap="Wisuda tangan terbuka"><img class="im" src="thumb/wisuda-19.jpg" alt="Foto wisuda RPXLABS tangan terbuka, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda tangan terbuka</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
+      <a class="tile shot" href="full/wisuda-03.jpg" data-full="full/wisuda-03.jpg" data-cap="Toga di tangan"><img class="im" src="thumb/wisuda-03.jpg" alt="Foto wisuda RPXLABS toga di tangan, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Toga di tangan</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
+      <a class="tile shot" href="full/wisuda-09.jpg" data-full="full/wisuda-09.jpg" data-cap="Empat wisudawan"><img class="im" src="thumb/wisuda-09.jpg" alt="Foto wisuda RPXLABS empat wisudawan, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Empat wisudawan</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
+      <a class="tile shot" href="full/wisuda-01.jpg" data-full="full/wisuda-01.jpg" data-cap="Wisuda kebaya"><img class="im" src="thumb/wisuda-01.jpg" alt="Foto wisuda RPXLABS kebaya, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda kebaya</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
+      <a class="tile shot" href="full/wisuda-18.jpg" data-full="full/wisuda-18.jpg" data-cap="Wisuda tiang"><img class="im" src="thumb/wisuda-18.jpg" alt="Foto wisuda RPXLABS tiang, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda tiang</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
+      <a class="tile shot" href="full/wisuda-15.jpg" data-full="full/wisuda-15.jpg" data-cap="Wisuda duduk"><img class="im" src="thumb/wisuda-15.jpg" alt="Foto wisuda RPXLABS duduk, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda duduk</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
+      <a class="tile shot" href="full/wisuda-04.jpg" data-full="full/wisuda-04.jpg" data-cap="Toga dramatis"><img class="im" src="thumb/wisuda-04.jpg" alt="Foto wisuda RPXLABS toga dramatis, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Toga dramatis</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
+      <a class="tile shot" href="full/wisuda-17.jpg" data-full="full/wisuda-17.jpg" data-cap="Detail medali"><img class="im" src="thumb/wisuda-17.jpg" alt="Foto wisuda RPXLABS detail medali, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Detail medali</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
+      <a class="tile shot" href="full/wisuda-05.jpg" data-full="full/wisuda-05.jpg" data-cap="Rombongan wisuda"><img class="im" src="thumb/wisuda-05.jpg" alt="Foto wisuda RPXLABS rombongan, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Rombongan wisuda</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
+      <a class="tile shot" href="full/wisuda-08.jpg" data-full="full/wisuda-08.jpg" data-cap="Wisuda gelap"><img class="im" src="thumb/wisuda-08.jpg" alt="Foto wisuda RPXLABS low light, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda gelap</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
+      <a class="tile shot" href="full/wisuda-02.jpg" data-full="full/wisuda-02.jpg" data-cap="Siluet wisuda"><img class="im" src="thumb/wisuda-02.jpg" alt="Foto wisuda RPXLABS siluet, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Siluet wisuda</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
+      <a class="tile shot" href="full/wisuda-06.jpg" data-full="full/wisuda-06.jpg" data-cap="Wisuda malam"><img class="im" src="thumb/wisuda-06.jpg" alt="Foto wisuda RPXLABS malam, Palangka Raya" width="800" height="1000" loading="lazy" decoding="async"><div class="ov"><span>Wisuda malam</span></div><span class="igb"><i class="ph-fill ph-arrows-out"></i>Perbesar</span></a>
+    </div>
+  </section>
 
   <footer id="kontak">
     <div class="fbrand">
