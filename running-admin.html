@@ -265,7 +265,7 @@ function bukaFormUbah(a){
   barisEdit = a.baris;
   $('#fJudul').value = a.judul || '';
   $('#fKategori').value = a.kategori || '';
-  $('#fTanggal').value = isoDari(a.tanggal);
+  $('#fTanggal').value = a.tanggalIso || isoDari(a.tanggal);
   $('#fLink').value = a.link || '';
   $('#fAktif').value = a.aktif ? 'Ya' : 'Tidak';
   $('#sesiWrap').classList.toggle('hide', (a.kategori || '') !== 'Harian');
