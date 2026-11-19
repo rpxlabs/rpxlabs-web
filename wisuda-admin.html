@@ -211,13 +211,8 @@ function simpan(){
   if (!link) return toast('Link Drive belum diisi');
   if (link.indexOf('drive.google.com') === -1) return toast('Link harus dari Google Drive');
 
-  // tanggal -> format enak dibaca
+  // kirim ISO apa adanya; server yang memformat (hindari Date invalid -> 'NaN undefined NaN')
   var tg = tanggal;
-  if (tanggal) {
-    var d = new Date(tanggal + 'T00:00:00');
-    var bln = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
-    tg = d.getDate() + ' ' + bln[d.getMonth()] + ' ' + d.getFullYear();
-  }
 
   $('#btnSimpan').disabled = true;
   $('#btnSimpan').textContent = 'Menyimpan…';
