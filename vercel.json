@@ -25,11 +25,6 @@
       "permanent": true
     },
     {
-      "source": "/graduation",
-      "destination": "/graduation.html",
-      "permanent": true
-    },
-    {
       "source": "/Payment",
       "destination": "/payment",
       "permanent": true
