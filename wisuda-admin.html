@@ -81,7 +81,7 @@ select{padding-right:32px}
     <div class="lbl">Akses</div>
     <input id="pin" type="password" inputmode="numeric" placeholder="PIN portal" autocomplete="current-password">
     <div class="row"><button class="btn main" id="btnPin" type="button">Buka</button></div>
-    <div class="hint" id="pinHint">Biasanya kamu sudah otomatis masuk lewat <b>rpxlabs.id/portal.html</b>. PIN ini cadangan kalau halaman dibuka langsung.</div>
+    <div class="hint" id="pinHint">Biasanya kamu sudah otomatis masuk lewat <b>rpxlabs.id/portal</b>. PIN ini cadangan kalau halaman dibuka langsung.</div>
   </div>
 
   <!-- form -->
@@ -151,7 +151,7 @@ var K_TOKEN = 'rpxlabs_portal_token';
 var K_TIME  = 'rpxlabs_portal_time';
 var TTL     = 12 * 60 * 60 * 1000;
 var EP = 'https://script.google.com/macros/s/AKfycbx1BYB1TACi2OSYFACowp38RVs1A8tq70hPn3dxbvjtLfJuYsS9LfuNEWQbOx5_o5KnLg/exec';
-var BASE = location.origin + '/wisuda.html';
+var BASE = location.origin + '/wisuda';
 
 var $ = function(s){ return document.querySelector(s); };
 

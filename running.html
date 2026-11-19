@@ -200,7 +200,7 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
 </style>
 
     <!-- SEO -->
-    <link rel="canonical" href="https://rpxlabs.id/running.html">
+    <link rel="canonical" href="https://rpxlabs.id/running">
     <meta name="robots" content="index, follow, max-image-preview:large">
     <meta name="author" content="RPXLABS">
     <meta name="geo.region" content="ID-KT">
@@ -212,7 +212,7 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
     <meta property="og:locale" content="id_ID">
     <meta property="og:title" content="Fotografer Running & Marathon Palangka Raya | RPXLABS">
     <meta property="og:description" content="Jasa foto lari dan marathon di Palangka Raya. Abadikan momen start hingga finish line dengan hasil edit warna natural. Booking online RPXLABS.">
-    <meta property="og:url" content="https://rpxlabs.id/running.html">
+    <meta property="og:url" content="https://rpxlabs.id/running">
     <meta property="og:image" content="https://rpxlabs.id/assets/logo-wisuda.png">
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
@@ -297,7 +297,7 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
 <div class="wrap">
 
   <div class="top">
-    <a href="/index.html" class="back"><i class="ph ph-arrow-left"></i>Beranda</a>
+    <a href="/index" class="back"><i class="ph ph-arrow-left"></i>Beranda</a>
     <img src="/assets/logo-rpx-sport.png" alt="RPXLABS">
   </div>
 
@@ -427,7 +427,7 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
       </div>
     </div>
 
-    <a class="btnpay" href="/payment.html">
+    <a class="btnpay" href="/payment">
       <i class="ph-fill ph-arrow-square-out"></i>Buka Halaman Pembayaran
     </a>
   </div>
@@ -437,7 +437,7 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
     <p>Pesan sudah terisi otomatis. Tinggal lengkapi kode fotonya, kirim, lalu bayar lewat QRIS atau BCA di halaman pembayaran. Link pembayaran juga ikut terkirim di pesan WhatsApp kamu.</p>
     <div class="bandcta">
       <a class="btn" href="https://wa.me/6289623290398?text=Halo%20RPXLABS.%20Aku%20mau%20beli%20foto%20ini%0A----------------------------%0AAlbum%20%3A%20%0A----------------------------%0AKode%20Foto%20%3A%20" target="_blank" rel="noopener"><i class="ph-fill ph-whatsapp-logo"></i>Checkout via WhatsApp</a>
-      <a class="btn ghost" href="/payment.html"><i class="ph-fill ph-qr-code"></i>QRIS &amp; Rekening</a>
+      <a class="btn ghost" href="/payment"><i class="ph-fill ph-qr-code"></i>QRIS &amp; Rekening</a>
     </div>
   </div>
 
@@ -544,7 +544,7 @@ document.getElementById('filters').addEventListener('click', e => {
     const wkt   = String(a.waktu || '').trim();             // Pagi / Sore / CFD
     const sesi  = [a.tanggalTampil || '', kat, wkt].filter(Boolean).join(' - ');
 
-    return 'album.html?f=' + encodeURIComponent(fid) +
+    return '/album?f=' + encodeURIComponent(fid) +
            '&j=' + encodeURIComponent(judul) +
            '&s=' + encodeURIComponent(sesi);
   }

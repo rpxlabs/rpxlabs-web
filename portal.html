@@ -189,12 +189,12 @@ function showDash(){
   // halaman admin lama: kirim token lewat hash supaya tidak muncul di log server
   var t = localStorage.getItem(K_TOKEN) || '';
   // admin.html & calendar.html ada di rpxlabs-web (repo yang sama), bukan di domain lama
-  document.getElementById('t1').href = '/calendar.html#t=' + t;
-  document.getElementById('t2').href = '/admin.html#t=' + t;
-  document.getElementById('t3').href = '/running.html';
-  document.getElementById('t5').href = '/invoice.html';
-  document.getElementById('t6').href = '/wisuda-admin.html#t=' + t;
-  document.getElementById('t7').href = '/running-admin.html#t=' + t;
+  document.getElementById('t1').href = '/calendar#t=' + t;
+  document.getElementById('t2').href = '/admin#t=' + t;
+  document.getElementById('t3').href = '/running';
+  document.getElementById('t5').href = '/invoice';
+  document.getElementById('t6').href = '/wisuda-admin#t=' + t;
+  document.getElementById('t7').href = '/running-admin#t=' + t;
   document.getElementById('t4').href = SHEET;
   document.getElementById('t4').target = '_blank';
 }

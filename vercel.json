@@ -1,4 +1,6 @@
 {
+  "cleanUrls": true,
+  "trailingSlash": false,
   "redirects": [
     {
       "source": "/:path*",
@@ -25,6 +27,46 @@
     {
       "source": "/graduation",
       "destination": "/graduation.html",
+      "permanent": true
+    },
+    {
+      "source": "/Payment",
+      "destination": "/payment",
+      "permanent": true
+    },
+    {
+      "source": "/Bayar",
+      "destination": "/payment",
+      "permanent": true
+    },
+    {
+      "source": "/Running",
+      "destination": "/running",
+      "permanent": true
+    },
+    {
+      "source": "/Album",
+      "destination": "/running",
+      "permanent": true
+    },
+    {
+      "source": "/Graduation",
+      "destination": "/graduation",
+      "permanent": true
+    },
+    {
+      "source": "/Sport",
+      "destination": "/sport",
+      "permanent": true
+    },
+    {
+      "source": "/Event",
+      "destination": "/event",
+      "permanent": true
+    },
+    {
+      "source": "/Portfolio",
+      "destination": "/portfolio",
       "permanent": true
     }
   ],

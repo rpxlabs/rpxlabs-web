@@ -108,7 +108,7 @@ select{padding-right:32px}
     <div class="lbl">Akses</div>
     <input id="pin" type="password" inputmode="numeric" placeholder="PIN portal" autocomplete="current-password">
     <div class="row"><button class="btn main" id="btnPin" type="button">Buka</button></div>
-    <div class="hint" id="pinHint">Biasanya kamu sudah otomatis masuk lewat <b>rpxlabs.id/portal.html</b>. PIN ini cadangan kalau halaman dibuka langsung.</div>
+    <div class="hint" id="pinHint">Biasanya kamu sudah otomatis masuk lewat <b>rpxlabs.id/portal</b>. PIN ini cadangan kalau halaman dibuka langsung.</div>
   </div>
 
   <!-- form -->
@@ -476,7 +476,7 @@ function portalDari(a){
   if (!m) m = /[?&]id=([a-zA-Z0-9_-]{10,})/.exec(String(a.link || ''));
   if (!m) return '';
   var sesi = [a.tanggal || '', a.kategori || '', a.waktu || ''].filter(Boolean).join(' - ');
-  return 'album.html?f=' + encodeURIComponent(m[1]) +
+  return '/album?f=' + encodeURIComponent(m[1]) +
          '&j=' + encodeURIComponent(a.judul || 'Album') +
          '&s=' + encodeURIComponent(sesi);
 }

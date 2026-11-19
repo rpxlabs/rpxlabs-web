@@ -2,10 +2,10 @@ User-agent: *
 Allow: /
 
 # Halaman internal — jangan diindeks
-Disallow: /portal.html
-Disallow: /admin.html
-Disallow: /calendar.html
-Disallow: /invoice.html
-Disallow: /penawaran-website.html
+Disallow: /portal
+Disallow: /admin
+Disallow: /calendar
+Disallow: /invoice
+Disallow: /penawaran-website
 
 Sitemap: https://rpxlabs.id/sitemap.xml
