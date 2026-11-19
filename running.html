@@ -89,34 +89,46 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
 
   /* ---------- Pemilih kategori bertahap ---------- */
   .hide{display:none!important}
-  .pick{background:var(--glass);border:1px solid var(--line-soft);border-radius:20px;padding:22px 20px;margin-bottom:26px;backdrop-filter:blur(16px)}
-  .pick-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px}
-  .pick-head>i{font-size:1.15rem;color:rgba(255,255,255,0.72);margin-top:2px}
-  .pick-head b{display:block;font-family:'Poppins',sans-serif;font-size:0.95rem;font-weight:700;color:#fff;margin-bottom:4px}
-  .pick-head span{font-size:0.76rem;color:var(--dim);line-height:1.5}
-  .kat{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-  .kcard{display:flex;flex-direction:column;align-items:flex-start;gap:14px;text-align:left;cursor:pointer;
-    font-family:'Nunito',sans-serif;min-height:186px;
-    color:#0a0a0a;background:linear-gradient(158deg,rgba(228,228,228,0.90) 0%,rgba(208,208,208,0.87) 100%);
-    border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:20px 19px;
-    box-shadow:0 1px 0 rgba(255,255,255,0.3) inset,0 14px 30px rgba(0,0,0,0.42);
+  .pick{position:relative;text-align:center;
+    background:linear-gradient(160deg,rgba(255,255,255,0.11) 0%,rgba(255,255,255,0.035) 52%,rgba(255,255,255,0.015) 100%);
+    border:1px solid rgba(255,255,255,0.34);border-radius:24px;padding:32px 24px 26px;margin:36px 0 26px;
+    box-shadow:0 0 70px rgba(255,255,255,0.11),0 18px 46px rgba(0,0,0,0.52);
+    backdrop-filter:blur(16px)}
+  .pick-head{display:flex;flex-direction:column;align-items:center;gap:11px;margin-bottom:24px}
+  .pick-head .pick-badge{display:inline-flex;align-items:center;gap:7px;
+    font-family:'Nunito',sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.2em;text-transform:uppercase;
+    color:#0a0a0a;background:#fff;border-radius:99px;padding:7px 15px;
+    box-shadow:0 0 24px rgba(255,255,255,0.38)}
+  .pick-head .pick-badge i{font-size:0.85rem}
+  .pick-head b{display:block;font-family:'Poppins',sans-serif;font-weight:800;
+    font-size:clamp(1.5rem,3.4vw,2.05rem);line-height:1.12;color:#fff;letter-spacing:-.02em;
+    text-shadow:0 0 34px rgba(255,255,255,0.28)}
+  .pick-head .pick-sub{font-size:0.84rem;color:rgba(255,255,255,0.72);line-height:1.6;max-width:400px;margin:0 auto}
+  .pick.picked .pick-head b{font-size:clamp(1.15rem,2.4vw,1.4rem)}
+  .pick.picked .pick-head{margin-bottom:18px}
+  .kat{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .kcard{display:flex;flex-direction:column;align-items:flex-start;gap:16px;text-align:left;cursor:pointer;
+    font-family:'Nunito',sans-serif;min-height:212px;
+    color:#0a0a0a;background:linear-gradient(158deg,rgba(232,232,232,0.94) 0%,rgba(210,210,210,0.91) 100%);
+    border:1px solid rgba(255,255,255,0.34);border-radius:20px;padding:22px 20px;
+    box-shadow:0 1px 0 rgba(255,255,255,0.35) inset,0 16px 34px rgba(0,0,0,0.46);
     transition:all .24s cubic-bezier(.4,0,.2,1)}
-  .kcard:hover{background:linear-gradient(158deg,#eef1f6 0%,#d3d9e3 100%);border-color:rgba(255,255,255,0.45);
-    transform:translateY(-3px);box-shadow:0 1px 0 rgba(255,255,255,0.4) inset,0 18px 34px rgba(0,0,0,0.5)}
+  .kcard:hover{background:linear-gradient(158deg,#eef1f6 0%,#d3d9e3 100%);border-color:rgba(255,255,255,0.5);
+    transform:translateY(-4px);box-shadow:0 1px 0 rgba(255,255,255,0.45) inset,0 22px 40px rgba(0,0,0,0.55)}
   .kcard:active{transform:translateY(0)}
-  .kcard.on{background:#0a0a0a;border-color:#0a0a0a;color:#fff;box-shadow:0 14px 30px rgba(0,0,0,0.6)}
-  .kcard .ki{flex-shrink:0;width:44px;height:44px;border-radius:13px;display:grid;place-items:center;
-    background:#0a0a0a;color:#fff;border:1px solid rgba(10,10,10,0.9);font-size:1.25rem}
+  .kcard.on{background:#0a0a0a;border-color:#0a0a0a;color:#fff;box-shadow:0 16px 34px rgba(0,0,0,0.62)}
+  .kcard .ki{flex-shrink:0;width:52px;height:52px;border-radius:15px;display:grid;place-items:center;
+    background:#0a0a0a;color:#fff;border:1px solid rgba(10,10,10,0.9);font-size:1.5rem}
   .kcard.on .ki{background:#fff;border-color:#fff;color:#0a0a0a}
-  .kcard .ktxt{display:flex;flex-direction:column;gap:5px;min-width:0;width:100%}
-  .kcard .ktxt b{font-family:'Poppins',sans-serif;font-size:1.18rem;font-weight:700;line-height:1.15;color:#000;
+  .kcard .ktxt{display:flex;flex-direction:column;gap:6px;min-width:0;width:100%}
+  .kcard .ktxt b{font-family:'Poppins',sans-serif;font-size:1.32rem;font-weight:700;line-height:1.15;color:#000;
     letter-spacing:-.01em}
   .kcard.on .ktxt b{color:#fff}
-  .kcard .ktxt em{font-style:normal;font-family:'Poppins',sans-serif;font-size:1.02rem;font-weight:800;
+  .kcard .ktxt em{font-style:normal;font-family:'Poppins',sans-serif;font-size:1.05rem;font-weight:800;
     color:#000;line-height:1.2}
   .kcard.on .ktxt em{color:#fff}
-  .kcard .ktxt em span{font-size:1.5rem;font-weight:900;letter-spacing:-.02em}
-  .kcard .ktxt small{font-size:0.72rem;color:rgba(10,10,10,0.66);line-height:1.45;margin-top:auto}
+  .kcard .ktxt em span{font-size:1.75rem;font-weight:900;letter-spacing:-.02em}
+  .kcard .ktxt small{font-size:0.76rem;color:rgba(10,10,10,0.66);line-height:1.45;margin-top:auto}
   .kcard.on .ktxt small{color:rgba(255,255,255,0.66)}
 
   .sesi{border-top:1px solid var(--line-soft);padding-top:16px;margin-top:16px;animation:sesiIn .22s ease}
@@ -140,23 +152,36 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
   .sbtn.on em{color:#fff}
   .sbtn em span{font-size:1.35rem;font-weight:900}
 
+  .list-head{display:flex;align-items:center;flex-wrap:wrap;gap:10px;text-align:left;
+    margin:0 0 16px;padding:0 2px}
+  .list-head i{font-size:1.15rem;color:rgba(255,255,255,0.55)}
+  .list-head b{font-family:'Poppins',sans-serif;font-size:1.02rem;font-weight:800;color:#fff;letter-spacing:-.01em}
+  .list-head span{margin-left:auto;font-size:0.68rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;
+    color:rgba(255,255,255,0.42)}
+
   .kback{display:inline-flex;align-items:center;gap:7px;cursor:pointer;font-family:'Nunito',sans-serif;
-    background:transparent;border:1px solid var(--line-soft);border-radius:100px;
-    padding:8px 15px;margin-top:16px;color:rgba(255,255,255,0.62);
-    font-size:0.66rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;transition:all .2s}
-  .kback:hover{color:#fff;border-color:rgba(255,255,255,0.4)}
+    background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.24);border-radius:100px;
+    padding:11px 20px;margin:20px auto 0;color:rgba(255,255,255,0.86);
+    font-size:0.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;transition:all .2s}
+  .pick .kback{display:flex;width:fit-content}
+  .kback:hover{color:#fff;border-color:rgba(255,255,255,0.5);background:rgba(255,255,255,0.13)}
 
   @media(max-width:640px){
     /* 3 kartu tetap sejajar ke samping, jangan tumpuk ke bawah */
     .kat{grid-template-columns:repeat(3,1fr);gap:8px}
-    .kcard{min-height:0;gap:9px;padding:13px 11px;border-radius:14px}
-    .kcard .ki{width:34px;height:34px;border-radius:10px;font-size:1rem}
+    .kcard{min-height:0;gap:10px;padding:14px 12px;border-radius:15px}
+    .kcard .ki{width:38px;height:38px;border-radius:11px;font-size:1.15rem}
     .kcard .ktxt{gap:3px}
-    .kcard .ktxt b{font-size:clamp(0.72rem,3.3vw,0.92rem);line-height:1.2}
-    .kcard .ktxt em{font-size:0.8rem}
-    .kcard .ktxt em span{font-size:clamp(1.05rem,5vw,1.3rem)}
-    .kcard .ktxt small{font-size:0.58rem;line-height:1.3}
-    .pick{padding:18px 14px;margin-bottom:20px}
+    .kcard .ktxt b{font-size:clamp(0.78rem,3.5vw,1rem);line-height:1.2}
+    .kcard .ktxt em{font-size:0.82rem}
+    .kcard .ktxt em span{font-size:clamp(1.2rem,5.6vw,1.5rem)}
+    .kcard .ktxt small{font-size:0.62rem;line-height:1.3}
+    .pick{padding:24px 14px 20px;margin:26px 0 20px;border-radius:20px}
+    .pick-head{gap:9px;margin-bottom:18px}
+    .pick-head .pick-badge{font-size:0.54rem;padding:6px 12px;letter-spacing:0.16em}
+    .pick-head b{font-size:clamp(1.3rem,6.2vw,1.75rem)}
+    .pick.picked .pick-head b{font-size:clamp(1.05rem,4.6vw,1.3rem)}
+    .pick-head .pick-sub{font-size:0.76rem}
     .sesi-b{gap:8px}
     .sbtn{min-height:0;gap:5px;padding:13px 12px;border-radius:13px}
     .sbtn i{font-size:1.15rem}
@@ -280,11 +305,9 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
 
   <div class="pick" id="pick">
     <div class="pick-head">
-      <i class="ph-fill ph-funnel"></i>
-      <div>
-        <b id="pickJudul">Pilih kategori album</b>
-        <span id="pickSub">Tap salah satu, albumnya langsung muncul.</span>
-      </div>
+      <span class="pick-badge"><i class="ph-fill ph-images"></i> Album Foto</span>
+      <b id="pickJudul">Pilih Kategori Album</b>
+      <span class="pick-sub" id="pickSub">Link album ada di sini — tap kategori di bawah, albumnya langsung muncul.</span>
     </div>
 
     <div class="kat" id="katRow">
@@ -577,8 +600,8 @@ document.getElementById('filters').addEventListener('click', e => {
     $('katRow').classList.remove('hide');
     $('sesiRow').classList.add('hide');
     $('btnKembali').classList.add('hide');
-    $('pickJudul').textContent = 'Pilih kategori album';
-    $('pickSub').textContent = 'Tap salah satu, albumnya langsung muncul.';
+    $('pickJudul').textContent = 'Pilih Kategori Album';
+    $('pickSub').textContent = 'Link album ada di sini — tap kategori di bawah, albumnya langsung muncul.';
     $('albumWrap').innerHTML = '';
     document.querySelectorAll('.kcard, .sbtn').forEach(function(b){ b.classList.remove('on'); });
   }
@@ -597,7 +620,7 @@ document.getElementById('filters').addEventListener('click', e => {
       $('sesiRow').classList.remove('hide');
       $('btnKembali').classList.add('hide');
       $('pickJudul').textContent = 'Lari Harian';
-      $('pickSub').textContent = 'Pilih sesi pagi atau sore dulu.';
+      $('pickSub').textContent = 'Pilih sesi pagi atau sore dulu ya.';
       $('albumWrap').innerHTML = '';
       return;
     }
@@ -605,7 +628,7 @@ document.getElementById('filters').addEventListener('click', e => {
     $('sesiRow').classList.add('hide');
     $('btnKembali').classList.remove('hide');
     $('pickJudul').textContent = kat === 'CFD' ? 'CFD' : 'Event Running';
-    $('pickSub').textContent = 'Album yang tersedia:';
+    $('pickSub').textContent = 'Tap album di bawah untuk buka link fotonya.';
     renderDaftar();
   }
 
@@ -615,7 +638,7 @@ document.getElementById('filters').addEventListener('click', e => {
     $('sesiRow').classList.add('hide');
     $('btnKembali').classList.remove('hide');
     $('pickJudul').textContent = 'Lari Harian · ' + sesi;
-    $('pickSub').textContent = 'Album yang tersedia:';
+    $('pickSub').textContent = 'Tap album di bawah untuk buka link fotonya.';
     document.querySelectorAll('.sbtn').forEach(function(b){
       b.classList.toggle('on', b.dataset.sesi === sesi);
     });
@@ -635,10 +658,16 @@ document.getElementById('filters').addEventListener('click', e => {
 
     if(!list.length){
       const apa = state.kat === 'Harian' ? ('Harian sesi ' + state.sesi) : state.kat;
-      wrap.innerHTML = '<div class="empty">Belum ada album ' + apa + '.</div>';
+      wrap.innerHTML = '<div class="list-head"><i class="ph-fill ph-folder-open"></i>' +
+        '<b>Album ' + apa + '</b></div><div class="empty">Belum ada album ' + apa + '.</div>';
       return;
     }
-    wrap.innerHTML = '<div class="grid">' + list.map(card).join('') + '</div>';
+    const label = state.kat === 'Harian' ? (state.kat + ' \u00b7 ' + state.sesi) : state.kat;
+    wrap.innerHTML = '<div class="list-head"><i class="ph-fill ph-folder-open"></i>' +
+      '<b>Album ' + label + '</b>' +
+      '<span>Tap album untuk buka galeri \u00b7 ' + list.length + ' album</span></div>' +
+      '<div class="grid">' + list.map(card).join('') + '</div>';
+    setTimeout(function(){ wrap.scrollIntoView({behavior:'smooth', block:'start'}); }, 60);
   }
 
   /* ---------- Muat sekali, lalu tampilkan pemilih ---------- */
