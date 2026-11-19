@@ -1089,8 +1089,6 @@
                 // Jeda antar sesi (menit) — WAJIB sama dengan SESI_JEDA_MENIT di server.
                 // Sesi booked memblokir slot selama durasi + jeda (60 menit).
                 const SESI_JEDA_MENIT = 60;
-                // Jam kerja: jadwal yang MULAI di >= 17:00 tidak dianggap mengunci slot.
-                const WISUDA_WORK_END_MIN = 17 * 60;
                 let durationMinutes = 60; // default Silver
                 if (selectedPaket.includes('Gold')) durationMinutes = 90;
                 if (selectedPaket.includes('Platinum')) durationMinutes = 120;
@@ -1144,11 +1142,9 @@
                             // - sesi baru tidak boleh selesai > 60 menit sebelum jadwal mulai
                             const bookedBlockStartMin = bookedStartMin - SESI_JEDA_MENIT;
 
-                            // Slot yang MULAI di jam kerja tutup (>= 17:00) hanya diblokir
-                            // kalau jamnya persis sama dengan jadwal lain.
-                            const bentrok = slotStartMin >= WISUDA_WORK_END_MIN
-                                ? (slotStartMin === bookedStartMin)
-                                : (slotStartMin < bookedBlockEndMin && slotEndMin > bookedBlockStartMin);
+                            // Jadwal yang masih berjalan saat slot dimulai tetap mengunci,
+                            // termasuk 17:00 vs Other Job 16:00-20:00.
+                            const bentrok = slotStartMin < bookedBlockEndMin && slotEndMin > bookedBlockStartMin;
                             if (bentrok) {
                                 isAvailable = false;
                                 break;
