@@ -72,6 +72,19 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
 .or{display:flex;align-items:center;gap:12px;max-width:330px;margin:20px auto;color:rgba(255,255,255,0.34);font-size:0.6rem;font-weight:900;letter-spacing:0.2em;text-transform:uppercase}
 .or::before,.or::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.12)}
 
+/* ---------- panduan pembayaran (kartu putih glow, di atas QRIS) ---------- */
+.guide{background:linear-gradient(158deg,#ffffff 0%,#f7f7f7 45%,#ebebeb 100%);border:1px solid rgba(255,255,255,0.92);
+  border-radius:20px;padding:26px 22px;color:#0a0a0a;margin-bottom:20px;
+  box-shadow:0 1px 0 rgba(255,255,255,0.95) inset,0 0 60px rgba(255,255,255,0.55),0 18px 46px rgba(0,0,0,0.55)}
+.guide h2{display:flex;align-items:center;justify-content:center;gap:9px;font-family:'Poppins',sans-serif;font-size:1.02rem;font-weight:700;margin-bottom:8px;color:#0a0a0a}
+.guide-sub{text-align:center;font-size:0.76rem;color:rgba(10,10,10,0.72);margin-bottom:22px;line-height:1.6;max-width:420px;margin-left:auto;margin-right:auto}
+.guide .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.guide .stp{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;
+  background:rgba(10,10,10,0.035);border:1px solid rgba(10,10,10,0.10);border-radius:14px;padding:16px 12px}
+.guide .stp .n{flex-shrink:0;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#0a0a0a;color:#fff;font-size:0.66rem;font-weight:900}
+.guide .stp b{font-size:0.74rem;font-weight:900;letter-spacing:0.02em;color:#0a0a0a}
+.guide .stp p{font-size:0.66rem;line-height:1.55;color:rgba(10,10,10,0.78);margin:0}
+
 /* langkah */
 .steps{display:grid;gap:10px}
 .stp{display:flex;align-items:flex-start;gap:12px;background:rgba(255,255,255,0.03);border:1px solid var(--line-soft);border-radius:12px;padding:13px 15px}
@@ -107,6 +120,12 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
 .pr .unit{font-size:0.56rem}
 .block{padding:22px 16px;border-radius:18px}
 .qact{grid-template-columns:1fr}
+.guide{padding:20px 14px;border-radius:18px}
+.guide .steps{gap:7px}
+.guide .stp{padding:13px 7px;gap:6px;border-radius:12px}
+.guide .stp .n{width:22px;height:22px;font-size:0.58rem}
+.guide .stp b{font-size:0.66rem}
+.guide .stp p{font-size:0.58rem;line-height:1.45}
 body{padding-bottom:90px}
 }
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
@@ -132,9 +151,31 @@ body{padding-bottom:90px}
     <div class="pr"><div class="lbl">Slowmo Clips</div><div class="val">Rp 50.000</div><div class="unit">per clip</div></div>
   </div>
 
+  <div class="guide glow">
+    <h2><i class="ph-fill ph-list-numbers"></i>Panduan Pembayaran</h2>
+    <p class="guide-sub">Baca 3 langkah ini dulu, baru lanjut ke QRIS atau rekening di bawah.</p>
+    <div class="steps">
+      <div class="stp">
+        <div class="n">1</div>
+        <b>Bayar</b>
+        <p>Scan QRIS atau transfer BCA sesuai jumlah foto &times; harga.</p>
+      </div>
+      <div class="stp">
+        <div class="n">2</div>
+        <b>Screenshot</b>
+        <p>Simpan bukti pembayaran / struk dari aplikasi bank atau e-wallet.</p>
+      </div>
+      <div class="stp">
+        <div class="n">3</div>
+        <b>Kirim bukti</b>
+        <p>Kirim ke WhatsApp admin. Konfirmasi, lalu foto HD dikirim maks 2&times;24 jam.</p>
+      </div>
+    </div>
+  </div>
+
   <div class="block">
     <h2><i class="ph-fill ph-wallet"></i>Metode Pembayaran</h2>
-    <p class="sub">Pilih salah satu: scan QRIS atau transfer ke rekening BCA. Bayar sesuai jumlah foto, lalu simpan bukti pembayaran.</p>
+    <p class="sub">Pilih salah satu: scan QRIS atau transfer ke rekening BCA.</p>
 
     <div class="qris-box">
       <div class="qris-name">RPXLABS PHOTOGRAPHY</div>
@@ -161,16 +202,6 @@ body{padding-bottom:90px}
     <div class="warn">
       <i class="ph-fill ph-warning-circle"></i>
       <p><b>Perhatian:</b> sebelum konfirmasi, pastikan nama merchant di aplikasi pembayaran kamu terbaca <b>RPXLABS</b> / <b>A. RIFKO PERDANA PUTRA</b>. Kalau nama merchant berbeda, batalkan dan hubungi admin.</p>
-    </div>
-  </div>
-
-  <div class="block">
-    <h2><i class="ph-fill ph-list-numbers"></i>Setelah bayar</h2>
-    <p class="sub">Tiga langkah, selesai.</p>
-    <div class="steps">
-      <div class="stp"><div class="n">1</div><p><b>Screenshot</b> bukti pembayaran / struk QRIS.</p></div>
-      <div class="stp"><div class="n">2</div><p>Kirim bukti + <b>kode foto</b> kamu ke WhatsApp admin.</p></div>
-      <div class="stp"><div class="n">3</div><p>Admin konfirmasi, lalu kirim <b>foto versi HD</b> maks <b>2&times;24 jam</b>.</p></div>
     </div>
   </div>
 
