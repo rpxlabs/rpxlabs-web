@@ -1116,8 +1116,19 @@
                         option.textContent = `${slot.value} - ${endStr}`;
                     }
                     
+                    // Blokir jam yang sesinya melewati jam kerja (05:00-17:00)
+                    const _overWork = (() => {
+                        const [h, m] = slot.value.split(':').map(Number);
+                        return (h * 60 + m) + durationMinutes > 17 * 60;
+                    })();
+                    if (slot.value !== 'custom' && _overWork) {
+                        option.disabled = true;
+                        option.textContent += ' (Lewat jam kerja)';
+                        option.style.color = '#999';
+                    }
+
                     // Check if slot is available (except "custom")
-                    if (slot.value !== 'custom') {
+                    if (slot.value !== 'custom' && !_overWork) {
                         const [slotHours, slotMins] = slot.value.split(':').map(Number);
                         const slotStart = new Date(2000, 0, 1, slotHours, slotMins);
                         const slotEnd = new Date(slotStart.getTime() + durationMinutes * 60000);
@@ -1162,6 +1173,13 @@
                     if (slot.value === 'custom') {
                         option.textContent = slot.label;
                     } else {
+                        // Blokir jam yang sesinya melewati jam kerja 17:00
+                        const [fh, fm] = slot.value.split(':').map(Number);
+                        if ((fh * 60 + fm) + durationMinutes > 17 * 60) {
+                            option.disabled = true;
+                            option.textContent += ' (Lewat jam kerja)';
+                            option.style.color = '#999';
+                        }
                         // Tampilkan start - end time
                         const [slotHours, slotMins] = slot.value.split(':').map(Number);
                         const slotStart = new Date(2000, 0, 1, slotHours, slotMins);
