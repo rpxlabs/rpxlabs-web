@@ -410,28 +410,35 @@ radial-gradient(640px 420px at 50% 112%,rgba(255,255,255,0.05),transparent 72%);
 
   <div class="pay">
     <h2><i class="ph-fill ph-credit-card"></i>Metode Pembayaran</h2>
-    <p class="pay-sub">Bayar lewat QRIS atau transfer bank, lalu kirim buktinya ke WhatsApp admin.</p>
+    <p class="pay-sub">QRIS atau transfer BCA. Halaman pembayaran berisi QR code, nomor rekening, dan tombol salin.</p>
 
-    <div class="qris-box">
-      <div class="qris-name">RPXLABS PHOTOGRAPHY</div>
-      <img src="/assets/qris-rpxlabs-square.png" alt="QRIS RPXLABS PHOTOGRAPHY">
-      <div class="qris-note">Scan pakai aplikasi bank atau e-wallet apa saja</div>
-    </div>
-
-    <div class="bank">
-      <div class="bank-row">
-        <span class="bank-lbl">BCA</span>
-        <span class="bank-num" id="bcaNum">6695401021</span>
-        <button class="copy" id="copyBca" type="button"><i class="ph ph-copy"></i>Salin</button>
+    <div class="payrow">
+      <div class="payic"><i class="ph-fill ph-qr-code"></i></div>
+      <div class="paytx">
+        <b>QRIS</b>
+        <span>GoPay, OVO, DANA, ShopeePay, BCA mobile &amp; lainnya</span>
       </div>
-      <div class="bank-an">a/n A. Rifko Perdana Putra</div>
     </div>
+    <div class="payrow">
+      <div class="payic"><i class="ph-fill ph-bank"></i></div>
+      <div class="paytx">
+        <b>BCA 6695401021</b>
+        <span>a/n A. Rifko Perdana Putra</span>
+      </div>
+    </div>
+
+    <a class="btnpay" href="/payment.html">
+      <i class="ph-fill ph-arrow-square-out"></i>Buka Halaman Pembayaran
+    </a>
   </div>
 
   <div class="band">
     <h2>Siap checkout foto kamu?</h2>
-    <p>Pesan sudah terisi otomatis. Tinggal lengkapi kode fotonya, kirim, admin yang urus sisanya.</p>
-    <a class="btn" href="https://wa.me/6289623290398?text=Halo%20RPXLABS.%20Aku%20mau%20ambil%20foto%20berikut%0A%0AKode%20Foto%20%3A%20" target="_blank" rel="noopener"><i class="ph-fill ph-whatsapp-logo"></i>Checkout via WhatsApp</a>
+    <p>Pesan sudah terisi otomatis. Tinggal lengkapi kode fotonya, kirim, lalu bayar lewat QRIS atau BCA di halaman pembayaran. Link pembayaran juga ikut terkirim di pesan WhatsApp kamu.</p>
+    <div class="bandcta">
+      <a class="btn" href="https://wa.me/6289623290398?text=Halo%20RPXLABS.%20Aku%20mau%20beli%20foto%20ini%0A----------------------------%0AAlbum%20%3A%20%0A----------------------------%0AKode%20Foto%20%3A%20" target="_blank" rel="noopener"><i class="ph-fill ph-whatsapp-logo"></i>Checkout via WhatsApp</a>
+      <a class="btn ghost" href="/payment.html"><i class="ph-fill ph-qr-code"></i>QRIS &amp; Rekening</a>
+    </div>
   </div>
 
 </div>
@@ -484,6 +491,24 @@ document.getElementById('filters').addEventListener('click', e => {
   .bank-an{margin-top:10px;font-size:0.78rem;color:rgba(240,240,240,0.72)}
   @media(max-width:560px){.prices{grid-template-columns:repeat(3,1fr)}.pay{padding:24px 16px}.ev-card{background:linear-gradient(158deg,#ffffff 0%,#f7f7f7 45%,#ebebeb 100%);border-color:rgba(255,255,255,0.90)}.pr{background:linear-gradient(158deg,#ffffff 0%,#f7f7f7 45%,#ebebeb 100%);border-color:rgba(255,255,255,0.90)}.howto{background:linear-gradient(158deg,#ffffff 0%,#f7f7f7 45%,#ebebeb 100%);border-color:rgba(255,255,255,0.20)}.fy-card{background:linear-gradient(158deg,#ffffff 0%,#f7f7f7 45%,#ebebeb 100%)}body{padding-bottom:96px}.pr .lbl{letter-spacing:0.06em;font-size:0.5rem}.pr .val{font-size:0.98rem}.pr{padding:14px 8px}.pr .unit{font-size:0.56rem}}
 
+
+  /* ---------- kartu pembayaran ringkas -> payment.html ---------- */
+  .payrow{max-width:340px;margin:0 auto 10px;display:flex;align-items:center;gap:13px;text-align:left;
+    background:rgba(255,255,255,0.045);border:1px solid var(--line-soft);border-radius:14px;padding:14px 16px}
+  .payic{flex-shrink:0;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;
+    background:#fff;color:#000;font-size:1.05rem}
+  .paytx{display:flex;flex-direction:column;gap:3px;min-width:0}
+  .paytx b{font-family:'Poppins',sans-serif;font-size:0.86rem;font-weight:700;color:#fff;letter-spacing:0.01em}
+  .paytx span{font-size:0.7rem;color:rgba(255,255,255,0.62);line-height:1.45}
+  .btnpay{display:flex;align-items:center;justify-content:center;gap:8px;max-width:340px;margin:18px auto 0;
+    text-decoration:none;background:#fff;color:#000;font-family:'Nunito',sans-serif;font-size:0.72rem;
+    font-weight:900;letter-spacing:0.09em;text-transform:uppercase;border-radius:100px;padding:14px 22px;
+    box-shadow:0 0 26px rgba(255,255,255,0.22);transition:all .22s}
+  .btnpay:hover{transform:translateY(-2px);box-shadow:0 0 36px rgba(255,255,255,0.40)}
+  .bandcta{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+  .btn.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.42);box-shadow:none}
+  .btn.ghost:hover{background:rgba(255,255,255,0.10);border-color:rgba(255,255,255,0.66);box-shadow:0 0 26px rgba(255,255,255,0.14)}
+  @media(max-width:560px){.bandcta{flex-direction:column}.bandcta .btn{width:100%;justify-content:center}}
   .loading{grid-column:1/-1;padding:26px 0;color:rgba(255,255,255,0.4);font-size:0.84rem;text-align:center}
   .empty{grid-column:1/-1;padding:26px 0;color:rgba(255,255,255,0.32);font-size:0.84rem;text-align:center}
 </style>
