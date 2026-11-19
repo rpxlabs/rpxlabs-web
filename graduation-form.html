@@ -1136,21 +1136,24 @@
                     // Check if slot is available (except "custom")
                     if (slot.value !== 'custom') {
                         const [slotHours, slotMins] = slot.value.split(':').map(Number);
-                        const slotStart = new Date(2000, 0, 1, slotHours, slotMins);
-                        const slotEnd = new Date(slotStart.getTime() + durationMinutes * 60000);
-                        
-                        // Jeda antar sesi sudah dihitung di server: booked.endTime =
-                        // durasi paket + SESI_JEDA_MENIT. Jangan tambah buffer lagi di sini,
-                        // kalau tidak jeda jadi dobel (Silver 05:00 end 07:00 malah ditolak
-                        // sampai 07:30). Cek overlap murni terhadap rentang yang diblokir.
+                        // Bandingkan dalam MENIT (angka), jangan objek Date — perbandingan
+                        // Date lintas objek rawan hasil salah dan pernah bikin slot bentrok lolos.
+                        const slotStartMin = slotHours * 60 + slotMins;
+                        const slotEndMin = slotStartMin + durationMinutes;
+
+                        // booked.endTime sudah = durasi paket + jeda (dihitung server).
+                        // Tambah jeda sekali lagi SETELAH sesi booked, supaya sesi baru
+                        // tidak menempel tepat di menit akhirnya (tanpa waktu ngegas).
                         let isAvailable = true;
                         for (let booked of bookedSlots) {
-                            const [bookedHours, bookedMins] = booked.startTime.split(':').map(Number);
-                            const bookedStart = new Date(2000, 0, 1, bookedHours, bookedMins);
-                            const bookedEnd = new Date(2000, 0, 1, ...booked.endTime.split(':').map(Number));
+                            const [bSH, bSM] = booked.startTime.split(':').map(Number);
+                            const [bEH, bEM] = booked.endTime.split(':').map(Number);
+                            const bookedStartMin = bSH * 60 + bSM;
+                            const bookedBlockEndMin = bEH * 60 + bEM + SESI_JEDA_MENIT;
 
-                            // Check collision: slot.start < bookedEnd && slot.end > bookedStart
-                            if (slotStart < bookedEnd && slotEnd > bookedStart) {
+                            // Overlap INKLUSIF: sesi yang berakhir tepat saat jadwal lain
+                            // mulai tetap ditolak — harus ada jeda, tidak boleh menempel.
+                            if (slotStartMin < bookedBlockEndMin && slotEndMin >= bookedStartMin) {
                                 isAvailable = false;
                                 break;
                             }
