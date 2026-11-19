@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Preview Wisuda — RPXLABS</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+:root{
+  --bg:#000; --text:#f0f0f0; --dim:#7c7c8a; --line:rgba(255,255,255,.22);
+  --card:#0b0b0b; --acc:#fff;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
+  font-family:"Nunito",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;overscroll-behavior-y:contain}
+a{color:inherit}
+
+/* ---------- HEADER ---------- */
+header{position:sticky;top:0;z-index:30;background:rgba(0,0,0,.94);
+  backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.hwrap{max-width:960px;margin:0 auto;padding:14px 16px 12px}
+.brand{display:flex;align-items:center;gap:9px;margin-bottom:11px}
+.brand img{height:20px;width:auto;display:block}
+.brand span{font-size:10px;letter-spacing:.19em;text-transform:uppercase;color:var(--dim)}
+h1{margin:0 0 3px;font-size:18px;font-weight:800;letter-spacing:-.02em;line-height:1.25}
+.meta{font-size:12px;color:var(--dim);line-height:1.5}
+.meta b{color:var(--text);font-weight:700}
+
+/* jatah */
+.jatah{margin-top:11px;border:1px solid var(--line);border-radius:10px;
+  padding:9px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.jatah .lbl{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim)}
+.jatah .val{font-size:15px;font-weight:800;letter-spacing:-.01em}
+.jatah .val b{font-size:19px}
+.jatah.penuh{border-color:#fff;background:rgba(255,255,255,.06)}
+
+/* toolbar */
+.tools{display:flex;gap:8px;margin-top:11px}
+#cari{flex:1;min-width:0;background:#0d0d0d;border:1px solid var(--line);border-radius:9px;
+  color:var(--text);font:inherit;font-size:14px;padding:10px 13px;outline:none}
+#cari:focus{border-color:rgba(255,255,255,.5);background:#111}
+#cari::placeholder{color:#5a5a66}
+.tbtn{background:transparent;border:1px solid var(--line);color:var(--text);
+  font:inherit;font-size:12px;font-weight:700;padding:0 13px;border-radius:9px;cursor:pointer;
+  white-space:nowrap;transition:.15s}
+.tbtn:active{background:rgba(255,255,255,.12)}
+
+/* ---------- GRID ---------- */
+main{max-width:960px;margin:0 auto;padding:14px 16px 130px}
+#grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+@media(min-width:680px){#grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}}
+@media(min-width:900px){#grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+.cell{position:relative;border-radius:10px;overflow:hidden;background:#101010;
+  aspect-ratio:2/3;border:1px solid transparent;transition:border-color .15s}
+.cell img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .3s}
+.cell img.on{opacity:1}
+.cell.picked{border-color:#fff;box-shadow:0 0 0 2px #fff}
+.cell.picked::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.34)}
+.cell .kode{position:absolute;left:7px;bottom:7px;z-index:2;
+  background:rgba(0,0,0,.8);color:#fff;font-size:11px;font-weight:800;
+  padding:3px 7px;border-radius:5px;letter-spacing:.04em;
+  box-shadow:0 0 0 1.5px rgba(0,0,0,.55),0 2px 8px rgba(0,0,0,.5)}
+.cell .badge{position:absolute;right:7px;top:7px;z-index:3;width:26px;height:26px;
+  border-radius:50%;background:#fff;color:#000;font-size:13px;font-weight:900;
+  display:none;align-items:center;justify-content:center;
+  box-shadow:0 0 0 1.5px rgba(0,0,0,.55),0 2px 8px rgba(0,0,0,.5)}
+.cell.picked .badge{display:flex}
+.cell.blocked{border-color:rgba(255,255,255,.35)}
+.cell .lock{position:absolute;inset:0;z-index:2;display:none;align-items:center;
+  justify-content:center;background:rgba(0,0,0,.6);font-size:11px;font-weight:700;
+  text-align:center;padding:8px;line-height:1.4}
+.cell.blocked .lock{display:flex}
+
+/* kosong / error */
+.state{grid-column:1/-1;text-align:center;padding:56px 20px;color:var(--dim);font-size:13px;line-height:1.7}
+.state b{color:var(--text);display:block;font-size:15px;margin-bottom:7px}
+.state .kodebox{display:inline-block;margin-top:12px;background:#111;border:1px solid var(--line);
+  padding:7px 13px;border-radius:7px;font-family:ui-monospace,monospace;font-size:11px;color:#9a9aa8}
+
+/* ---------- BAR BAWAH ---------- */
+#bar{position:fixed;left:0;right:0;bottom:0;z-index:40;transform:translateY(110%);
+  transition:transform .26s cubic-bezier(.22,.9,.3,1);padding:0 0 env(safe-area-inset-bottom)}
+#bar.on{transform:translateY(0)}
+#bar .in{max-width:960px;margin:0 auto 10px;padding:0 12px}
+#bar .card{background:#fff;color:#000;border-radius:14px;padding:12px 13px;
+  box-shadow:0 0 24px rgba(255,255,255,.14),0 -4px 30px rgba(0,0,0,.7)}
+#bar .row{display:flex;align-items:center;gap:12px}
+#bar .info{flex:1;min-width:0}
+#bar .n1{font-size:13px;font-weight:900;letter-spacing:-.01em}
+#bar .n2{font-size:11px;color:#4a4a52;margin-top:2px;font-weight:600}
+#bar .acts{display:flex;gap:7px}
+#bar button{font:inherit;font-size:12.5px;font-weight:800;border-radius:9px;
+  padding:11px 15px;cursor:pointer;border:1px solid #000;white-space:nowrap;transition:.15s}
+#bar .reset{background:#fff;color:#000}
+#bar .reset:active{background:#e6e6e6}
+#bar .send{background:#000;color:#fff}
+#bar .send:active{background:#222}
+#bar .send:disabled{opacity:.4}
+
+/* ---------- LIGHTBOX ---------- */
+#lb{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.97);display:none;
+  align-items:center;justify-content:center;flex-direction:column}
+#lb.on{display:flex}
+#lb img{max-width:100%;max-height:calc(100% - 130px);object-fit:contain;display:block}
+#lb .top{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;
+  align-items:center;padding:14px 16px;padding-top:calc(14px + env(safe-area-inset-top))}
+#lb .pill{background:rgba(255,255,255,.14);color:#fff;font-size:12px;font-weight:800;
+  padding:7px 13px;border-radius:20px;letter-spacing:.05em}
+#lb .x{background:none;border:0;color:#fff;font-size:26px;line-height:1;cursor:pointer;
+  padding:6px 10px;font-weight:300}
+#lb .bot{position:absolute;bottom:0;left:0;right:0;padding:16px;
+  padding-bottom:calc(16px + env(safe-area-inset-bottom));display:flex;gap:10px}
+#lb .bot button{flex:1;font:inherit;font-size:13.5px;font-weight:800;padding:15px;
+  border-radius:11px;cursor:pointer;border:1px solid #fff}
+#lb .bot .pickbtn{background:#fff;color:#000}
+#lb .bot .pickbtn.on{background:transparent;color:#fff}
+#lb .nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.12);
+  border:0;color:#fff;width:38px;height:38px;border-radius:50%;font-size:17px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center}
+#lb .prev{left:10px} #lb .next{right:10px}
+
+/* toast */
+#toast{position:fixed;left:50%;bottom:104px;transform:translate(-50%,20px);z-index:90;
+  background:#fff;color:#000;font-size:12.5px;font-weight:800;padding:10px 17px;
+  border-radius:20px;opacity:0;transition:.24s;pointer-events:none;white-space:nowrap}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hwrap">
+    <div class="brand">
+      <img src="/assets/logo-rpx-sport.png" alt="RPXLABS">
+      <span>graduation preview</span>
+    </div>
+    <h1 id="judul">Memuat…</h1>
+    <div class="meta" id="meta"></div>
+    <div class="jatah" id="jatahBox">
+      <span class="lbl">Jatah edit</span>
+      <span class="val" id="jatahVal">—</span>
+    </div>
+    <div class="tools">
+      <input id="cari" type="search" inputmode="numeric" placeholder="Cari kode foto…" autocomplete="off">
+      <button class="tbtn" id="btnReset" type="button">Reset</button>
+    </div>
+  </div>
+</header>
+
+<main><div id="grid"><div class="state">Memuat foto…</div></div></main>
+
+<div id="bar">
+  <div class="in"><div class="card"><div class="row">
+    <div class="info">
+      <div class="n1" id="barN1">0 foto dipilih</div>
+      <div class="n2" id="barN2"></div>
+    </div>
+    <div class="acts">
+      <button class="reset" id="btnKosong" type="button">Kosongkan</button>
+      <button class="send" id="btnKirim" type="button">Kirim</button>
+    </div>
+  </div></div></div>
+</div>
+
+<div id="lb">
+  <div class="top">
+    <span class="pill" id="lbKode">—</span>
+    <button class="x" id="lbX" type="button">&times;</button>
+  </div>
+  <button class="nav prev" id="lbPrev" type="button">‹</button>
+  <img id="lbImg" alt="">
+  <button class="nav next" id="lbNext" type="button">›</button>
+  <div class="bot"><button class="pickbtn" id="lbPick" type="button">Pilih foto ini</button></div>
+</div>
+
+<div id="toast"></div>
+
+<script src="grads-data.js"></script>
+<script>
+(function(){
+"use strict";
+
+var EP = 'https://script.google.com/macros/s/AKfycbx1BYB1TACi2OSYFACowp38RVs1A8tq70hPn3dxbvjtLfJuYsS9LfuNEWQbOx5_o5KnLg/exec';
+var WA = '6289623290398';
+var EAGER = 24;
+
+var data = null;          // respons server
+var files = [];           // [{id,name,kode}]
+var picked = [];          // array kode, urutan dipilih
+var vis = [];             // kode yang lolos filter
+var lbIdx = -1;
+
+var $ = function(s){ return document.querySelector(s); };
+var grid = $('#grid');
+
+/* ---------- util ---------- */
+function thumb(id, w){ return 'https://drive.google.com/thumbnail?id=' + id + '&sz=w' + w; }
+
+function toast(msg){
+  var t = $('#toast');
+  t.textContent = msg; t.classList.add('on');
+  clearTimeout(t._t);
+  t._t = setTimeout(function(){ t.classList.remove('on'); }, 2100);
+}
+
+function qs(name){
+  var m = new RegExp('[?&]' + name + '=([^&]*)').exec(location.search);
+  return m ? decodeURIComponent(m[1].replace(/\+/g, ' ')) : '';
+}
+
+/* ---------- util tanggal ---------- */
+var BULAN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+function rapiTanggal(t){
+  if (!t) return '';
+  var d = new Date(t);
+  if (isNaN(d.getTime())) return String(t);            // sudah teks enak dibaca
+  return d.getDate() + ' ' + BULAN[d.getMonth()] + ' ' + d.getFullYear();
+}
+
+/* ---------- muat data ---------- */
+function muat(){
+  var k = qs('k') || qs('c');          // 'c' = format lama, tetap didukung
+  if (!k) {
+    salah('Link tidak lengkap', 'Link yang kamu buka tidak berisi kode client. Minta link baru ke RPXLABS ya.');
+    return;
+  }
+  var url = EP + '?action=getWisudaClient&k=' + encodeURIComponent(k);
+
+  fetch(url)
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      if (!j.success) { salah('Tidak bisa dibuka', j.error || 'Server menolak permintaan.'); return; }
+      data = j;
+      files = j.files || [];
+      renderInfo();
+      renderGrid();
+    })
+    .catch(function(e){
+      salah('Koneksi gagal', 'Tidak bisa menghubungi server. Periksa internet lalu muat ulang halaman.');
+    });
+}
+
+function salah(judul, pesan){
+  $('#judul').textContent = judul;
+  $('#meta').textContent = '';
+  $('#jatahBox').style.display = 'none';
+  grid.innerHTML = '<div class="state"><b>' + judul + '</b>' + pesan + '</div>';
+}
+
+function renderInfo(){
+  $('#judul').textContent = data.judul || ('Preview ' + data.nama);
+  var bits = [];
+  if (data.nama) bits.push('<b>' + data.nama + '</b>');
+  if (data.universitas) bits.push(data.universitas);
+  if (data.paket) bits.push('Paket ' + data.paket);
+  if (data.tanggal) bits.push(rapiTanggal(data.tanggal));
+  bits.push(files.length + ' foto');
+  $('#meta').innerHTML = bits.join(' &middot; ');
+  document.title = (data.judul || data.nama) + ' — RPXLABS';
+  renderJatah();
+}
+
+function renderJatah(){
+  var j = data.jatah || 0;
+  var n = picked.length;
+  var el = $('#jatahVal');
+  if (j <= 0) {
+    $('#jatahBox').style.display = 'none';
+    return;
+  }
+  $('#jatahBox').style.display = 'flex';
+  el.innerHTML = '<b>' + n + '</b> / ' + j + ' dipilih';
+  $('#jatahBox').classList.toggle('penuh', n >= j);
+}
+
+/* ---------- grid ---------- */
+function renderGrid(){
+  var q = $('#cari').value.trim();
+  vis = files.filter(function(f){ return !q || f.kode.indexOf(q) !== -1; });
+
+  if (!vis.length) {
+    grid.innerHTML = '<div class="state"><b>Foto tidak ditemukan</b>Coba kode lain.</div>';
+    return;
+  }
+
+  var frag = document.createDocumentFragment();
+  vis.forEach(function(f, i){
+    var d = document.createElement('div');
+    d.className = 'cell';
+    d.dataset.kode = f.kode;
+    d.dataset.i = i;
+    d.innerHTML = '<img alt="Foto ' + f.kode + '" ' +
+                  'data-src="' + thumb(f.id, 400) + '" ' +
+                  'data-full="' + f.id + '" ' +
+                  'referrerpolicy="no-referrer">' +
+                  '<span class="kode">' + f.kode + '</span>' +
+                  '<span class="badge"></span>';
+    frag.appendChild(d);
+  });
+  grid.innerHTML = '';
+  grid.appendChild(frag);
+
+  // status picked
+  Array.prototype.forEach.call(grid.children, function(c){
+    if (picked.indexOf(c.dataset.kode) !== -1) {
+      c.classList.add('picked');
+      c.querySelector('.badge').textContent = picked.indexOf(c.dataset.kode) + 1;
+    }
+  });
+
+  muatGambar();
+}
+
+/* lazy load + retry */
+function muatGambar(){
+  var cells = Array.prototype.slice.call(grid.querySelectorAll('.cell'));
+
+  function hook(c){
+    var im = c.querySelector('img');
+    if (!im || !im.dataset.src) return;
+    im.addEventListener('load', function(){ im.classList.add('on'); });
+    im.addEventListener('error', function(){
+      if (!im.dataset.retried) {
+        im.dataset.retried = '1';
+        setTimeout(function(){ im.src = im.dataset.src; }, 1200 + Math.random() * 1800);  // Drive kadang 429
+      }
+    });
+  }
+  cells.forEach(hook);
+
+  // muat yang dekat viewport; dipanggil dari scroll DAN observer (observer tak selalu fire)
+  function cek(){
+    for (var i = 0; i < cells.length; i++) {
+      var im = cells[i].querySelector('img');
+      if (!im || !im.dataset.src) continue;
+      if (cells[i].getBoundingClientRect().top < innerHeight + 700) {
+        im.src = im.dataset.src;
+        delete im.dataset.src;
+      }
+    }
+  }
+
+  cek();
+
+  // Jalur 1: event scroll (paling murah, normalnya cukup)
+  var raf = false;
+  addEventListener('scroll', function(){
+    if (raf) return;
+    raf = true;
+    requestAnimationFrame(function(){ raf = false; cek(); });
+  }, {passive:true});
+  addEventListener('resize', cek, {passive:true});
+
+  // Jalur 2: IntersectionObserver
+  if (window.IntersectionObserver) {
+    var io = new IntersectionObserver(function(ents){
+      var ada = false;
+      ents.forEach(function(e){ if (e.isIntersecting) ada = true; });
+      if (ada) cek();
+    }, {rootMargin:'700px'});
+    cells.forEach(function(c){ io.observe(c); });
+  }
+
+  // Jalur 3: cadangan - cek posisi berkala.
+  // Di sebagian WebView, event scroll & IntersectionObserver TIDAK fire sama sekali
+  // (visibilityState=hidden). Timer ini yang menjaga foto tetap muncul.
+  // Panggil cek() tiap tick tanpa guard: guard "kalau tak berubah, lewati" bikin
+  // deadlock - jumlah tak berubah justru karena cek() tak pernah jalan.
+  var t = setInterval(function(){
+    var sisa = 0;
+    for (var i = 0; i < cells.length; i++) {
+      var im = cells[i].querySelector('img');
+      if (im && im.dataset.src) sisa++;
+    }
+    if (sisa === 0) { clearInterval(t); return; }
+    cek();
+  }, 600);
+}
+
+/* ---------- pilih ---------- */
+function toggle(kode){
+  var i = picked.indexOf(kode);
+  if (i !== -1) {
+    picked.splice(i, 1);
+    syncPick();
+    return;
+  }
+  var j = data.jatah || 0;
+  if (j > 0 && picked.length >= j) {
+    toast('Jatah edit kamu ' + j + ' foto. Hubungi RPXLABS untuk tambah.');
+    return;
+  }
+  picked.push(kode);
+  syncPick();
+}
+
+function syncPick(){
+  var j = data.jatah || 0;
+
+  Array.prototype.forEach.call(grid.children, function(c){
+    var k = c.dataset.kode;
+    var idx = picked.indexOf(k);
+    var on = idx !== -1;
+    c.classList.toggle('picked', on);
+    c.querySelector('.badge').textContent = on ? (idx + 1) : '';
+    c.classList.remove('blocked');
+    if (!on && j > 0 && picked.length >= j) {
+      c.classList.add('blocked');
+      if (!c.querySelector('.lock')) {
+        var l = document.createElement('span');
+        l.className = 'lock';
+        l.textContent = 'Jatah penuh';
+        c.appendChild(l);
+      }
+    } else {
+      var old = c.querySelector('.lock');
+      if (old) old.remove();
+    }
+  });
+
+  var n = picked.length;
+  var bar = $('#bar');
+  if (n > 0) {
+    bar.classList.add('on');
+    $('#barN1').textContent = n + ' foto dipilih';
+    $('#barN2').textContent = j > 0 ? ('sisa jatah ' + Math.max(0, j - n) + ' foto') : 'siap dikirim';
+    $('#btnKirim').disabled = false;
+  } else {
+    bar.classList.remove('on');
+  }
+  renderJatah();
+  if (lbIdx >= 0) syncLbPick();
+}
+
+/* ---------- WhatsApp ---------- */
+function pesan(){
+  var judul = data.judul || data.nama;
+  var sesi = [];
+  if (data.universitas) sesi.push(data.universitas);
+  if (data.paket) sesi.push('Paket ' + data.paket);
+  if (data.tanggal) sesi.push(rapiTanggal(data.tanggal));
+
+  var baris = picked.map(function(k, i){ return (i + 1) + '. ' + k; });
+
+  return 'Halo RPXLABS. Aku mau pilih foto untuk diedit' + '\n' +
+         'Album : ' + judul + ', ' + sesi.join(' - ') + '\n\n' +
+         'Kode Foto :' + '\n' +
+         baris.join('\n') + '\n\n' +
+         'Aku otw kirim bukti pembayarannya yaa';
+}
+
+function kirim(){
+  if (!picked.length) return;
+  var url = 'https://wa.me/' + WA + '?text=' + encodeURIComponent(pesan());
+  window.open(url, '_blank');
+}
+
+/* ---------- lightbox ---------- */
+function bukaLb(kode){
+  var i = -1;
+  for (var k = 0; k < vis.length; k++) { if (vis[k].kode === kode) { i = k; break; } }
+  if (i === -1) return;
+  lbIdx = i;
+  tampilLb();
+  $('#lb').classList.add('on');
+  document.body.style.overflow = 'hidden';
+}
+
+function tampilLb(){
+  var f = vis[lbIdx];
+  if (!f) return;
+  $('#lbKode').textContent = f.kode;
+  var im = $('#lbImg');
+  im.src = thumb(f.id, 1600);
+  im.setAttribute('referrerpolicy', 'no-referrer');
+  syncLbPick();
+}
+
+function syncLbPick(){
+  var f = vis[lbIdx];
+  if (!f) return;
+  var on = picked.indexOf(f.kode) !== -1;
+  var b = $('#lbPick');
+  b.classList.toggle('on', on);
+  b.textContent = on ? 'Batalkan pilihan' : 'Pilih foto ini';
+}
+
+function tutupLb(){
+  $('#lb').classList.remove('on');
+  document.body.style.overflow = '';
+  lbIdx = -1;
+}
+
+function geser(d){
+  if (lbIdx < 0) return;
+  lbIdx = (lbIdx + d + vis.length) % vis.length;
+  tampilLb();
+}
+
+/* ---------- event ---------- */
+grid.addEventListener('click', function(e){
+  var c = e.target.closest('.cell');
+  if (!c) return;
+  if (e.target.closest('.kode')) { toggle(c.dataset.kode); return; }
+  bukaLb(c.dataset.kode);
+});
+
+$('#lbPick').addEventListener('click', function(){
+  if (lbIdx < 0) return;
+  toggle(vis[lbIdx].kode);
+});
+$('#lbX').addEventListener('click', tutupLb);
+$('#lbPrev').addEventListener('click', function(){ geser(-1); });
+$('#lbNext').addEventListener('click', function(){ geser(1); });
+$('#lb').addEventListener('click', function(e){ if (e.target.id === 'lb') tutupLb(); });
+
+document.addEventListener('keydown', function(e){
+  if (lbIdx >= 0) {
+    if (e.key === 'Escape') tutupLb();
+    if (e.key === 'ArrowLeft') geser(-1);
+    if (e.key === 'ArrowRight') geser(1);
+  }
+});
+
+var tmr;
+$('#cari').addEventListener('input', function(){
+  clearTimeout(tmr);
+  tmr = setTimeout(renderGrid, 180);
+});
+
+$('#btnKosong').addEventListener('click', function(){
+  picked = [];
+  syncPick();
+  toast('Pilihan dikosongkan');
+});
+
+$('#btnKirim').addEventListener('click', kirim);
+
+$('#btnReset').addEventListener('click', function(){
+  $('#cari').value = '';
+  renderGrid();
+});
+
+muat();
+})();
+</script>
+</body>
+</html>
