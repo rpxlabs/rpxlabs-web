@@ -1099,6 +1099,8 @@
                 const data = await response.json();
                 
                 const bookedSlots = data.success ? data.bookedSlots : [];
+                // Simpan untuk validasi jam custom di submit
+                window.bookedSlotsCache = bookedSlots;
                 
                 // Populate dropdown
                 jamSelect.innerHTML = '<option value="">-- Pilih slot waktu --</option>';
@@ -1510,7 +1512,35 @@
                     submitBtn.textContent = 'Kirim Booking';
                     return;
                 }
-                finalJam = customJam + ' (Custom)';
+
+                // Validasi jam custom terhadap jam kerja, durasi, dan jeda 1 jam.
+                // Sebelumnya input bebas ini lolos tanpa cek (14:15 bisa disimpan).
+                const _toMin = (t) => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+                let _durasi = 60;
+                if (document.getElementById('paket').value.includes('gold')) _durasi = 90;
+                if (document.getElementById('paket').value.includes('platinum')) _durasi = 120;
+                if (document.getElementById('paket').value.includes('bestie')) _durasi = 120;
+
+                const _s = _toMin(customJam), _e = _s + _durasi;
+                if (_s < 5 * 60) {
+                    showAlert('⚠️ Jam ' + customJam + ' sebelum 05:00 tidak bisa dipesan.', 'warning');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Kirim Booking';
+                    return;
+                }
+
+                const _bentrok = (bookedSlotsCache || []).filter(b => {
+                    const bs = _toMin(b.startTime), be = _toMin(b.endTime) + 60;
+                    return _s < be && _e > (bs - 60);
+                });
+                if (_bentrok.length) {
+                    showAlert('⚠️ Jam ' + customJam + ' bentrok atau tidak cukup jeda 1 jam dengan jadwal lain. Pilih jam lain.', 'warning');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Kirim Booking';
+                    return;
+                }
+
+                finalJam = customJam;
             }
             
             // Get universitas value (handle custom)
