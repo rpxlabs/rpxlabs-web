@@ -21,6 +21,11 @@
       ],
       "destination": "https://rpxlabs.id/:path*",
       "permanent": true
+    },
+    {
+      "source": "/graduation",
+      "destination": "/graduation.html",
+      "permanent": true
     }
   ],
   "headers": [
