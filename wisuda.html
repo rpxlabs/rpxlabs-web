@@ -68,6 +68,36 @@ main{max-width:960px;margin:0 auto;padding:14px 16px 130px}
   box-shadow:0 0 0 1.5px rgba(0,0,0,.55),0 2px 8px rgba(0,0,0,.5)}
 .cell.picked .badge{display:flex}
 .cell.blocked{border-color:rgba(255,255,255,.35)}
+
+/* tombol pilih di tiap tile */
+.cell .pickbtn{position:absolute;right:7px;bottom:7px;z-index:4;
+  background:rgba(0,0,0,.82);color:#fff;border:1px solid rgba(255,255,255,.5);
+  font:inherit;font-size:11px;font-weight:800;letter-spacing:.02em;
+  padding:7px 12px;border-radius:20px;cursor:pointer;line-height:1;
+  display:flex;align-items:center;gap:5px;
+  box-shadow:0 0 0 1.5px rgba(0,0,0,.55),0 2px 8px rgba(0,0,0,.5);
+  transition:.15s;white-space:nowrap}
+.cell .pickbtn:active{transform:scale(.94)}
+.cell.picked .pickbtn{background:#fff;color:#000;border-color:#fff}
+.cell.blocked .pickbtn{opacity:.35;pointer-events:none}
+.cell.picked .pickbtn .lbl{display:none}
+.cell.picked .pickbtn .ok{display:inline}
+.cell .pickbtn .ok{display:none}
+
+/* bubble WhatsApp melayang */
+#fab{position:fixed;right:16px;bottom:22px;z-index:50;width:58px;height:58px;
+  border-radius:50%;background:#fff;color:#000;border:0;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(0,0,0,.6),0 0 0 1.5px rgba(255,255,255,.28);
+  transition:transform .18s, bottom .26s cubic-bezier(.22,.9,.3,1), opacity .18s}
+#fab:active{transform:scale(.92)}
+#fab svg{width:29px;height:29px;display:block}
+#fab .cnt{position:absolute;top:-3px;right:-3px;min-width:21px;height:21px;
+  border-radius:11px;background:#000;color:#fff;font-size:11px;font-weight:900;
+  display:none;align-items:center;justify-content:center;padding:0 5px;
+  box-shadow:0 0 0 1.5px #fff}
+#fab.ada .cnt{display:flex}
+body.barOn #fab{bottom:104px}
 .cell .lock{position:absolute;inset:0;z-index:2;display:none;align-items:center;
   justify-content:center;background:rgba(0,0,0,.6);font-size:11px;font-weight:700;
   text-align:center;padding:8px;line-height:1.4}
@@ -133,7 +163,7 @@ main{max-width:960px;margin:0 auto;padding:14px 16px 130px}
 <header>
   <div class="hwrap">
     <div class="brand">
-      <img src="/assets/logo-rpx-sport.png" alt="RPXLABS">
+      <img src="/assets/logo-wisuda.png" alt="RPXLABS">
       <span>graduation preview</span>
     </div>
     <h1 id="judul">Memuat…</h1>
@@ -174,6 +204,13 @@ main{max-width:960px;margin:0 auto;padding:14px 16px 130px}
   <button class="nav next" id="lbNext" type="button">›</button>
   <div class="bot"><button class="pickbtn" id="lbPick" type="button">Pilih foto ini</button></div>
 </div>
+
+<button id="fab" type="button" aria-label="Kirim pilihan lewat WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.2-.7.2s-.8 1-1 1.2c-.2.2-.4.3-.7.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.4.5-.6.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.7-1.6-.9-2.2-.2-.5-.4-.5-.6-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.2-.6-.3zM12 2A10 10 0 0 0 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.3A10 10 0 1 0 12 2zm0 18.2c-1.6 0-3-.4-4.3-1.2l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.2z"/>
+  </svg>
+  <span class="cnt" id="fabCnt">0</span>
+</button>
 
 <div id="toast"></div>
 
@@ -296,7 +333,10 @@ function renderGrid(){
                   'data-full="' + f.id + '" ' +
                   'referrerpolicy="no-referrer">' +
                   '<span class="kode">' + f.kode + '</span>' +
-                  '<span class="badge"></span>';
+                  '<span class="badge"></span>' +
+                  '<button class="pickbtn" type="button">' +
+                    '<span class="lbl">Pilih</span><span class="ok">&#10003; Dipilih</span>' +
+                  '</button>';
     frag.appendChild(d);
   });
   grid.innerHTML = '';
@@ -406,6 +446,8 @@ function syncPick(){
     c.classList.toggle('picked', on);
     c.querySelector('.badge').textContent = on ? (idx + 1) : '';
     c.classList.remove('blocked');
+    var pb = c.querySelector('.pickbtn');
+    if (pb) pb.querySelector('.lbl').textContent = on ? '' : 'Pilih';
     if (!on && j > 0 && picked.length >= j) {
       c.classList.add('blocked');
       if (!c.querySelector('.lock')) {
@@ -421,6 +463,15 @@ function syncPick(){
   });
 
   var n = picked.length;
+
+  // bubble WhatsApp
+  var fab = $('#fab');
+  if (fab) {
+    fab.classList.toggle('ada', n > 0);
+    $('#fabCnt').textContent = n;
+  }
+  document.body.classList.toggle('barOn', n > 0);
+
   var bar = $('#bar');
   if (n > 0) {
     bar.classList.add('on');
@@ -503,7 +554,11 @@ function geser(d){
 grid.addEventListener('click', function(e){
   var c = e.target.closest('.cell');
   if (!c) return;
-  if (e.target.closest('.kode')) { toggle(c.dataset.kode); return; }
+  // tombol pilih / label kode = pilih; klik foto = lightbox
+  if (e.target.closest('.pickbtn') || e.target.closest('.kode')) {
+    toggle(c.dataset.kode);
+    return;
+  }
   bukaLb(c.dataset.kode);
 });
 
@@ -537,6 +592,14 @@ $('#btnKosong').addEventListener('click', function(){
 });
 
 $('#btnKirim').addEventListener('click', kirim);
+
+$('#fab').addEventListener('click', function(){
+  if (!picked.length) {
+    toast('Pilih foto dulu ya');
+    return;
+  }
+  kirim();
+});
 
 $('#btnReset').addEventListener('click', function(){
   $('#cari').value = '';
