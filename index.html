@@ -190,18 +190,19 @@ nav .navlogo:hover{opacity:0.82;transform:translateY(-1px)}
 /* ---------- FOOTER ---------- */
 footer{
   border-top:1px solid var(--line-soft);padding-top:34px;
-  display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center;
 }
-footer .fbrand{display:flex;align-items:center;gap:10px}
+footer .fbrand{display:flex;flex-direction:column;align-items:center;gap:10px}
 footer .fbrand img{height:26px;mix-blend-mode:screen;opacity:0.72}
-footer .fsoc{display:flex;gap:10px}
+footer .fsoc{display:flex;gap:12px;justify-content:center}
 footer .fsoc a{
-  width:38px;height:38px;border-radius:50%;
+  width:46px;height:46px;border-radius:50%;
   display:grid;place-items:center;
-  border:1px solid var(--line-soft);background:rgba(255,255,255,0.03);
-  color:rgba(255,255,255,0.58);text-decoration:none;font-size:1.06rem;transition:all .22s;
+  border:1px solid rgba(255,255,255,0.90);background:linear-gradient(158deg,#ffffff 0%,#f7f7f7 45%,#ebebeb 100%);
+  color:#0a0a0a;text-decoration:none;font-size:1.32rem;transition:all .22s;
+  box-shadow:0 1px 0 rgba(255,255,255,0.92) inset,0 0 34px rgba(255,255,255,0.38),0 14px 32px rgba(0,0,0,0.46);
 }
-footer .fsoc a:hover{border-color:rgba(255,255,255,0.42);color:#fff;background:rgba(255,255,255,0.1)}
+footer .fsoc a:hover{background:linear-gradient(158deg,#ffffff 0%,#fcfcfc 45%,#f3f3f3 100%);border-color:#fff;transform:translateY(-3px);box-shadow:0 1px 0 rgba(255,255,255,1) inset,0 0 50px rgba(255,255,255,0.60),0 20px 40px rgba(0,0,0,0.50)}
 footer .fnote{font-size:0.66rem;color:rgba(255,255,255,0.32);letter-spacing:0.1em;text-transform:uppercase;font-weight:700}
 
 /* ---------- FLOAT WA ---------- */
@@ -230,7 +231,7 @@ footer .fnote{font-size:0.66rem;color:rgba(255,255,255,0.32);letter-spacing:0.1e
   .work{grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:58px}
   .trust{margin-bottom:58px}
   .band{padding:44px 22px;border-radius:20px;margin-bottom:50px}
-  footer{flex-direction:column;align-items:flex-start;gap:16px}
+  footer{flex-direction:column;align-items:center;gap:16px}
   .wrap{padding:0 16px 60px}
   nav{padding-top:12px;padding-bottom:12px;padding-left:max(16px, calc(50vw - 540px + 16px));padding-right:max(16px, calc(50vw - 540px + 16px))}
   nav .navlogo img{height:18px}
