@@ -72,10 +72,10 @@ select{padding-right:32px}
 
   <!-- PIN -->
   <div class="card" id="pinCard">
-    <div class="lbl">PIN Admin</div>
-    <input id="pin" type="password" inputmode="numeric" placeholder="Masukkan PIN" autocomplete="current-password">
+    <div class="lbl">Akses</div>
+    <input id="pin" type="password" inputmode="numeric" placeholder="PIN portal" autocomplete="current-password">
     <div class="row"><button class="btn main" id="btnPin" type="button">Buka</button></div>
-    <div class="hint" id="pinHint"></div>
+    <div class="hint" id="pinHint">Biasanya kamu sudah otomatis masuk lewat <b>rpxlabs.id/portal.html</b>. PIN ini cadangan kalau halaman dibuka langsung.</div>
   </div>
 
   <!-- form -->
@@ -140,7 +140,10 @@ select{padding-right:32px}
 <script>
 (function(){
 "use strict";
-var PIN_BENAR = '2006';
+var PIN_BENAR = '2006';          // cadangan kalau dibuka langsung tanpa portal
+var K_TOKEN = 'rpxlabs_portal_token';
+var K_TIME  = 'rpxlabs_portal_time';
+var TTL     = 12 * 60 * 60 * 1000;
 var EP = 'https://script.google.com/macros/s/AKfycbx1BYB1TACi2OSYFACowp38RVs1A8tq70hPn3dxbvjtLfJuYsS9LfuNEWQbOx5_o5KnLg/exec';
 var BASE = location.origin + '/wisuda.html';
 
@@ -180,15 +183,40 @@ $('#fPaket').addEventListener('change', function(){
   $('#fJatah').placeholder = j > 0 ? ('Jatah edit (' + j + ' dari paket, kosongkan saja)') : 'Jatah edit';
 });
 
-/* ---------- PIN ---------- */
-function buka(){
-  var p = $('#pin').value.trim();
-  if (p !== PIN_BENAR) { $('#pinHint').textContent = 'PIN salah.'; return; }
-  sessionStorage.setItem('rpx_grads_pin', p);
+/* ---------- sesi: token portal dulu, PIN cadangan ---------- */
+function tokenPortal(){
+  var t = localStorage.getItem(K_TOKEN) || '';
+  var ts = Number(localStorage.getItem(K_TIME) || 0);
+  if (!t) return '';
+  if (ts && (Date.now() - ts) > TTL) {          // kedaluwarsa
+    localStorage.removeItem(K_TOKEN);
+    localStorage.removeItem(K_TIME);
+    return '';
+  }
+  return t;
+}
+
+function bacaHash(){
+  var m = /(?:^|[#&])t=([A-Za-z0-9]+)/.exec(location.hash || '');
+  if (!m) return '';
+  localStorage.setItem(K_TOKEN, m[1]);
+  localStorage.setItem(K_TIME, String(Date.now()));
+  try { history.replaceState(null, '', location.pathname); } catch (e) {}
+  return m[1];
+}
+
+function masuk(){
   $('#pinCard').classList.add('hide');
   $('#formCard').classList.add('hide');
   $('#listCard').classList.remove('hide');
   muatDaftar();
+}
+
+function buka(){
+  var p = $('#pin').value.trim();
+  if (p !== PIN_BENAR) { $('#pinHint').textContent = 'PIN salah.'; return; }
+  sessionStorage.setItem('rpx_grads_pin', p);
+  masuk();
 }
 $('#btnPin').addEventListener('click', buka);
 $('#pin').addEventListener('keydown', function(e){ if (e.key === 'Enter') buka(); });
@@ -219,6 +247,7 @@ function simpan(){
 
   var body = {
     action: 'saveGradsClient',
+    token: tokenPortal(),
     pin: sessionStorage.getItem('rpx_grads_pin') || '',
     tanggal: tg,
     nama: nama,
@@ -330,10 +359,11 @@ function esc(s){
 
 /* ---------- init ---------- */
 isiDropdown();
-if (sessionStorage.getItem('rpx_grads_pin') === PIN_BENAR) {
-  $('#pinCard').classList.add('hide');
-  $('#listCard').classList.remove('hide');
-  muatDaftar();
+
+// Prioritas: token dari portal (hash -> localStorage), lalu PIN yang sudah diisi sebelumnya
+bacaHash();
+if (tokenPortal() || sessionStorage.getItem('rpx_grads_pin') === PIN_BENAR) {
+  masuk();
 }
 })();
 </script>

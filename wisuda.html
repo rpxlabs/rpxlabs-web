@@ -487,19 +487,13 @@ function syncPick(){
 
 /* ---------- WhatsApp ---------- */
 function pesan(){
-  var judul = data.judul || data.nama;
-  var sesi = [];
-  if (data.universitas) sesi.push(data.universitas);
-  if (data.paket) sesi.push('Paket ' + data.paket);
-  if (data.tanggal) sesi.push(rapiTanggal(data.tanggal));
-
   var baris = picked.map(function(k, i){ return (i + 1) + '. ' + k; });
 
-  return 'Halo RPXLABS. Aku mau pilih foto untuk diedit' + '\n' +
-         'Album : ' + judul + ', ' + sesi.join(' - ') + '\n\n' +
+  return 'Haloo kak. Fotonya udah aku pilih yaa' + '\n\n' +
+         'Nama : ' + (data.nama || '') + '\n' +
+         'Paket : ' + (data.paket || '') + '\n' +
          'Kode Foto :' + '\n' +
-         baris.join('\n') + '\n\n' +
-         'Aku otw kirim bukti pembayarannya yaa';
+         baris.join('\n');
 }
 
 function kirim(){
