@@ -480,7 +480,7 @@
     <!-- TODAY -->
     <div class="panel">
         <div class="panel-head">
-            <ph-icon class="ph ph-calendar-dots"></ph-icon>
+            <i class="ph ph-calendar-dots"></i>
             Jadwal Hari Ini
             <span class="count" id="todayCount">—</span>
         </div>
@@ -505,18 +505,18 @@
 
     <!-- FORM -->
     <form id="jobForm">
-        <h2><ph-icon class="ph ph-plus-square"></ph-icon>Input Job Baru</h2>
+        <h2><i class="ph ph-plus-square"></i>Input Job Baru</h2>
 
         <label>Sesi</label>
         <div class="pills" id="pills">
             <button type="button" class="pill active sport" data-jenis="Sport">
-                <ph-icon class="ph ph-tennis-ball"></ph-icon>Sport
+                <i class="ph ph-tennis-ball"></i>Sport
             </button>
             <button type="button" class="pill" data-jenis="Event">
-                <ph-icon class="ph ph-confetti"></ph-icon>Event
+                <i class="ph ph-confetti"></i>Event
             </button>
             <button type="button" class="pill" data-jenis="Documentation">
-                <ph-icon class="ph ph-camera"></ph-icon>Doc
+                <i class="ph ph-camera"></i>Doc
             </button>
         </div>
 
@@ -548,7 +548,7 @@
 
         <div class="panel" style="border-color: rgba(255,255,255,0.24); background: rgba(255,255,255,0.04); margin: 1.1rem 0;">
             <div class="panel-head">
-                <ph-icon class="ph ph-currency-circle-dollar"></ph-icon>Harga &amp; DP
+                <i class="ph ph-currency-circle-dollar"></i>Harga &amp; DP
             </div>
             <div class="form-group" style="margin-bottom: 0.7rem;">
                 <label>Harga Total <span class="req">*</span></label>
@@ -585,14 +585,14 @@
         </div>
 
         <button type="submit" class="btn" id="submitBtn">
-            <ph-icon class="ph ph-check-square"></ph-icon>Simpan Job
+            <i class="ph ph-check-square"></i>Simpan Job
         </button>
     </form>
 
     <!-- AGENDA -->
     <div class="panel">
         <div class="panel-head">
-            <ph-icon class="ph ph-list-checks"></ph-icon>
+            <i class="ph ph-list-checks"></i>
             Agenda 14 Hari
             <span class="count" id="agendaCount">—</span>
         </div>
@@ -633,7 +633,7 @@ function lockPage(){
     document.body.innerHTML = `
       <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:#000;color:#f0f0f0;font-family:Nunito,sans-serif;text-align:center">
         <div style="max-width:360px">
-          <div style="font-size:2rem;opacity:.5;margin-bottom:16px"><ph-icon class="ph ph-lock-key"></ph-icon></div>
+          <div style="font-size:2rem;opacity:.5;margin-bottom:16px"><i class="ph ph-lock-key"></i></div>
           <h1 style="font-size:1.3rem;font-weight:700;margin-bottom:10px">Halaman Terkunci</h1>
           <p style="font-size:.85rem;color:#7c7c8a;line-height:1.6;margin-bottom:22px">Masuk lewat portal dulu supaya halaman ini bisa dibuka.</p>
           <a href="${PORTAL_URL}" style="display:inline-block;background:#f0f0f0;color:#000;font-weight:800;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border-radius:11px;padding:13px 22px">Buka Portal</a>
@@ -705,7 +705,7 @@ function kindTag(ev) {
 let toastTimer;
 function toast(msg, icon) {
     const t = el('toast');
-    t.innerHTML = '<ph-icon class="ph ' + (icon || 'ph-info') + '"></ph-icon>' + msg;
+    t.innerHTML = '<i class="ph ' + (icon || 'ph-info') + '"></i>' + msg;
     t.classList.add('show');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => t.classList.remove('show'), 3800);
@@ -758,7 +758,7 @@ function renderToday() {
                     ${ev.detail || ev.nama || '—'}
                 </div>
                 <div class="tl-meta">${ev.lokasi || 'Lokasi belum diisi'}</div>
-                ${clash ? '<div class="clash"><ph-icon class="ph ph-warning"></ph-icon>Tabrakan jadwal — cek ulang jam</div>' : ''}
+                ${clash ? '<div class="clash"><i class="ph ph-warning"></i>Tabrakan jadwal — cek ulang jam</div>' : ''}
             </div>
         </div>`;
     }).join('');
@@ -882,11 +882,11 @@ async function checkConflictNow() {
 
     if (!date || !start || !end) { box.innerHTML = ''; return; }
     if (toMin(end) <= toMin(start)) {
-        box.innerHTML = `<div class="cbox cbox-warn"><ph-icon class="ph ph-warning"></ph-icon><div><strong>Jam tidak valid</strong>Jam selesai harus setelah jam mulai.</div></div>`;
+        box.innerHTML = `<div class="cbox cbox-warn"><i class="ph ph-warning"></i><div><strong>Jam tidak valid</strong>Jam selesai harus setelah jam mulai.</div></div>`;
         return;
     }
 
-    box.innerHTML = `<div class="cbox cbox-info"><ph-icon class="ph ph-circle-notch"></ph-icon><div>Mengecek jadwal…</div></div>`;
+    box.innerHTML = `<div class="cbox cbox-info"><i class="ph ph-circle-notch"></i><div>Mengecek jadwal…</div></div>`;
 
     try {
         const res = await fetch(`${GOOGLE_SCRIPT_URL}?action=checkConflict&date=${date}&start=${start}&end=${end}`, { cache: 'no-store' });
@@ -894,12 +894,12 @@ async function checkConflictNow() {
 
         if (data.hasConflict) {
             const items = data.conflicts.map(c => `<li>${c.start}–${c.end} · <strong>${kindTag(c)}</strong> ${c.detail || c.nama || ''}</li>`).join('');
-            box.innerHTML = `<div class="cbox cbox-warn"><ph-icon class="ph ph-warning-octagon"></ph-icon><div><strong>Tabrakan dengan ${data.conflicts.length} jadwal</strong><ul>${items}</ul></div></div>`;
+            box.innerHTML = `<div class="cbox cbox-warn"><i class="ph ph-warning-octagon"></i><div><strong>Tabrakan dengan ${data.conflicts.length} jadwal</strong><ul>${items}</ul></div></div>`;
         } else {
-            box.innerHTML = `<div class="cbox cbox-ok"><ph-icon class="ph ph-check-circle"></ph-icon><div><strong>Jadwal kosong</strong>Tidak ada tabrakan di jam ini.</div></div>`;
+            box.innerHTML = `<div class="cbox cbox-ok"><i class="ph ph-check-circle"></i><div><strong>Jadwal kosong</strong>Tidak ada tabrakan di jam ini.</div></div>`;
         }
     } catch (err) {
-        box.innerHTML = `<div class="cbox cbox-info"><ph-icon class="ph ph-info"></ph-icon><div>Cek tabrakan gagal — lanjut simpan, verifikasi manual di sheet.</div></div>`;
+        box.innerHTML = `<div class="cbox cbox-info"><i class="ph ph-info"></i><div>Cek tabrakan gagal — lanjut simpan, verifikasi manual di sheet.</div></div>`;
     }
 }
 
@@ -943,7 +943,7 @@ el('jobForm').addEventListener('submit', async (e) => {
 
     const btn = el('submitBtn');
     btn.disabled = true;
-    btn.innerHTML = '<ph-icon class="ph ph-circle-notch"></ph-icon>Menyimpan…';
+    btn.innerHTML = '<i class="ph ph-circle-notch"></i>Menyimpan…';
 
     try {
         await fetch(GOOGLE_SCRIPT_URL, {
@@ -981,7 +981,7 @@ el('jobForm').addEventListener('submit', async (e) => {
         toast('Gagal mengirim. Coba lagi.', 'ph-x-circle');
     } finally {
         btn.disabled = false;
-        btn.innerHTML = '<ph-icon class="ph ph-check-square"></ph-icon>Simpan Job';
+        btn.innerHTML = '<i class="ph ph-check-square"></i>Simpan Job';
     }
 });
 
