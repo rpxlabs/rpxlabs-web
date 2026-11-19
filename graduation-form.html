@@ -1139,12 +1139,16 @@
                             // Blok = durasi paket + jeda 60 menit setelah sesi booked
                             const bookedBlockEndMin = bEH * 60 + bEM + SESI_JEDA_MENIT;
 
+                            // Jeda 1 jam berlaku DUA ARAH: sebelum dan sesudah jadwal lain.
+                            // - sesi baru tidak boleh mulai < 60 menit setelah jadwal berakhir
+                            // - sesi baru tidak boleh selesai > 60 menit sebelum jadwal mulai
+                            const bookedBlockStartMin = bookedStartMin - SESI_JEDA_MENIT;
+
                             // Slot yang MULAI di jam kerja tutup (>= 17:00) hanya diblokir
-                            // kalau jamnya persis sama dengan jadwal lain. Jadi 17:00 tetap
-                            // bisa dipilih walau ada Other Job 16:00-20:00.
+                            // kalau jamnya persis sama dengan jadwal lain.
                             const bentrok = slotStartMin >= WISUDA_WORK_END_MIN
                                 ? (slotStartMin === bookedStartMin)
-                                : (slotStartMin < bookedBlockEndMin && slotEndMin >= bookedStartMin);
+                                : (slotStartMin < bookedBlockEndMin && slotEndMin > bookedBlockStartMin);
                             if (bentrok) {
                                 isAvailable = false;
                                 break;
