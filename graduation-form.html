@@ -1087,9 +1087,10 @@
                 // Get selected paket & calculate duration
                 const selectedPaket = paketSelect.options[paketSelect.selectedIndex].text;
                 // Jeda antar sesi (menit) — WAJIB sama dengan SESI_JEDA_MENIT di server.
-                // Sesi booked memblokir slot selama durasi + jeda, jadi sesi baru tidak
-                // boleh mulai di menit terakhir sesi lama (tanpa jeda = langsung ngegas).
+                // Sesi booked memblokir slot selama durasi + jeda (60 menit).
                 const SESI_JEDA_MENIT = 60;
+                // Jam kerja: jadwal yang MULAI di >= 17:00 tidak dianggap mengunci slot.
+                const WISUDA_WORK_END_MIN = 17 * 60;
                 let durationMinutes = 60; // default Silver
                 if (selectedPaket.includes('Gold')) durationMinutes = 90;
                 if (selectedPaket.includes('Platinum')) durationMinutes = 120;
@@ -1105,11 +1106,6 @@
                 jamSelect.innerHTML = '<option value="">-- Pilih slot waktu --</option>';
                 
                 TIME_SLOTS.forEach(slot => {
-                    // Skip jam yang sesinya lewat 17:00 (fallback tetap hormati jam kerja)
-                    if (slot.value !== 'custom') {
-                        const [fh, fm] = slot.value.split(':').map(Number);
-                        if ((fh * 60 + fm) + durationMinutes + SESI_JEDA_MENIT > 17 * 60) return;
-                    }
                     const option = document.createElement('option');
                     option.value = slot.value;
                     
@@ -1125,14 +1121,6 @@
                         option.textContent = `${slot.value} - ${endStr}`;
                     }
                     
-                    // Jam yang sesinya (durasi + jeda) tidak selesai sebelum 17:00 tidak ditawarkan
-                    const _overWork = (() => {
-                        if (slot.value === 'custom') return false;
-                        const [h, m] = slot.value.split(':').map(Number);
-                        return (h * 60 + m) + durationMinutes + SESI_JEDA_MENIT > 17 * 60;
-                    })();
-                    if (_overWork) return; // skip, jangan tampilkan
-
                     // Check if slot is available (except "custom")
                     if (slot.value !== 'custom') {
                         const [slotHours, slotMins] = slot.value.split(':').map(Number);
@@ -1141,19 +1129,23 @@
                         const slotStartMin = slotHours * 60 + slotMins;
                         const slotEndMin = slotStartMin + durationMinutes;
 
-                        // booked.endTime sudah = durasi paket + jeda (dihitung server).
-                        // Tambah jeda sekali lagi SETELAH sesi booked, supaya sesi baru
-                        // tidak menempel tepat di menit akhirnya (tanpa waktu ngegas).
+                        // booked.endTime = akhir sesi (durasi paket). Jeda ditambahkan
+                        // di sini supaya sesi baru tidak menempel.
                         let isAvailable = true;
                         for (let booked of bookedSlots) {
                             const [bSH, bSM] = booked.startTime.split(':').map(Number);
                             const [bEH, bEM] = booked.endTime.split(':').map(Number);
                             const bookedStartMin = bSH * 60 + bSM;
+                            // Blok = durasi paket + jeda 60 menit setelah sesi booked
                             const bookedBlockEndMin = bEH * 60 + bEM + SESI_JEDA_MENIT;
 
-                            // Overlap INKLUSIF: sesi yang berakhir tepat saat jadwal lain
-                            // mulai tetap ditolak — harus ada jeda, tidak boleh menempel.
-                            if (slotStartMin < bookedBlockEndMin && slotEndMin >= bookedStartMin) {
+                            // Slot yang MULAI di jam kerja tutup (>= 17:00) hanya diblokir
+                            // kalau jamnya persis sama dengan jadwal lain. Jadi 17:00 tetap
+                            // bisa dipilih walau ada Other Job 16:00-20:00.
+                            const bentrok = slotStartMin >= WISUDA_WORK_END_MIN
+                                ? (slotStartMin === bookedStartMin)
+                                : (slotStartMin < bookedBlockEndMin && slotEndMin >= bookedStartMin);
+                            if (bentrok) {
                                 isAvailable = false;
                                 break;
                             }
