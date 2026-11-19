@@ -209,16 +209,23 @@
   /* ---------- pesan WhatsApp ---------- */
   function pesanDaftar(list) {
     var baris = list.map(function (k, i) { return (i + 1) + '. ' + k; }).join('\n');
-    return 'Halo RPXLABS. Aku mau nebus foto berikut\n' +
-           'Album : ' + SESI + '\n\n' +
-           'Kode Foto :\n' + baris + '\n\n' +
+    return 'Halo RPXLABS. Aku mau beli foto ini\n' +
+           '----------------------------\n' +
+           'Album : ' + SESI + '\n' +
+           '----------------------------\n' +
+           'Kode Foto :\n' + baris + '\n' +
+           '----------------------------\n' +
            'Aku otw kirim bukti pembayarannya yaa';
   }
   function setWaSemua() {
     document.getElementById('waAll').href = WA + encodeURIComponent(
-      'Halo RPXLABS. Aku mau nebus foto berikut\n' +
-      'Album : ' + SESI + '\n\n' +
-      'Kode Foto :\n\n\nAku otw kirim bukti pembayarannya yaa');
+      'Halo RPXLABS. Aku mau beli foto ini\n' +
+      '----------------------------\n' +
+      'Album : ' + SESI + '\n' +
+      '----------------------------\n' +
+      'Kode Foto :\n\n' +
+      '----------------------------\n' +
+      'Aku otw kirim bukti pembayarannya yaa');
   }
 
   /* ---------- pilihan ---------- */
