@@ -128,7 +128,7 @@
 
 <header>
   <div class="brand">
-    <img src="/assets/logo-rpx-sport.png" alt="RPXLABS">
+    <img id="albLogo" src="/assets/logo-rpx-sport.png" alt="RPXLABS">
   </div>
   <h1 id="albJudul">Album Foto</h1>
   <p class="sub" id="albSub">memuat album…</p>
@@ -200,6 +200,23 @@
   };
   var SESI = ALBUM.sesi ? (ALBUM.judul ? ALBUM.judul + ', ' + ALBUM.sesi : ALBUM.sesi)
                         : (ALBUM.judul || 'Album RPXLABS');
+
+  /* ---------- logo sesuai jenis album ----------
+     ?t=wisuda -> logo wisuda, ?t=running|sport -> logo sport.
+     Kalau ?t= tidak ada, tebak dari judul album. */
+  var TIPE = (P.get('t') || '').trim().toLowerCase();
+  (function () {
+    var logo = document.getElementById('albLogo');
+    if (!logo) return;
+    var t = TIPE;
+    if (!t) {
+      var j = (ALBUM.judul + ' ' + ALBUM.sesi).toLowerCase();
+      if (/wisuda|graduation|toga|ijazah|sarjana/.test(j)) t = 'wisuda';
+      else t = 'running';
+    }
+    var wisuda = (t.indexOf('wisuda') === 0 || t.indexOf('graduation') === 0);
+    logo.src = wisuda ? '/assets/logo-wisuda.png' : '/assets/logo-rpx-sport.png';
+  })();
 
   var g = document.getElementById('g'), sen = document.getElementById('sen');
   var ALL = [], shown = 0, hasil = null, cur = 0;

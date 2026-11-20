@@ -478,7 +478,8 @@ function portalDari(a){
   var sesi = [a.tanggal || '', a.kategori || '', a.waktu || ''].filter(Boolean).join(' - ');
   return '/album?f=' + encodeURIComponent(m[1]) +
          '&j=' + encodeURIComponent(a.judul || 'Album') +
-         '&s=' + encodeURIComponent(sesi);
+         '&s=' + encodeURIComponent(sesi) +
+         '&t=running';
 }
 
 function esc(s){
