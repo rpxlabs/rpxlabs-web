@@ -286,6 +286,8 @@
     return 'https://drive.google.com/thumbnail?id=' + id + '&sz=w' + (w || GRID_W);
   }
   function onLoaded(im) {
+    if (im.dataset.counted) return;
+    im.dataset.counted = '1';
     var c = im.parentNode, sk = c && c.querySelector('.skel');
     if (sk) sk.remove();
     im.classList.add('on');
@@ -318,6 +320,8 @@
     im.src = im.dataset.src;
     im.removeAttribute('data-src');
     hook(im);
+    // cache hit: gambar bisa selesai sebelum listener sempat nempel
+    if (im.complete && im.naturalWidth > 0) onLoaded(im);
   }
 
   function cellHTML(it) {
