@@ -137,8 +137,6 @@
     <button class="mini" id="fast">Pilih semua</button>
   </div>
   <div class="perf">
-    <span class="p">Foto 1: <b id="mFirst">—</b></span>
-    <span class="p">Termuat: <b id="mShow">—</b></span>
     <span class="p">Dipilih: <b id="mPick">0</b></span>
   </div>
 </header>
@@ -220,7 +218,6 @@
 
   var g = document.getElementById('g'), sen = document.getElementById('sen');
   var ALL = [], shown = 0, hasil = null, cur = 0;
-  var nImg = 0, tNav = performance.now(), firstAt = 0;
   var picked = [];
 
   /* ---------- pesan WhatsApp ---------- */
@@ -291,12 +288,6 @@
     var c = im.parentNode, sk = c && c.querySelector('.skel');
     if (sk) sk.remove();
     im.classList.add('on');
-    if (!firstAt) {
-      firstAt = 1;
-      document.getElementById('mFirst').textContent = Math.round(performance.now() - tNav) + ' ms';
-    }
-    nImg++;
-    document.getElementById('mShow').textContent = nImg;
   }
   function hook(im) {
     if (im.dataset.hooked) return;
@@ -492,7 +483,6 @@
     return;
   }
 
-  var t0 = Date.now();
   fetch(EP + '?action=getAlbumFiles&folder=' + encodeURIComponent(FOLDER))
     .then(function (r) { return r.json(); })
     .then(function (j) {
@@ -504,13 +494,10 @@
         gagal('Server jawab: ' + alasan);
         return;
       }
-      var ms = Date.now() - t0;
-
       if (!ALBUM.judul && j.judul) ALBUM.judul = j.judul;
       document.getElementById('albJudul').textContent = ALBUM.judul || 'Album Foto';
       document.getElementById('albSub').textContent =
-        (ALBUM.sesi ? ALBUM.sesi + ' \u00b7 ' : '') +
-        (j.total || 0) + ' foto' + (j.cached ? ' \u00b7 cache' : '') + ' \u00b7 ' + ms + ' ms';
+        (ALBUM.sesi ? ALBUM.sesi + ' \u00b7 ' : '') + (j.total || 0) + ' foto';
 
       ALL = (j.files || [])
         .filter(function (f) { return f && f.id && f.k; })
