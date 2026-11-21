@@ -52,6 +52,28 @@
    background-size:200% 100%;animation:sk 1.3s infinite}
  @keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
+ /* ---------- SKELETON SHIMMER (motion.dev style) ----------
+    Lapis 1: kerangka kartu tampil instan begitu halaman dibuka,
+    jadi layar tidak pernah kosong selama fetch ke Apps Script. */
+ .shim{position:absolute;inset:0;overflow:hidden;background:#0d0d0d}
+ .shim::before{content:"";position:absolute;inset:0;
+   background:
+     radial-gradient(90% 55% at 50% 0,#171717 0%,transparent 62%),
+     radial-gradient(70% 40% at 50% 100%,#141414 0%,transparent 65%);
+ }
+ .shim::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:55%;
+   background:linear-gradient(90deg,transparent,rgba(255,255,255,.085),transparent);
+   transform:skewX(-12deg);animation:shim 1.45s cubic-bezier(.4,0,.2,1) infinite}
+ @keyframes shim{0%{left:-60%}62%,100%{left:115%}}
+ .shim i{position:absolute;left:8px;right:8px;height:9px;border-radius:5px;
+   background:rgba(255,255,255,.065)}
+ .shim i.a{top:14px;width:42%;right:auto;height:8px}
+ .shim i.b{top:29px;width:26%;right:auto;height:7px;opacity:.7}
+ @media (prefers-reduced-motion:reduce){
+   .shim::after{animation:none;display:none}
+   .skel{animation:none}
+ }
+
  /* pilihan */
  .pick{position:absolute;top:7px;right:7px;width:31px;height:31px;border-radius:50%;
    border:2px solid rgba(255,255,255,.85);background:rgba(0,0,0,.42);
@@ -123,6 +145,10 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://script.google.com" crossorigin>
+<link rel="preconnect" href="https://drive.google.com">
+<link rel="dns-prefetch" href="https://drive.usercontent.google.com">
+<link rel="dns-prefetch" href="https://lh3.googleusercontent.com">
 </head>
 <body>
 
@@ -337,6 +363,14 @@
   }
 
   /* ---------- render ---------- */
+  function renderSkel() {
+    var h = '';
+    for (var i = 0; i < 8; i++) {
+      h += '<div class="cell"><div class="shim"><i class="a"></i><i class="b"></i></div></div>';
+    }
+    g.innerHTML = h;
+    document.getElementById('cnt').textContent = 'memuat daftar foto…';
+  }
   function render(list) {
     var lim = Math.min(BATCH, list.length), html = '';
     for (var i = 0; i < lim; i++) html += cellHTML(list[i]);
@@ -490,6 +524,33 @@
     return;
   }
 
+  /* ---------- Lapis 3: warm-up ping ----------
+     Satu request kecil biar Apps Script bangun duluan;
+     klik album berikutnya tidak nunggu cold start. */
+  try { fetch(EP + '?action=getAlbums', { mode: 'no-cors' }).catch(function () {}); } catch (e) {}
+
+  /* ---------- Lapis 2: cache localStorage ----------
+     Render instan dari cache, lalu fetch TETAP jalan & menimpa.
+     Fetch gagal -> cache tetap tampil, bukan layar error. */
+  var CKEY = 'rpx_album_' + FOLDER;
+  var cacheUsed = false;
+  function pakaiCache(c) {
+    if (!c || !c.files || !c.files.length) return false;
+    if (!ALBUM.judul && c.judul) ALBUM.judul = c.judul;
+    document.getElementById('albJudul').textContent = ALBUM.judul || 'Album Foto';
+    document.getElementById('albSub').textContent =
+      (ALBUM.sesi ? ALBUM.sesi + ' \u00b7 ' : '') +
+      (c.total || c.files.length) + ' foto \u00b7 cache';
+    ALL = c.files.filter(function (f) { return f && f.id && f.k; })
+                 .map(function (f) { return { kode: f.k, id: f.id }; });
+    if (!ALL.length) return false;
+    setWaSemua(); render(ALL); segarkanPilihan();
+    cacheUsed = true;
+    return true;
+  }
+  try { pakaiCache(JSON.parse(localStorage.getItem(CKEY) || 'null')); } catch (e) {}
+  if (!cacheUsed) renderSkel();
+
   fetch(EP + '?action=getAlbumFiles&folder=' + encodeURIComponent(FOLDER))
     .then(function (r) { return r.json(); })
     .then(function (j) {
@@ -498,7 +559,7 @@
         // dengan versi terbaru, jadi action getAlbumFiles belum ada.
         var alasan = (j && j.error) ? j.error
           : 'action getAlbumFiles belum aktif di Apps Script (redeploy ke versi baru).';
-        gagal('Server jawab: ' + alasan);
+        if (!cacheUsed) gagal('Server jawab: ' + alasan);
         return;
       }
       if (!ALBUM.judul && j.judul) ALBUM.judul = j.judul;
@@ -510,14 +571,24 @@
         .filter(function (f) { return f && f.id && f.k; })
         .map(function (f) { return { kode: f.k, id: f.id }; });
 
-      if (!ALL.length) { gagal('Folder ini belum berisi foto dengan nama berkode.'); return; }
+      if (!ALL.length) {
+        if (!cacheUsed) gagal('Folder ini belum berisi foto dengan nama berkode.');
+        return;
+      }
+
+      try { localStorage.setItem(CKEY, JSON.stringify({
+        t: Date.now(),
+        judul: ALBUM.judul,
+        total: j.total || ALL.length,
+        files: (j.files || []).map(function (f) { return { k: f.k, id: f.id }; })
+      })); } catch (e) {}
 
       setWaSemua();
       render(ALL);
       segarkanPilihan();
     })
     .catch(function (e) {
-      gagal('Gagal menghubungi server (' + (e && e.message ? e.message : 'jaringan') + ').');
+      if (!cacheUsed) gagal('Gagal menghubungi server (' + (e && e.message ? e.message : 'jaringan') + ').');
     });
 })();
 </script>
