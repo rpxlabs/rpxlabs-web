@@ -567,11 +567,11 @@
       document.getElementById('albSub').textContent =
         (ALBUM.sesi ? ALBUM.sesi + ' \u00b7 ' : '') + (j.total || 0) + ' foto';
 
-      ALL = (j.files || [])
+      var baru = (j.files || [])
         .filter(function (f) { return f && f.id && f.k; })
         .map(function (f) { return { kode: f.k, id: f.id }; });
 
-      if (!ALL.length) {
+      if (!baru.length) {
         if (!cacheUsed) gagal('Folder ini belum berisi foto dengan nama berkode.');
         return;
       }
@@ -579,10 +579,22 @@
       try { localStorage.setItem(CKEY, JSON.stringify({
         t: Date.now(),
         judul: ALBUM.judul,
-        total: j.total || ALL.length,
+        total: j.total || baru.length,
         files: (j.files || []).map(function (f) { return { k: f.k, id: f.id }; })
       })); } catch (e) {}
 
+      /* Kalau daftar dari server identik dengan yang sudah tampil dari cache,
+         jangan render ulang — render kedua bikin grid berkedip seperti halaman
+         ke-refresh. Cukup perbarui subjudul. */
+      var sama = cacheUsed && baru.length === ALL.length;
+      if (sama) {
+        for (var i = 0; i < baru.length; i++) {
+          if (baru[i].kode !== ALL[i].kode || baru[i].id !== ALL[i].id) { sama = false; break; }
+        }
+      }
+      if (sama) return;
+
+      ALL = baru;
       setWaSemua();
       render(ALL);
       segarkanPilihan();
