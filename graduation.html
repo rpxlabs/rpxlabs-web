@@ -290,6 +290,13 @@ footer .fnote{font-size:0.66rem;color:rgba(255,255,255,0.32);letter-spacing:0.1e
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
   .rv{opacity:1;transform:none}
 }
+
+/* --- page enter: fade + rise + motion blur ---
+   Blur satu nilai menyusut (12px -> 0) + translateY: kesan shutter smear,
+   bukan gambar buram statis. blur() hanya terima satu nilai di semua browser. */
+@keyframes page-in{from{opacity:0;transform:translateY(16px) scaleY(1.012);filter:blur(12px)}60%{filter:blur(3px)}to{opacity:1;transform:translateY(0) scaleY(1);filter:blur(0)}}
+body{animation:page-in .5s cubic-bezier(.22,.61,.36,1) both}
+@media (prefers-reduced-motion:reduce){body{animation:none}}
 </style>
 
     <!-- SEO -->
